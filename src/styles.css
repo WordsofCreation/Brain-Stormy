@@ -36,3 +36,69 @@ a {
   background: rgba(139, 92, 246, 0.45);
   color: white;
 }
+
+.storm-energy-bg {
+  position: absolute;
+  inset: -12rem -20vw auto -20vw;
+  height: min(92vh, 58rem);
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(139, 92, 246, 0.36), transparent 28%),
+    radial-gradient(circle at 78% 16%, rgba(216, 222, 233, 0.16), transparent 23%),
+    radial-gradient(circle at 52% 72%, rgba(56, 189, 248, 0.16), transparent 31%),
+    linear-gradient(120deg, rgba(7, 17, 31, 0), rgba(139, 92, 246, 0.12), rgba(7, 17, 31, 0));
+  filter: blur(4px) saturate(115%);
+  opacity: 0.95;
+  transform: translate3d(0, 0, 0);
+  animation: storm-drift 18s ease-in-out infinite alternate;
+}
+
+.storm-energy-bg::before,
+.storm-energy-bg::after {
+  position: absolute;
+  content: "";
+  inset: 18% 10%;
+  border-radius: 999px;
+  background: conic-gradient(from 90deg, transparent, rgba(255, 255, 255, 0.14), transparent, rgba(139, 92, 246, 0.22), transparent);
+  filter: blur(28px);
+  opacity: 0.52;
+  animation: storm-spin 28s linear infinite;
+}
+
+.storm-energy-bg::after {
+  inset: 30% 20% 6%;
+  opacity: 0.28;
+  animation-duration: 36s;
+  animation-direction: reverse;
+}
+
+@keyframes storm-drift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+
+  100% {
+    transform: translate3d(2%, 3%, 0) scale(1.06);
+  }
+}
+
+@keyframes storm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
