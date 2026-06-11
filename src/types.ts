@@ -8,12 +8,40 @@ export type NavigationItem = {
   icon: LucideIcon
 }
 
+export const ideaCategories = [
+  'Business',
+  'Creative',
+  'Personal',
+  'Product',
+  'Content',
+  'Writing',
+  'Learning',
+  'Finance',
+  'Health',
+  'Travel',
+  'Home',
+  'Other',
+] as const
+
+export const ideaStatuses = ['Raw Idea', 'Reviewing', 'Approved', 'Parked', 'Completed'] as const
+
+export const ideaPriorities = ['Low', 'Medium', 'High', 'Urgent'] as const
+
+export type IdeaCategory = (typeof ideaCategories)[number]
+export type IdeaStatus = (typeof ideaStatuses)[number]
+export type IdeaPriority = (typeof ideaPriorities)[number]
+
 export type Idea = {
   id: string
   title: string
-  note: string
-  tag: string
-  priority: 'Low' | 'Medium' | 'High'
+  description: string
+  category: IdeaCategory
+  status: IdeaStatus
+  priority: IdeaPriority
+  tags: string[]
+  createdAt: string
+  favorite: boolean
+  projectId?: string
 }
 
 export type BoardColumn = {
