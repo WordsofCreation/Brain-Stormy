@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowUpRight,
+  CalendarClock,
   CheckCircle2,
   Clock3,
   FolderInput,
@@ -16,12 +17,13 @@ import {
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Button } from '../components/Button'
 import { Section } from '../components/Section'
-import { sampleIdeas, sampleProjects } from '../data/sampleData'
+import { sampleCalendarItems, sampleIdeas, sampleProjects } from '../data/sampleData'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import {
   ideaCategories,
   ideaPriorities,
   ideaStatuses,
+  type CalendarItem,
   type Idea,
   type IdeaCategory,
   type IdeaPriority,
@@ -29,6 +31,7 @@ import {
 } from '../types'
 
 const storageKey = 'brain-stormy-ideas'
+const calendarStorageKey = 'brain-stormy-calendar-items'
 const allFilter = 'All'
 
 type IdeaFormState = {
@@ -64,6 +67,12 @@ const statusStyles: Record<IdeaStatus, string> = {
   Approved: 'bg-emerald-300/10 text-emerald-100',
   Parked: 'bg-amber-300/10 text-amber-100',
   Completed: 'bg-sky-300/10 text-sky-100',
+}
+
+function getTomorrowKey() {
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  return `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`
 }
 
 function formatDate(value: string) {
@@ -123,6 +132,7 @@ function ideaToForm(idea: Idea): IdeaFormState {
 
 export function IdeaInbox() {
   const [storedIdeas, setIdeas] = useLocalStorage<StoredIdea[]>(storageKey, sampleIdeas)
+  const [, setCalendarItems] = useLocalStorage<CalendarItem[]>(calendarStorageKey, sampleCalendarItems)
   const ideas = useMemo(() => storedIdeas.map(normalizeStoredIdea), [storedIdeas])
   const [quickIdea, setQuickIdea] = useState(defaultFormState)
   const [editingIdea, setEditingIdea] = useState<Idea | null>(null)
@@ -231,6 +241,25 @@ export function IdeaInbox() {
 
   const toggleFavorite = (ideaId: string) => {
     setIdeas((currentIdeas) => currentIdeas.map((idea) => (idea.id === ideaId ? { ...idea, favorite: !idea.favorite } : idea)))
+  }
+
+
+  const scheduleIdea = (idea: Idea) => {
+    const scheduledItem: CalendarItem = {
+      id: `calendar-${crypto.randomUUID()}`,
+      title: `Review idea: ${idea.title}`,
+      description: idea.description,
+      date: getTomorrowKey(),
+      time: '09:00',
+      type: 'Idea Review',
+      status: 'Scheduled',
+      relatedIdeaId: idea.id,
+      relatedProjectId: idea.projectId,
+      priority: idea.priority,
+      createdAt: new Date().toISOString(),
+    }
+
+    setCalendarItems((currentItems) => [scheduledItem, ...currentItems])
   }
 
   return (
@@ -358,6 +387,7 @@ export function IdeaInbox() {
                     onDelete={() => deleteIdea(idea)}
                     onEdit={() => openEditPanel(idea)}
                     onFavorite={() => toggleFavorite(idea.id)}
+                    onSchedule={() => scheduleIdea(idea)}
                     projectName={sampleProjects.find((project) => project.id === idea.projectId)?.title}
                     staggerDelay={index * 0.045}
                   />
@@ -515,11 +545,12 @@ type IdeaCardProps = {
   onDelete: () => void
   onEdit: () => void
   onFavorite: () => void
+  onSchedule: () => void
   projectName?: string
   staggerDelay: number
 }
 
-function IdeaCard({ idea, onDelete, onEdit, onFavorite, projectName, staggerDelay }: IdeaCardProps) {
+function IdeaCard({ idea, onDelete, onEdit, onFavorite, onSchedule, projectName, staggerDelay }: IdeaCardProps) {
   return (
     <motion.article
       layout
@@ -584,6 +615,9 @@ function IdeaCard({ idea, onDelete, onEdit, onFavorite, projectName, staggerDela
       <div className="relative mt-5 flex gap-2">
         <Button className="flex-1 px-4 py-2.5" onClick={onEdit} type="button" variant="secondary">
           <Pencil className="mr-2" size={16} /> Edit
+        </Button>
+        <Button className="flex-1 px-4 py-2.5" onClick={onSchedule} type="button" variant="ghost">
+          <CalendarClock className="mr-2" size={16} /> Schedule
         </Button>
         <button
           className="rounded-full border border-white/10 bg-white/5 px-4 text-silver transition hover:border-rose-300/30 hover:bg-rose-400/10 hover:text-rose-100"

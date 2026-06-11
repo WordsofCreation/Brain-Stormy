@@ -1,4 +1,4 @@
-import type { BoardColumn, CalendarEvent, Goal, Idea, Project } from '../types'
+import type { BoardColumn, CalendarItem, Goal, Idea, Project } from '../types'
 
 export const sampleIdeas: Idea[] = [
   {
@@ -137,11 +137,68 @@ export const sampleProjects: Project[] = [
 ]
 
 
-export const sampleCalendarEvents: CalendarEvent[] = [
-  { id: 'event-1', date: 'Mon 09:00', title: 'Idea inbox sweep', type: 'Review' },
-  { id: 'event-2', date: 'Tue 14:30', title: 'Storm map synthesis', type: 'Focus' },
-  { id: 'event-3', date: 'Thu 11:00', title: 'Project milestone review', type: 'Execution' },
-  { id: 'event-4', date: 'Fri 15:00', title: 'Weekly goal dashboard', type: 'Reflection' },
+export const sampleCalendarItems: CalendarItem[] = [
+  {
+    id: 'calendar-1',
+    title: 'Review AI-assisted weekly ritual',
+    description: 'Pressure-test the workflow, capture risks, and decide whether this becomes a project template.',
+    date: '2026-06-11',
+    time: '09:00',
+    type: 'Idea Review',
+    status: 'Scheduled',
+    relatedIdeaId: 'idea-1',
+    priority: 'High',
+    createdAt: '2026-06-03T10:15:00.000Z',
+  },
+  {
+    id: 'calendar-2',
+    title: 'Design finance command center layout',
+    description: 'Deep work block for the project dashboard structure and first-review prompts.',
+    date: '2026-06-12',
+    time: '14:30',
+    type: 'Project Task',
+    status: 'In Progress',
+    relatedIdeaId: 'idea-3',
+    relatedProjectId: 'project-2',
+    relatedTaskId: 'task-2-2',
+    priority: 'Urgent',
+    createdAt: '2026-06-05T08:20:00.000Z',
+  },
+  {
+    id: 'calendar-3',
+    title: 'Protected creative operating-system sprint',
+    description: 'Map publishing and review rituals before building the first reusable dashboard.',
+    date: '2026-06-15',
+    time: '10:00',
+    type: 'Deep Work',
+    status: 'Scheduled',
+    relatedProjectId: 'project-1',
+    priority: 'High',
+    createdAt: '2026-06-06T11:00:00.000Z',
+  },
+  {
+    id: 'calendar-4',
+    title: 'Admin catch-up and inbox sweep',
+    description: 'Clear stale tasks, file reference notes, and reset the coming week action list.',
+    date: '2026-06-09',
+    time: '16:00',
+    type: 'Admin',
+    status: 'Missed',
+    priority: 'Medium',
+    createdAt: '2026-06-01T12:00:00.000Z',
+  },
+  {
+    id: 'calendar-5',
+    title: 'Monthly review prompts deadline',
+    description: 'Finalize review questions for subscriptions, savings, and upcoming bills.',
+    date: '2026-06-20',
+    type: 'Deadline',
+    status: 'Scheduled',
+    relatedProjectId: 'project-2',
+    relatedTaskId: 'task-2-3',
+    priority: 'Urgent',
+    createdAt: '2026-06-05T08:20:00.000Z',
+  },
 ]
 
 export const sampleGoals: Goal[] = [
