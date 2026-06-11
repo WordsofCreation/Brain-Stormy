@@ -27,9 +27,30 @@ export const ideaStatuses = ['Raw Idea', 'Reviewing', 'Approved', 'Parked', 'Com
 
 export const ideaPriorities = ['Low', 'Medium', 'High', 'Urgent'] as const
 
+export const projectCategories = [
+  'Business',
+  'Creative',
+  'Personal',
+  'Product',
+  'Content',
+  'Writing',
+  'Learning',
+  'Finance',
+  'Health',
+  'Home',
+  'Other',
+] as const
+
+export const projectStatuses = ['Planning', 'Active', 'Waiting', 'Scheduled', 'Completed'] as const
+
+export const projectPriorities = ['Low', 'Medium', 'High', 'Urgent'] as const
+
 export type IdeaCategory = (typeof ideaCategories)[number]
 export type IdeaStatus = (typeof ideaStatuses)[number]
 export type IdeaPriority = (typeof ideaPriorities)[number]
+export type ProjectCategory = (typeof projectCategories)[number]
+export type ProjectStatus = (typeof projectStatuses)[number]
+export type ProjectPriority = (typeof projectPriorities)[number]
 
 export type Idea = {
   id: string
@@ -51,12 +72,26 @@ export type BoardColumn = {
   ideas: string[]
 }
 
+export type ProjectTask = {
+  id: string
+  title: string
+  completed: boolean
+  dueDate?: string
+  notes?: string
+}
+
 export type Project = {
   id: string
-  name: string
-  status: string
-  progress: number
-  nextStep: string
+  title: string
+  description: string
+  category: ProjectCategory
+  status: ProjectStatus
+  priority: ProjectPriority
+  targetDate: string
+  ideaIds: string[]
+  tasks: ProjectTask[]
+  createdAt: string
+  notes: string
 }
 
 export type CalendarEvent = {
