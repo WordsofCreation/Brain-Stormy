@@ -27,6 +27,7 @@ import { sampleCalendarItems, sampleIdeas, sampleProjects } from '../data/sample
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import {
   calendarItemStatuses,
+  calendarItemTypes,
   ideaCategories,
   ideaPriorities,
   ideaStatuses,
@@ -181,7 +182,7 @@ function normalizeCalendarItem(item: Partial<CalendarItem>, index: number): Cale
     description: item.description?.trim() || 'Scheduled action from your plan.',
     date: item.date || toDateKey(new Date()),
     time: item.time || undefined,
-    type: item.type || 'Other',
+    type: isOneOf(item.type, calendarItemTypes) ? item.type : 'Other',
     status: status as CalendarItemStatus,
     relatedIdeaId: item.relatedIdeaId || undefined,
     relatedProjectId: item.relatedProjectId || undefined,
@@ -225,9 +226,9 @@ export function GoalDashboard({ onNavigate }: GoalDashboardProps) {
   const weekEndKey = toDateKey(addDays(today, 6))
   const weekStartKey = toDateKey(addDays(today, -today.getDay()))
 
-  const ideas = useMemo(() => storedIdeas.map(normalizeIdea), [storedIdeas])
-  const projects = useMemo(() => storedProjects.map(normalizeProject), [storedProjects])
-  const calendarItems = useMemo(() => storedCalendarItems.map(normalizeCalendarItem), [storedCalendarItems])
+  const ideas = useMemo(() => storedIdeas.map((idea, index) => normalizeIdea(idea ?? {}, index)), [storedIdeas])
+  const projects = useMemo(() => storedProjects.map((project, index) => normalizeProject(project ?? {}, index)), [storedProjects])
+  const calendarItems = useMemo(() => storedCalendarItems.map((item, index) => normalizeCalendarItem(item ?? {}, index)), [storedCalendarItems])
 
   const tasks = useMemo<DashboardTask[]>(
     () =>
