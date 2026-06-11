@@ -18,6 +18,7 @@ import { Card } from '../components/Card'
 import { Section } from '../components/Section'
 import { sampleCalendarItems, sampleIdeas, sampleProjects } from '../data/sampleData'
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 import {
   calendarItemStatuses,
   calendarItemTypes,
@@ -187,6 +188,7 @@ export function Calendar() {
   const [typeFilter, setTypeFilter] = useState<CalendarItemType | typeof allFilter>(allFilter)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [form, setForm] = useState<CalendarFormState>(emptyForm(todayKey))
+  const isMobile = useMediaQuery('(max-width: 767px)')
 
   useEffect(() => {
     if (calendarItemsNeedMigration(storedItems, items)) {
@@ -201,6 +203,7 @@ export function Calendar() {
   const monthDays = useMemo(() => buildMonthDays(visibleMonth), [visibleMonth])
   const selectedItems = filteredItems.filter((item) => item.date === selectedDate)
   const upcomingItems = filteredItems.filter((item) => item.date >= todayKey && item.date <= toDateKey(addDays(today, 7)) && item.status !== 'Completed').slice(0, 7)
+  const weekDays = Array.from({ length: 7 }, (_, index) => addDays(today, index))
   const weeklyItems = filteredItems.filter((item) => item.date >= todayKey && item.date <= toDateKey(addDays(today, 6)))
   const activeProjectTasks = projects.find((project) => project.id === form.relatedProjectId)?.tasks ?? []
 
@@ -266,12 +269,12 @@ export function Calendar() {
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold text-white">{formatMonthTitle(visibleMonth)}</h2>
                 </div>
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-center">
                   <label className="relative">
                     <Filter className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-silver/45" size={16} />
                     <select
                       aria-label="Filter calendar by type"
-                      className="rounded-2xl border border-white/10 bg-navy/70 py-3 pl-10 pr-4 text-sm text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
+                      className="min-h-11 w-full rounded-2xl border border-white/10 bg-navy/70 py-3 pl-10 pr-4 text-sm text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
                       onChange={(event) => setTypeFilter(event.target.value as CalendarItemType | typeof allFilter)}
                       value={typeFilter}
                     >
@@ -283,7 +286,7 @@ export function Calendar() {
                       ))}
                     </select>
                   </label>
-                  <div className="flex rounded-full border border-white/10 bg-navy/55 p-1">
+                  <div className="flex min-h-11 justify-between rounded-full border border-white/10 bg-navy/55 p-1">
                     <button className="rounded-full p-2 text-silver transition hover:bg-white/10 hover:text-white" onClick={() => moveMonth(-1)} type="button" aria-label="Previous month">
                       <ArrowLeft size={18} />
                     </button>
@@ -294,7 +297,7 @@ export function Calendar() {
                       <ArrowRight size={18} />
                     </button>
                   </div>
-                  <Button onClick={() => openAddModal()} type="button">
+                  <Button className="w-full sm:w-auto" onClick={() => openAddModal()} type="button">
                     <Plus className="mr-2" size={17} /> Add item
                   </Button>
                 </div>
@@ -360,10 +363,33 @@ export function Calendar() {
               </div>
             </motion.div>
 
-            <div className="grid gap-3 p-4 sm:hidden">
+            <div className="grid gap-4 p-4 sm:hidden">
               <div className="flex items-center justify-between gap-3">
-                <h3 className="text-lg font-semibold text-white">This week</h3>
-                <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-silver">Mobile list</span>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">This week</h3>
+                  <p className="mt-1 text-sm text-silver/65">A thumb-friendly action list for the next 7 days.</p>
+                </div>
+                <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-silver">{weeklyItems.length} items</span>
+              </div>
+              <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Select a day this week">
+                {weekDays.map((date) => {
+                  const dateKey = toDateKey(date)
+                  const dayItems = filteredItems.filter((item) => item.date === dateKey)
+                  const isSelected = dateKey === selectedDate
+
+                  return (
+                    <button
+                      className={`min-w-[4.6rem] rounded-2xl border px-3 py-3 text-center transition ${isSelected ? 'border-violet/60 bg-violet/15 text-white shadow-glow' : 'border-white/10 bg-navy/45 text-silver hover:text-white'}`}
+                      key={dateKey}
+                      onClick={() => setSelectedDate(dateKey)}
+                      type="button"
+                    >
+                      <span className="block text-xs font-semibold uppercase tracking-[0.18em]">{dayLabels[date.getDay()]}</span>
+                      <span className="mt-1 block text-lg font-semibold">{date.getDate()}</span>
+                      <span className="mt-1 block text-[0.68rem] text-silver/60">{dayItems.length} item{dayItems.length === 1 ? '' : 's'}</span>
+                    </button>
+                  )
+                })}
               </div>
               {weeklyItems.length > 0 ? weeklyItems.map((item) => <CalendarItemRow item={item} key={item.id} onToggleComplete={() => toggleComplete(item.id)} todayKey={todayKey} />) : <EmptyState text="No actions scheduled in the next 7 days." />}
             </div>
@@ -385,7 +411,7 @@ export function Calendar() {
           </Card>
         </div>
 
-        <motion.aside initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.45, ease: 'easeOut' }} className="grid content-start gap-6">
+        <motion.aside initial={isMobile ? { opacity: 0, y: 12 } : { opacity: 0, x: 22 }} animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, x: 0 }} transition={{ duration: isMobile ? 0.24 : 0.45, ease: 'easeOut' }} className="grid content-start gap-6">
           <Card className="bg-gradient-to-br from-violet/15 via-white/[0.07] to-sky-300/10">
             <div className="flex items-center gap-3">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-violet/20 text-violet">
@@ -414,13 +440,13 @@ export function Calendar() {
 
       <AnimatePresence>
         {isModalOpen ? (
-          <motion.div className="fixed inset-0 z-50 grid place-items-center bg-navy/75 p-4 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div className="fixed inset-0 z-50 flex items-end justify-center bg-navy/75 p-0 backdrop-blur-sm sm:grid sm:place-items-center sm:p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <motion.form
-              initial={{ opacity: 0, y: 28, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 18, scale: 0.96 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-              className="max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] border border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:p-7"
+              initial={isMobile ? { y: '100%' } : { opacity: 0, y: 28, scale: 0.96 }}
+              animate={isMobile ? { y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+              exit={isMobile ? { y: '100%' } : { opacity: 0, y: 18, scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: isMobile ? 320 : 260, damping: 30 }}
+              className="max-h-[92svh] w-full max-w-3xl overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:max-h-[92vh] sm:rounded-[2rem] sm:p-7"
               onSubmit={saveCalendarItem}
             >
               <div className="mb-6 flex items-start justify-between gap-4">
@@ -434,8 +460,8 @@ export function Calendar() {
               </div>
 
               <div className="grid gap-4">
-                <input className="rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-base text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, title: event.target.value }))} placeholder="Calendar item title..." value={form.title} />
-                <textarea className="min-h-28 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, description: event.target.value }))} placeholder="Why does this belong on the calendar?" value={form.description} />
+                <input className="min-h-11 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-base text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, title: event.target.value }))} placeholder="Calendar item title..." value={form.title} />
+                <textarea className="min-h-24 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, description: event.target.value }))} placeholder="Why does this belong on the calendar?" value={form.description} />
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   <InputField label="Date" onChange={(value) => setForm((currentForm) => ({ ...currentForm, date: value }))} type="date" value={form.date} />
                   <InputField label="Time" onChange={(value) => setForm((currentForm) => ({ ...currentForm, time: value }))} type="time" value={form.time} />
@@ -470,15 +496,16 @@ type CalendarItemRowProps = {
 }
 
 function CalendarItemRow({ compact = false, ideas = [], item, onToggleComplete, projects = [], todayKey }: CalendarItemRowProps) {
+  const isMobile = useMediaQuery('(max-width: 767px)')
   const idea = ideas.find((currentIdea) => currentIdea.id === item.relatedIdeaId)
   const project = projects.find((currentProject) => currentProject.id === item.relatedProjectId)
   const task = project?.tasks.find((currentTask) => currentTask.id === item.relatedTaskId)
   const overdue = isOverdue(item, todayKey)
 
   return (
-    <motion.div layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className={`rounded-3xl border p-4 ${overdue ? 'border-rose-300/30 bg-rose-400/10' : 'border-white/10 bg-white/[0.055]'} ${item.status === 'Completed' ? 'opacity-70' : ''}`}>
+    <motion.div layout initial={isMobile ? { opacity: 0, y: 8 } : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className={`rounded-3xl border p-4 ${overdue ? 'border-rose-300/30 bg-rose-400/10' : 'border-white/10 bg-white/[0.055]'} ${item.status === 'Completed' ? 'opacity-70' : ''}`}>
       <div className="flex items-start gap-3">
-        <button className="mt-0.5 text-silver/60 transition hover:text-white" onClick={onToggleComplete} type="button" aria-label={`Toggle ${item.title} complete`}>
+        <button className="mt-0.5 min-h-10 min-w-10 rounded-full text-silver/60 transition hover:text-white" onClick={onToggleComplete} type="button" aria-label={`Toggle ${item.title} complete`}>
           {item.status === 'Completed' ? <CheckCircle2 className="text-emerald-100" size={22} /> : <Circle size={22} />}
         </button>
         <div className="min-w-0 flex-1">
@@ -510,12 +537,14 @@ type UpcomingItemProps = {
 }
 
 function UpcomingItem({ index, item, todayKey }: UpcomingItemProps) {
+  const isMobile = useMediaQuery('(max-width: 767px)')
+
   return (
     <motion.div
-      initial={{ opacity: 0, x: 24 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -16 }}
-      transition={{ duration: 0.3, delay: index * 0.045, ease: 'easeOut' }}
+      initial={isMobile ? { opacity: 0, y: 8 } : { opacity: 0, x: 24 }}
+      animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, x: 0 }}
+      exit={isMobile ? { opacity: 0, y: -8 } : { opacity: 0, x: -16 }}
+      transition={{ duration: isMobile ? 0.2 : 0.3, delay: isMobile ? 0 : index * 0.045, ease: 'easeOut' }}
       className={`rounded-2xl border p-3 ${isOverdue(item, todayKey) ? 'border-rose-300/30 bg-rose-400/10' : 'border-white/10 bg-navy/45'}`}
     >
       <div className="flex items-start justify-between gap-3">
@@ -547,7 +576,7 @@ function SelectField({ label, onChange, options, placeholder, value }: SelectFie
   return (
     <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-silver/55">
       {label}
-      <select className="rounded-2xl border border-white/10 bg-navy/70 px-4 py-3 text-sm normal-case tracking-normal text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => onChange(event.target.value)} value={value}>
+      <select className="min-h-11 rounded-2xl border border-white/10 bg-navy/70 px-4 py-3 text-sm normal-case tracking-normal text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => onChange(event.target.value)} value={value}>
         {placeholder ? <option value="">{placeholder}</option> : null}
         {options.map((option) => {
           const optionValue = typeof option === 'string' ? option : option.value
@@ -570,7 +599,7 @@ function InputField({ label, onChange, type, value }: InputFieldProps) {
   return (
     <label className="grid gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-silver/55">
       {label}
-      <input className="rounded-2xl border border-white/10 bg-navy/70 px-4 py-3 text-sm normal-case tracking-normal text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => onChange(event.target.value)} type={type} value={value} />
+      <input className="min-h-11 rounded-2xl border border-white/10 bg-navy/70 px-4 py-3 text-sm normal-case tracking-normal text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => onChange(event.target.value)} type={type} value={value} />
     </label>
   )
 }

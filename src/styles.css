@@ -208,3 +208,41 @@ a {
     filter: none !important;
   }
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  input,
+  select,
+  textarea {
+    min-height: 2.75rem;
+    font-size: 1rem;
+  }
+
+  .storm-energy-bg {
+    animation: none;
+    filter: blur(2px) saturate(105%);
+    opacity: 0.72;
+  }
+
+  .home-shell::before {
+    opacity: 0.28;
+  }
+
+  .hero-title,
+  .hero-copy,
+  .app-preview,
+  .board-idea-card {
+    will-change: auto;
+  }
+}

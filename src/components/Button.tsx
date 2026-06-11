@@ -20,7 +20,7 @@ export function Button({ children, className = '', variant = 'primary', ...props
     <motion.button
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
-      className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${variants[variant]} ${className}`}
+      className={`inline-flex min-h-11 items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition sm:min-h-0 ${variants[variant]} ${className}`}
       {...props}
     >
       {children}

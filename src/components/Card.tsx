@@ -13,7 +13,7 @@ export function Card({ children, className = '', delay = 0 }: CardProps) {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={`rounded-3xl border border-white/10 bg-white/[0.07] p-6 shadow-glass backdrop-blur-xl ${className}`}
+      className={`rounded-[1.75rem] border border-white/10 bg-white/[0.07] p-4 shadow-glass sm:rounded-3xl sm:p-6 backdrop-blur-xl ${className}`}
     >
       {children}
     </motion.article>

@@ -19,6 +19,7 @@ import { Button } from '../components/Button'
 import { Section } from '../components/Section'
 import { sampleCalendarItems, sampleIdeas, sampleProjects } from '../data/sampleData'
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 import {
   ideaCategories,
   ideaPriorities,
@@ -141,6 +142,7 @@ export function IdeaInbox() {
   const [categoryFilter, setCategoryFilter] = useState<IdeaCategory | typeof allFilter>(allFilter)
   const [statusFilter, setStatusFilter] = useState<IdeaStatus | typeof allFilter>(allFilter)
   const [priorityFilter, setPriorityFilter] = useState<IdeaPriority | typeof allFilter>(allFilter)
+  const isMobile = useMediaQuery('(max-width: 767px)')
 
   useEffect(() => {
     if (ideasNeedMigration(storedIdeas, ideas)) {
@@ -274,12 +276,12 @@ export function IdeaInbox() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
           onSubmit={addIdea}
-          className="rounded-[2rem] border border-white/10 bg-white/[0.08] p-5 shadow-glass backdrop-blur-2xl sm:p-6"
+          className="rounded-[1.75rem] border border-white/10 bg-white/[0.08] p-4 shadow-glass backdrop-blur-2xl sm:rounded-[2rem] sm:p-6"
         >
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-violet">Quick add</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight">Capture before it fades</h2>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">Capture before it fades</h2>
             </div>
             <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-violet/20 text-violet">
               <Sparkles size={21} />
@@ -296,7 +298,7 @@ export function IdeaInbox() {
             />
             <textarea
               aria-label="Idea description"
-              className="min-h-24 rounded-2xl border border-white/10 bg-navy/55 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
+              className="min-h-20 rounded-2xl border border-white/10 bg-navy/55 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
               onChange={(event) => setQuickIdea((idea) => ({ ...idea, description: event.target.value }))}
               placeholder="Optional note, next thought, or why it matters..."
               value={quickIdea.description}
@@ -389,7 +391,7 @@ export function IdeaInbox() {
                     onFavorite={() => toggleFavorite(idea.id)}
                     onSchedule={() => scheduleIdea(idea)}
                     projectName={sampleProjects.find((project) => project.id === idea.projectId)?.title}
-                    staggerDelay={index * 0.045}
+                    staggerDelay={isMobile ? 0 : index * 0.045}
                   />
                 ))}
               </motion.div>
@@ -418,13 +420,13 @@ export function IdeaInbox() {
 
       <AnimatePresence>
         {editingIdea ? (
-          <motion.div className="fixed inset-0 z-50 flex justify-end bg-navy/70 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div className="fixed inset-0 z-50 flex items-end justify-end bg-navy/70 backdrop-blur-sm sm:items-stretch" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <motion.aside
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', stiffness: 280, damping: 32 }}
-              className="h-full w-full overflow-y-auto border-l border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:max-w-xl sm:p-7"
+              initial={isMobile ? { y: '100%' } : { x: '100%' }}
+              animate={isMobile ? { y: 0 } : { x: 0 }}
+              exit={isMobile ? { y: '100%' } : { x: '100%' }}
+              transition={{ type: 'spring', stiffness: isMobile ? 320 : 280, damping: 32 }}
+              className="max-h-[92svh] w-full overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-l sm:p-7"
             >
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div>
@@ -522,7 +524,7 @@ function FilterSelect({ label, onChange, options, value }: Omit<SelectFieldProps
   return (
     <select
       aria-label={label}
-      className="min-w-36 rounded-2xl border border-white/10 bg-navy/55 px-4 py-3 text-sm text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
+      className="min-h-11 w-full rounded-2xl lg:min-w-36 border border-white/10 bg-navy/55 px-4 py-3 text-sm text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
       onChange={(event) => onChange(event.target.value)}
       value={value}
     >
@@ -551,13 +553,15 @@ type IdeaCardProps = {
 }
 
 function IdeaCard({ idea, onDelete, onEdit, onFavorite, onSchedule, projectName, staggerDelay }: IdeaCardProps) {
+  const isMobile = useMediaQuery('(max-width: 767px)')
+
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, y: 24, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -14, scale: 0.96 }}
-      transition={{ duration: 0.45, delay: staggerDelay, ease: [0.22, 1, 0.36, 1] }}
+      initial={isMobile ? { opacity: 0, y: 10 } : { opacity: 0, y: 24, scale: 0.97 }}
+      animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+      exit={isMobile ? { opacity: 0, y: -8 } : { opacity: 0, y: -14, scale: 0.96 }}
+      transition={{ duration: isMobile ? 0.22 : 0.45, delay: staggerDelay, ease: [0.22, 1, 0.36, 1] }}
       className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-white/[0.12] to-white/[0.045] p-5 shadow-glass backdrop-blur-xl"
     >
       <div className="absolute -right-14 -top-14 h-32 w-32 rounded-full bg-violet/20 blur-3xl transition group-hover:bg-violet/30" />
@@ -612,7 +616,7 @@ function IdeaCard({ idea, onDelete, onEdit, onFavorite, onSchedule, projectName,
         </div>
       )}
 
-      <div className="relative mt-5 flex gap-2">
+      <div className="relative mt-5 grid grid-cols-[1fr_1fr_auto] gap-2">
         <Button className="flex-1 px-4 py-2.5" onClick={onEdit} type="button" variant="secondary">
           <Pencil className="mr-2" size={16} /> Edit
         </Button>
@@ -620,7 +624,7 @@ function IdeaCard({ idea, onDelete, onEdit, onFavorite, onSchedule, projectName,
           <CalendarClock className="mr-2" size={16} /> Schedule
         </Button>
         <button
-          className="rounded-full border border-white/10 bg-white/5 px-4 text-silver transition hover:border-rose-300/30 hover:bg-rose-400/10 hover:text-rose-100"
+          className="min-h-11 rounded-full border border-white/10 bg-white/5 px-4 text-silver transition hover:border-rose-300/30 hover:bg-rose-400/10 hover:text-rose-100"
           onClick={onDelete}
           type="button"
           aria-label={`Delete ${idea.title}`}
