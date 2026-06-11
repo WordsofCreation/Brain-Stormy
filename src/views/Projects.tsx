@@ -21,6 +21,7 @@ import { Button } from '../components/Button'
 import { Section } from '../components/Section'
 import { sampleCalendarItems, sampleIdeas, sampleProjects } from '../data/sampleData'
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 import {
   projectCategories,
   projectPriorities,
@@ -190,6 +191,7 @@ export function Projects() {
   const [activeProjectId, setActiveProjectId] = useState('')
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null)
   const [taskForm, setTaskForm] = useState<TaskFormState>(emptyTaskForm)
+  const isMobile = useMediaQuery('(max-width: 767px)')
 
   useEffect(() => {
     if (projectsNeedMigration(storedProjects, projects)) {
@@ -340,13 +342,13 @@ export function Projects() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="rounded-[2rem] border border-white/10 bg-white/[0.08] p-5 shadow-glass backdrop-blur-2xl sm:p-6"
+          className="rounded-[1.75rem] border border-white/10 bg-white/[0.08] p-4 shadow-glass backdrop-blur-2xl sm:rounded-[2rem] sm:p-6"
           onSubmit={saveProject}
         >
           <div className="mb-5 flex items-start justify-between gap-4">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-violet">{editingProject ? 'Edit project' : 'Create project'}</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight">{editingProject ? 'Refine the plan' : 'Shape the next plan'}</h2>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">{editingProject ? 'Refine the plan' : 'Shape the next plan'}</h2>
             </div>
             <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-violet/20 text-violet">
               <FolderKanban size={21} />
@@ -363,7 +365,7 @@ export function Projects() {
             />
             <textarea
               aria-label="Project description"
-              className="min-h-24 rounded-2xl border border-white/10 bg-navy/55 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
+              className="min-h-20 rounded-2xl border border-white/10 bg-navy/55 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
               onChange={(event) => setProjectForm((form) => ({ ...form, description: event.target.value }))}
               placeholder="What outcome should this project create?"
               value={projectForm.description}
@@ -464,7 +466,7 @@ export function Projects() {
                     onEdit={() => startEditingProject(project)}
                     onOpen={() => setActiveProjectId(project.id)}
                     project={project}
-                    staggerDelay={index * 0.055}
+                    staggerDelay={isMobile ? 0 : index * 0.055}
                   />
                 ))}
               </motion.div>
@@ -563,16 +565,17 @@ type ProjectCardProps = {
 }
 
 function ProjectCard({ ideaCount, isActive, onDelete, onEdit, onOpen, project, staggerDelay }: ProjectCardProps) {
+  const isMobile = useMediaQuery('(max-width: 767px)')
   const progress = calculateProgress(project.tasks)
   const completedTasks = project.tasks.filter((task) => task.completed).length
 
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, y: 24, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -14, scale: 0.96 }}
-      transition={{ duration: 0.45, delay: staggerDelay, ease: [0.22, 1, 0.36, 1] }}
+      initial={isMobile ? { opacity: 0, y: 10 } : { opacity: 0, y: 24, scale: 0.97 }}
+      animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+      exit={isMobile ? { opacity: 0, y: -8 } : { opacity: 0, y: -14, scale: 0.96 }}
+      transition={{ duration: isMobile ? 0.22 : 0.45, delay: staggerDelay, ease: [0.22, 1, 0.36, 1] }}
       className={`group relative overflow-hidden rounded-[1.75rem] border p-5 shadow-glass backdrop-blur-xl transition ${
         isActive ? 'border-violet/45 bg-violet/10' : 'border-white/10 bg-gradient-to-br from-white/[0.12] to-white/[0.045]'
       }`}
@@ -613,15 +616,15 @@ function ProjectCard({ ideaCount, isActive, onDelete, onEdit, onOpen, project, s
         </span>
       </div>
 
-      <div className="relative mt-5 flex gap-2">
+      <div className="relative mt-5 grid grid-cols-[1fr_auto_auto] gap-2">
         <Button className="flex-1 px-4 py-2.5" onClick={onOpen} type="button" variant="secondary">
           View details
         </Button>
-        <button className="rounded-full border border-white/10 bg-white/5 px-4 text-silver transition hover:text-white" onClick={onEdit} type="button" aria-label={`Edit ${project.title}`}>
+        <button className="min-h-11 rounded-full border border-white/10 bg-white/5 px-4 text-silver transition hover:text-white" onClick={onEdit} type="button" aria-label={`Edit ${project.title}`}>
           <Edit3 size={17} />
         </button>
         <button
-          className="rounded-full border border-white/10 bg-white/5 px-4 text-silver transition hover:border-rose-300/30 hover:bg-rose-400/10 hover:text-rose-100"
+          className="min-h-11 rounded-full border border-white/10 bg-white/5 px-4 text-silver transition hover:border-rose-300/30 hover:bg-rose-400/10 hover:text-rose-100"
           onClick={onDelete}
           type="button"
           aria-label={`Delete ${project.title}`}
@@ -647,16 +650,17 @@ type ProjectDetailDrawerProps = {
 }
 
 function ProjectDetailDrawer({ ideas, onAddTask, onClose, onDeleteTask, onEdit, onScheduleTask, onTaskFormChange, onToggleTask, project, taskForm }: ProjectDetailDrawerProps) {
+  const isMobile = useMediaQuery('(max-width: 767px)')
   const progress = calculateProgress(project.tasks)
 
   return (
-    <motion.div className="fixed inset-0 z-50 flex justify-end bg-navy/70 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <motion.div className="fixed inset-0 z-50 flex items-end justify-end bg-navy/70 backdrop-blur-sm sm:items-stretch" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <motion.aside
-        initial={{ x: '100%' }}
-        animate={{ x: 0 }}
-        exit={{ x: '100%' }}
-        transition={{ type: 'spring', stiffness: 280, damping: 32 }}
-        className="h-full w-full overflow-y-auto border-l border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:max-w-2xl sm:p-7"
+        initial={isMobile ? { y: '100%' } : { x: '100%' }}
+        animate={isMobile ? { y: 0 } : { x: 0 }}
+        exit={isMobile ? { y: '100%' } : { x: '100%' }}
+        transition={{ type: 'spring', stiffness: isMobile ? 320 : 280, damping: 32 }}
+        className="max-h-[92svh] w-full overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:h-full sm:max-h-none sm:max-w-2xl sm:rounded-none sm:border-l sm:p-7"
       >
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
@@ -732,7 +736,7 @@ function ProjectDetailDrawer({ ideas, onAddTask, onClose, onDeleteTask, onEdit, 
           <div className="grid gap-3">
             <input
               aria-label="Task title"
-              className="rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-sm text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
+              className="min-h-11 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-base sm:text-sm text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
               onChange={(event) => onTaskFormChange((form) => ({ ...form, title: event.target.value }))}
               placeholder="Next action step..."
               value={taskForm.title}
@@ -740,14 +744,14 @@ function ProjectDetailDrawer({ ideas, onAddTask, onClose, onDeleteTask, onEdit, 
             <div className="grid gap-3 sm:grid-cols-[0.8fr_1.2fr]">
               <input
                 aria-label="Task due date"
-                className="rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-sm text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
+                className="min-h-11 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-base sm:text-sm text-white outline-none transition focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
                 onChange={(event) => onTaskFormChange((form) => ({ ...form, dueDate: event.target.value }))}
                 type="date"
                 value={taskForm.dueDate}
               />
               <input
                 aria-label="Task notes"
-                className="rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-sm text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
+                className="min-h-11 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-base sm:text-sm text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15"
                 onChange={(event) => onTaskFormChange((form) => ({ ...form, notes: event.target.value }))}
                 placeholder="Optional notes..."
                 value={taskForm.notes}
@@ -843,10 +847,10 @@ function TaskItem({ onDelete, onSchedule, onToggle, task }: TaskItemProps) {
         <motion.span initial={false} animate={{ scale: task.completed ? 1 : 0.85, opacity: task.completed ? 1 : 0 }} className="text-emerald-100">
           <Check size={16} />
         </motion.span>
-        <button className="text-silver/45 transition hover:text-violet" onClick={onSchedule} type="button" aria-label={`Schedule ${task.title}`}>
+        <button className="min-h-10 min-w-10 rounded-full text-silver/45 transition hover:bg-white/10 hover:text-violet" onClick={onSchedule} type="button" aria-label={`Schedule ${task.title}`}>
           <CalendarDays size={16} />
         </button>
-        <button className="text-silver/45 transition hover:text-rose-100" onClick={onDelete} type="button" aria-label={`Delete ${task.title}`}>
+        <button className="min-h-10 min-w-10 rounded-full text-silver/45 transition hover:bg-white/10 hover:text-rose-100" onClick={onDelete} type="button" aria-label={`Delete ${task.title}`}>
           <Trash2 size={16} />
         </button>
       </div>

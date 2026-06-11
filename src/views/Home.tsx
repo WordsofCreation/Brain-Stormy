@@ -21,6 +21,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Button } from '../components/Button'
+import { useMediaQuery } from '../hooks/useMediaQuery'
 import type { ViewId } from '../types'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -92,9 +93,10 @@ const boardIdeas = [
 export function Home({ onNavigate }: HomeProps) {
   const pageRef = useRef<HTMLDivElement | null>(null)
   const prefersReducedMotion = useReducedMotion()
+  const isMobile = useMediaQuery('(max-width: 767px)')
 
   useEffect(() => {
-    if (!pageRef.current || prefersReducedMotion) {
+    if (!pageRef.current || prefersReducedMotion || isMobile) {
       return
     }
 
@@ -277,7 +279,7 @@ export function Home({ onNavigate }: HomeProps) {
       context.revert()
       ScrollTrigger.refresh()
     }
-  }, [prefersReducedMotion])
+  }, [isMobile, prefersReducedMotion])
 
   const titleLines = ['Brain', 'Stormy']
 
@@ -286,10 +288,10 @@ export function Home({ onNavigate }: HomeProps) {
       <div className="storm-energy-bg parallax-layer" data-depth="120" aria-hidden="true" />
       <div className="premium-orb premium-orb-left parallax-layer" data-depth="70" aria-hidden="true" />
       <div className="premium-orb premium-orb-right parallax-layer" data-depth="-52" aria-hidden="true" />
-      <section className="hero-section relative grid min-h-[calc(100vh-5rem)] items-center gap-12 py-12 lg:grid-cols-[0.92fr_1.08fr] lg:py-20">
+      <section className="hero-section relative grid min-h-[calc(100svh-7rem)] items-center gap-10 py-10 lg:grid-cols-[0.92fr_1.08fr] lg:py-20">
         <div className="hero-copy relative z-10 will-change-transform">
           <motion.p
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: isMobile ? 10 : 18 }}
             animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: easeOut }}
             className="hero-kicker mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-4 py-2 text-sm text-silver shadow-glass backdrop-blur-2xl"
@@ -298,7 +300,7 @@ export function Home({ onNavigate }: HomeProps) {
             Serious brainstorming for ideas, projects, goals, and execution.
           </motion.p>
 
-          <h1 className="hero-title overflow-hidden text-6xl font-semibold leading-[0.85] tracking-[-0.075em] text-white will-change-transform sm:text-7xl lg:text-8xl xl:text-9xl">
+          <h1 className="hero-title overflow-hidden text-5xl font-semibold leading-[0.85] tracking-[-0.075em] text-white will-change-transform sm:text-7xl lg:text-8xl xl:text-9xl">
             {titleLines.map((line, index) => (
               <span className="block overflow-hidden pb-3" key={line}>
                 <motion.span
@@ -314,19 +316,19 @@ export function Home({ onNavigate }: HomeProps) {
           </h1>
 
           <motion.p
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: isMobile ? 12 : 28 }}
             animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.82, delay: 0.42, ease: easeOut }}
-            className="mt-5 max-w-2xl text-xl leading-9 text-silver/82 sm:text-2xl"
+            className="mt-5 max-w-2xl text-lg leading-9 text-silver/82 sm:text-2xl"
           >
             Capture the spark. Organize the storm. Schedule the execution.
           </motion.p>
 
           <motion.div
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: isMobile ? 12 : 28 }}
             animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.62, ease: easeOut }}
-            className="hero-actions mt-9 flex flex-col gap-3 sm:flex-row"
+            className="hero-actions mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row"
           >
             <Button onClick={() => onNavigate('inbox')} className="px-6 py-4 text-base">
               Open Idea Inbox <ArrowRight className="ml-2" size={18} />
@@ -338,13 +340,13 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
 
         <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, y: 40, rotateX: 6 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: isMobile ? 14 : 40, rotateX: isMobile ? 0 : 6 }}
           animate={
             prefersReducedMotion
               ? undefined
               : {
                   opacity: 1,
-                  y: [0, -14, 0],
+                  y: isMobile ? 0 : [0, -14, 0],
                   rotateX: 0,
                 }
           }
@@ -354,10 +356,10 @@ export function Home({ onNavigate }: HomeProps) {
               : {
                   opacity: { duration: 0.9, delay: 0.35, ease: easeOut },
                   rotateX: { duration: 0.9, delay: 0.35, ease: easeOut },
-                  y: { duration: 7, delay: 1.2, repeat: Infinity, ease: 'easeInOut' },
+                  y: isMobile ? { duration: 0 } : { duration: 7, delay: 1.2, repeat: Infinity, ease: 'easeInOut' },
                 }
           }
-          className="app-preview relative z-10 mx-auto w-full max-w-2xl will-change-transform"
+          className="app-preview relative z-10 mx-auto w-full max-w-2xl will-change-transform max-sm:will-change-auto"
         >
           <div className="absolute -inset-8 rounded-[3rem] bg-violet/20 blur-3xl" />
           <div className="relative overflow-hidden rounded-[2.35rem] border border-white/15 bg-slate-950/60 p-3 shadow-[0_38px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl">
