@@ -102,3 +102,109 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
+
+.home-shell {
+  isolation: isolate;
+}
+
+.home-shell::before {
+  position: absolute;
+  inset: 9rem -16vw auto;
+  z-index: -2;
+  height: 52rem;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(90deg, transparent 0 24%, rgba(255, 255, 255, 0.08) 24.2%, transparent 24.6% 54%, rgba(139, 92, 246, 0.14) 54.2%, transparent 54.6%),
+    radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 42%);
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 72%, transparent);
+  opacity: 0.45;
+}
+
+.premium-orb {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 999px;
+  filter: blur(34px);
+  transform: translate3d(0, 0, 0);
+}
+
+.premium-orb-left {
+  top: 42rem;
+  left: -11rem;
+  width: 27rem;
+  height: 27rem;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 68%);
+}
+
+.premium-orb-right {
+  top: 78rem;
+  right: -13rem;
+  width: 34rem;
+  height: 34rem;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.24), transparent 70%);
+}
+
+.section-transition::before {
+  position: absolute;
+  inset: 0 auto auto 50%;
+  width: min(52rem, 86vw);
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transform: translateX(-50%);
+}
+
+.hero-section,
+.app-preview,
+.board-shell,
+.board-idea-card,
+.use-case-card,
+.how-card,
+.final-cta-card {
+  backface-visibility: hidden;
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .storm-energy-bg::before,
+  .storm-energy-bg::after {
+    animation: none;
+  }
+
+  .premium-orb {
+    opacity: 0.55;
+  }
+
+  .board-story-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .board-shell {
+    min-height: 32rem;
+  }
+
+  .board-idea-card {
+    width: 11rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .storm-energy-bg,
+  .storm-energy-bg::before,
+  .storm-energy-bg::after,
+  .parallax-layer,
+  .app-preview,
+  .board-idea-card,
+  .use-case-card,
+  .how-card,
+  .final-cta-card {
+    transform: none !important;
+    filter: none !important;
+  }
+}
