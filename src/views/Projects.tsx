@@ -19,12 +19,13 @@ import {
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Button } from '../components/Button'
 import { Section } from '../components/Section'
-import { sampleIdeas, sampleProjects } from '../data/sampleData'
+import { sampleCalendarItems, sampleIdeas, sampleProjects } from '../data/sampleData'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import {
   projectCategories,
   projectPriorities,
   projectStatuses,
+  type CalendarItem,
   type Idea,
   type Project,
   type ProjectCategory,
@@ -35,6 +36,7 @@ import {
 
 const projectStorageKey = 'brain-stormy-projects'
 const ideaStorageKey = 'brain-stormy-ideas'
+const calendarStorageKey = 'brain-stormy-calendar-items'
 
 const emptyProjectForm: ProjectFormState = {
   title: '',
@@ -89,6 +91,12 @@ type StoredProject = Partial<Project> & {
   name?: string
   progress?: number
   nextStep?: string
+}
+
+function getTomorrowKey() {
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  return `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`
 }
 
 function formatDate(value: string) {
@@ -176,6 +184,7 @@ function buildProjectFromForm(form: ProjectFormState, existingProject?: Project)
 export function Projects() {
   const [storedProjects, setProjects] = useLocalStorage<Project[]>(projectStorageKey, sampleProjects)
   const [ideas] = useLocalStorage<Idea[]>(ideaStorageKey, sampleIdeas)
+  const [, setCalendarItems] = useLocalStorage<CalendarItem[]>(calendarStorageKey, sampleCalendarItems)
   const projects = useMemo(() => storedProjects.map(normalizeStoredProject), [storedProjects])
   const [projectForm, setProjectForm] = useState<ProjectFormState>(emptyProjectForm)
   const [activeProjectId, setActiveProjectId] = useState('')
@@ -287,6 +296,25 @@ export function Projects() {
     setProjects((currentProjects) =>
       currentProjects.map((project) => (project.id === projectId ? { ...project, tasks: project.tasks.filter((task) => task.id !== taskId) } : project)),
     )
+  }
+
+
+  const scheduleTask = (project: Project, task: ProjectTask) => {
+    const scheduledItem: CalendarItem = {
+      id: `calendar-${crypto.randomUUID()}`,
+      title: task.title,
+      description: task.notes || `Scheduled task for ${project.title}.`,
+      date: task.dueDate || getTomorrowKey(),
+      time: '10:00',
+      type: 'Project Task',
+      status: 'Scheduled',
+      relatedProjectId: project.id,
+      relatedTaskId: task.id,
+      priority: project.priority,
+      createdAt: new Date().toISOString(),
+    }
+
+    setCalendarItems((currentItems) => [scheduledItem, ...currentItems])
   }
 
   const attachIdea = (ideaId: string) => {
@@ -470,6 +498,7 @@ export function Projects() {
             onEdit={() => startEditingProject(activeProject)}
             onTaskFormChange={setTaskForm}
             onToggleTask={(taskId) => toggleTask(activeProject.id, taskId)}
+            onScheduleTask={(task) => scheduleTask(activeProject, task)}
             project={activeProject}
             taskForm={taskForm}
           />
@@ -612,11 +641,12 @@ type ProjectDetailDrawerProps = {
   onEdit: () => void
   onTaskFormChange: (value: TaskFormState | ((current: TaskFormState) => TaskFormState)) => void
   onToggleTask: (taskId: string) => void
+  onScheduleTask: (task: ProjectTask) => void
   project: Project
   taskForm: TaskFormState
 }
 
-function ProjectDetailDrawer({ ideas, onAddTask, onClose, onDeleteTask, onEdit, onTaskFormChange, onToggleTask, project, taskForm }: ProjectDetailDrawerProps) {
+function ProjectDetailDrawer({ ideas, onAddTask, onClose, onDeleteTask, onEdit, onScheduleTask, onTaskFormChange, onToggleTask, project, taskForm }: ProjectDetailDrawerProps) {
   const progress = calculateProgress(project.tasks)
 
   return (
@@ -740,7 +770,7 @@ function ProjectDetailDrawer({ ideas, onAddTask, onClose, onDeleteTask, onEdit, 
             <AnimatePresence mode="popLayout">
               {project.tasks.length > 0 ? (
                 project.tasks.map((task) => (
-                  <TaskItem key={task.id} onDelete={() => onDeleteTask(task.id)} onToggle={() => onToggleTask(task.id)} task={task} />
+                  <TaskItem key={task.id} onDelete={() => onDeleteTask(task.id)} onSchedule={() => onScheduleTask(task)} onToggle={() => onToggleTask(task.id)} task={task} />
                 ))
               ) : (
                 <motion.p
@@ -780,10 +810,11 @@ function InfoTile({ icon: Icon, label, value }: InfoTileProps) {
 type TaskItemProps = {
   onDelete: () => void
   onToggle: () => void
+  onSchedule: () => void
   task: ProjectTask
 }
 
-function TaskItem({ onDelete, onToggle, task }: TaskItemProps) {
+function TaskItem({ onDelete, onSchedule, onToggle, task }: TaskItemProps) {
   return (
     <motion.div
       layout
@@ -812,6 +843,9 @@ function TaskItem({ onDelete, onToggle, task }: TaskItemProps) {
         <motion.span initial={false} animate={{ scale: task.completed ? 1 : 0.85, opacity: task.completed ? 1 : 0 }} className="text-emerald-100">
           <Check size={16} />
         </motion.span>
+        <button className="text-silver/45 transition hover:text-violet" onClick={onSchedule} type="button" aria-label={`Schedule ${task.title}`}>
+          <CalendarDays size={16} />
+        </button>
         <button className="text-silver/45 transition hover:text-rose-100" onClick={onDelete} type="button" aria-label={`Delete ${task.title}`}>
           <Trash2 size={16} />
         </button>

@@ -52,6 +52,25 @@ export type ProjectCategory = (typeof projectCategories)[number]
 export type ProjectStatus = (typeof projectStatuses)[number]
 export type ProjectPriority = (typeof projectPriorities)[number]
 
+export const calendarItemTypes = [
+  'Idea Review',
+  'Deep Work',
+  'Research',
+  'Planning',
+  'Project Task',
+  'Deadline',
+  'Meeting',
+  'Personal',
+  'Creative Work',
+  'Admin',
+  'Other',
+] as const
+
+export const calendarItemStatuses = ['Scheduled', 'In Progress', 'Completed', 'Missed'] as const
+
+export type CalendarItemType = (typeof calendarItemTypes)[number]
+export type CalendarItemStatus = (typeof calendarItemStatuses)[number]
+
 export type Idea = {
   id: string
   title: string
@@ -94,11 +113,19 @@ export type Project = {
   notes: string
 }
 
-export type CalendarEvent = {
+export type CalendarItem = {
   id: string
-  date: string
   title: string
-  type: string
+  description: string
+  date: string
+  time?: string
+  type: CalendarItemType
+  status: CalendarItemStatus
+  relatedIdeaId?: string
+  relatedProjectId?: string
+  relatedTaskId?: string
+  priority: ProjectPriority
+  createdAt: string
 }
 
 export type Goal = {
