@@ -31,7 +31,7 @@ function renderView(activeView: ViewId, onNavigate: (view: ViewId) => void) {
     case 'calendar':
       return <Calendar />
     case 'goals':
-      return <GoalDashboard />
+      return <GoalDashboard onNavigate={onNavigate} />
     default:
       return <Home onNavigate={onNavigate} />
   }
