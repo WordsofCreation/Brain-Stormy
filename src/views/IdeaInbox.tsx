@@ -296,7 +296,7 @@ export function IdeaInbox() {
             <SelectField
               label="Move into project later"
               onChange={(value) => setQuickIdea((idea) => ({ ...idea, projectId: value }))}
-              options={sampleProjects.map((project) => ({ label: project.name, value: project.id }))}
+              options={sampleProjects.map((project) => ({ label: project.title, value: project.id }))}
               placeholder="Keep in inbox"
               value={quickIdea.projectId}
             />
@@ -358,7 +358,7 @@ export function IdeaInbox() {
                     onDelete={() => deleteIdea(idea)}
                     onEdit={() => openEditPanel(idea)}
                     onFavorite={() => toggleFavorite(idea.id)}
-                    projectName={sampleProjects.find((project) => project.id === idea.projectId)?.name}
+                    projectName={sampleProjects.find((project) => project.id === idea.projectId)?.title}
                     staggerDelay={index * 0.045}
                   />
                 ))}
@@ -426,7 +426,7 @@ export function IdeaInbox() {
                   <SelectField
                     label="Project"
                     onChange={(value) => setEditForm((idea) => ({ ...idea, projectId: value }))}
-                    options={sampleProjects.map((project) => ({ label: project.name, value: project.id }))}
+                    options={sampleProjects.map((project) => ({ label: project.title, value: project.id }))}
                     placeholder="No project yet"
                     value={editForm.projectId}
                   />
