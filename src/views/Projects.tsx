@@ -186,7 +186,7 @@ export function Projects() {
   const [storedProjects, setProjects] = useLocalStorage<Project[]>(projectStorageKey, sampleProjects)
   const [ideas] = useLocalStorage<Idea[]>(ideaStorageKey, sampleIdeas)
   const [, setCalendarItems] = useLocalStorage<CalendarItem[]>(calendarStorageKey, sampleCalendarItems)
-  const projects = useMemo(() => storedProjects.map(normalizeStoredProject), [storedProjects])
+  const projects = useMemo(() => storedProjects.map((project, index) => normalizeStoredProject(project ?? {}, index)), [storedProjects])
   const [projectForm, setProjectForm] = useState<ProjectFormState>(emptyProjectForm)
   const [activeProjectId, setActiveProjectId] = useState('')
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null)
@@ -295,6 +295,14 @@ export function Projects() {
   }
 
   const deleteTask = (projectId: string, taskId: string) => {
+    const project = projects.find((currentProject) => currentProject.id === projectId)
+    const task = project?.tasks.find((currentTask) => currentTask.id === taskId)
+    const confirmed = window.confirm(`Delete “${task?.title ?? 'this task'}”? This action step cannot be recovered.`)
+
+    if (!confirmed) {
+      return
+    }
+
     setProjects((currentProjects) =>
       currentProjects.map((project) => (project.id === projectId ? { ...project, tasks: project.tasks.filter((task) => task.id !== taskId) } : project)),
     )
@@ -409,7 +417,7 @@ export function Projects() {
                   return (
                     <div className="flex items-center justify-between gap-3 rounded-2xl bg-navy/55 px-3 py-2 text-sm" key={ideaId}>
                       <span className="line-clamp-1 text-silver">{idea?.title ?? 'Missing idea'}</span>
-                      <button className="text-silver/60 transition hover:text-rose-100" onClick={() => detachIdea(ideaId)} type="button">
+                      <button className="text-silver/60 transition hover:text-rose-100" onClick={() => detachIdea(ideaId)} type="button" aria-label={`Detach ${idea?.title ?? 'missing idea'}`}>
                         <X size={16} />
                       </button>
                     </div>

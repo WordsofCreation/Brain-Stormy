@@ -134,7 +134,7 @@ function ideaToForm(idea: Idea): IdeaFormState {
 export function IdeaInbox() {
   const [storedIdeas, setIdeas] = useLocalStorage<StoredIdea[]>(storageKey, sampleIdeas)
   const [, setCalendarItems] = useLocalStorage<CalendarItem[]>(calendarStorageKey, sampleCalendarItems)
-  const ideas = useMemo(() => storedIdeas.map(normalizeStoredIdea), [storedIdeas])
+  const ideas = useMemo(() => storedIdeas.map((idea, index) => normalizeStoredIdea(idea ?? {}, index)), [storedIdeas])
   const [quickIdea, setQuickIdea] = useState(defaultFormState)
   const [editingIdea, setEditingIdea] = useState<Idea | null>(null)
   const [editForm, setEditForm] = useState(defaultFormState)
@@ -433,7 +433,7 @@ export function IdeaInbox() {
                   <p className="text-sm font-semibold uppercase tracking-[0.28em] text-violet">Edit idea</p>
                   <h2 className="mt-2 text-2xl font-semibold">Refine the capture</h2>
                 </div>
-                <button className="rounded-2xl border border-white/10 bg-white/10 p-3 text-silver transition hover:text-white" onClick={() => setEditingIdea(null)} type="button">
+                <button className="rounded-2xl border border-white/10 bg-white/10 p-3 text-silver transition hover:text-white" onClick={() => setEditingIdea(null)} type="button" aria-label="Close edit idea panel">
                   <X size={19} />
                 </button>
               </div>

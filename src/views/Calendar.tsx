@@ -181,7 +181,7 @@ export function Calendar() {
   const [storedItems, setItems] = useLocalStorage<StoredCalendarItem[]>(calendarStorageKey, sampleCalendarItems)
   const [ideas] = useLocalStorage<Idea[]>(ideaStorageKey, sampleIdeas)
   const [projects] = useLocalStorage<Project[]>(projectStorageKey, sampleProjects)
-  const items = useMemo(() => storedItems.map(normalizeCalendarItem), [storedItems])
+  const items = useMemo(() => storedItems.map((item, index) => normalizeCalendarItem(item ?? {}, index)), [storedItems])
   const today = parseDateKey(todayKey)
   const [visibleMonth, setVisibleMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
   const [selectedDate, setSelectedDate] = useState(todayKey)
@@ -324,6 +324,8 @@ export function Calendar() {
 
                   return (
                     <motion.button
+                      aria-label={`${day.date.toDateString()}${dayItems.length > 0 ? `, ${dayItems.length} scheduled item${dayItems.length === 1 ? '' : 's'}` : ', no scheduled items'}`}
+                      aria-current={isToday ? 'date' : undefined}
                       initial={{ opacity: 0, y: 14 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.25, delay: index * 0.012, ease: 'easeOut' }}
@@ -379,6 +381,8 @@ export function Calendar() {
 
                   return (
                     <button
+                      aria-label={`Select ${date.toDateString()}`}
+                      aria-current={isSelected ? 'date' : undefined}
                       className={`min-w-[4.6rem] rounded-2xl border px-3 py-3 text-center transition ${isSelected ? 'border-violet/60 bg-violet/15 text-white shadow-glow' : 'border-white/10 bg-navy/45 text-silver hover:text-white'}`}
                       key={dateKey}
                       onClick={() => setSelectedDate(dateKey)}
@@ -454,14 +458,14 @@ export function Calendar() {
                   <p className="text-sm font-semibold uppercase tracking-[0.28em] text-violet">Add calendar item</p>
                   <h2 className="mt-2 text-2xl font-semibold text-white">Schedule execution</h2>
                 </div>
-                <button className="rounded-2xl border border-white/10 bg-white/10 p-3 text-silver transition hover:text-white" onClick={() => setIsModalOpen(false)} type="button">
+                <button className="rounded-2xl border border-white/10 bg-white/10 p-3 text-silver transition hover:text-white" onClick={() => setIsModalOpen(false)} type="button" aria-label="Close calendar item form">
                   <X size={19} />
                 </button>
               </div>
 
               <div className="grid gap-4">
-                <input className="min-h-11 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-base text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, title: event.target.value }))} placeholder="Calendar item title..." value={form.title} />
-                <textarea className="min-h-24 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, description: event.target.value }))} placeholder="Why does this belong on the calendar?" value={form.description} />
+                <input aria-label="Calendar item title" className="min-h-11 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-base text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, title: event.target.value }))} placeholder="Calendar item title..." value={form.title} />
+                <textarea aria-label="Calendar item description" className="min-h-24 rounded-2xl border border-white/10 bg-navy/65 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-silver/45 focus:border-violet/70 focus:ring-4 focus:ring-violet/15" onChange={(event) => setForm((currentForm) => ({ ...currentForm, description: event.target.value }))} placeholder="Why does this belong on the calendar?" value={form.description} />
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   <InputField label="Date" onChange={(value) => setForm((currentForm) => ({ ...currentForm, date: value }))} type="date" value={form.date} />
                   <InputField label="Time" onChange={(value) => setForm((currentForm) => ({ ...currentForm, time: value }))} type="time" value={form.time} />
