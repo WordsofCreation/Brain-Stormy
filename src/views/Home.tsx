@@ -82,6 +82,13 @@ const previewSchedule = [
   { time: '15:00', item: 'Review momentum dashboard' },
 ]
 
+const boardIdeas = [
+  { title: 'Positioning story', meta: 'Brand arc', x: '-32%', y: '-6%', speed: '1.25' },
+  { title: 'Founder OS ritual', meta: 'Weekly cadence', x: '28%', y: '-18%', speed: '0.8' },
+  { title: 'Research sprint', meta: 'Opportunity map', x: '-18%', y: '26%', speed: '1.05' },
+  { title: 'Launch calendar', meta: 'Action plan', x: '34%', y: '22%', speed: '1.45' },
+]
+
 export function Home({ onNavigate }: HomeProps) {
   const pageRef = useRef<HTMLDivElement | null>(null)
   const prefersReducedMotion = useReducedMotion()
@@ -90,6 +97,8 @@ export function Home({ onNavigate }: HomeProps) {
     if (!pageRef.current || prefersReducedMotion) {
       return
     }
+
+    let mm: gsap.MatchMedia | undefined
 
     const context = gsap.context(() => {
       const sections = gsap.utils.toArray<HTMLElement>('.landing-reveal')
@@ -113,49 +122,183 @@ export function Home({ onNavigate }: HomeProps) {
         )
       })
 
-      gsap.utils.toArray<HTMLElement>('.stagger-card').forEach((card) => {
-        const delay = Number(card.dataset.stagger ?? 0)
+      gsap.utils.toArray<HTMLElement>('.how-card').forEach((card, index) => {
         gsap.fromTo(
           card,
-          { autoAlpha: 0, y: 34, scale: 0.96 },
+          { autoAlpha: 0, y: 46, scale: 0.94, filter: 'blur(10px)' },
           {
             autoAlpha: 1,
             y: 0,
             scale: 1,
-            duration: 0.78,
-            delay,
+            filter: 'blur(0px)',
+            duration: 0.88,
+            delay: index * 0.08,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: card,
-              start: 'top 88%',
+              trigger: '.how-section',
+              start: 'top 68%',
               once: true,
             },
           },
         )
       })
+
+      gsap.fromTo(
+        '.final-cta-card',
+        { autoAlpha: 0, y: 42, scale: 0.97, filter: 'blur(12px)' },
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          filter: 'blur(0px)',
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.final-cta-card',
+            start: 'top 78%',
+            once: true,
+          },
+        },
+      )
+
+      mm = gsap.matchMedia()
+
+      mm.add('(min-width: 768px)', () => {
+        gsap.to('.hero-copy', {
+          yPercent: -18,
+          autoAlpha: 0.25,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero-section',
+            start: 'top top',
+            end: 'bottom 48%',
+            scrub: 0.8,
+          },
+        })
+
+        gsap.to('.hero-title', {
+          yPercent: -22,
+          autoAlpha: 0,
+          filter: 'blur(10px)',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero-section',
+            start: 'top top',
+            end: 'bottom 62%',
+            scrub: 0.9,
+          },
+        })
+
+        gsap.to('.app-preview', {
+          yPercent: 18,
+          scale: 0.9,
+          rotateX: -2,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero-section',
+            start: 'top top',
+            end: 'bottom 42%',
+            scrub: 0.95,
+          },
+        })
+
+        gsap.utils.toArray<HTMLElement>('.parallax-layer').forEach((layer) => {
+          const depth = Number(layer.dataset.depth ?? 40)
+          gsap.to(layer, {
+            y: depth,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.home-shell',
+              start: 'top top',
+              end: 'bottom bottom',
+              scrub: 1.1,
+            },
+          })
+        })
+
+        gsap.utils.toArray<HTMLElement>('.use-case-card').forEach((card, index) => {
+          const direction = index % 2 === 0 ? -1 : 1
+          gsap.fromTo(
+            card,
+            { y: 36 * direction, autoAlpha: 0.62 },
+            {
+              y: -28 * direction,
+              autoAlpha: 1,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: '.use-cases-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.2,
+              },
+            },
+          )
+        })
+
+        const boardTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.board-story-section',
+            start: 'top top+=86',
+            end: '+=115%',
+            pin: true,
+            scrub: 0.85,
+            anticipatePin: 1,
+          },
+        })
+
+        boardTimeline
+          .fromTo('.board-shell', { scale: 0.94, autoAlpha: 0.72 }, { scale: 1, autoAlpha: 1, duration: 0.24, ease: 'power2.out' })
+          .fromTo(
+            '.board-idea-card',
+            { autoAlpha: 0, y: 92, scale: 0.86, filter: 'blur(12px)' },
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              filter: 'blur(0px)',
+              duration: 0.56,
+              stagger: 0.12,
+              ease: 'power3.out',
+            },
+            0.08,
+          )
+          .to('.board-idea-card', {
+            y: (_, target) => -34 * Number((target as HTMLElement).dataset.speed ?? 1),
+            x: (_, target) => 14 * Number((target as HTMLElement).dataset.speed ?? 1),
+            duration: 0.48,
+            stagger: 0.04,
+            ease: 'none',
+          })
+      })
     }, pageRef)
 
-    return () => context.revert()
+    return () => {
+      mm?.revert()
+      context.revert()
+      ScrollTrigger.refresh()
+    }
   }, [prefersReducedMotion])
 
   const titleLines = ['Brain', 'Stormy']
 
   return (
-    <div ref={pageRef} className="relative -mt-8 overflow-hidden pb-10">
-      <div className="storm-energy-bg" aria-hidden="true" />
-      <section className="relative grid min-h-[calc(100vh-5rem)] items-center gap-12 py-12 lg:grid-cols-[0.92fr_1.08fr] lg:py-20">
-        <div className="relative z-10">
+    <div ref={pageRef} className="home-shell relative -mt-8 overflow-hidden pb-10">
+      <div className="storm-energy-bg parallax-layer" data-depth="120" aria-hidden="true" />
+      <div className="premium-orb premium-orb-left parallax-layer" data-depth="70" aria-hidden="true" />
+      <div className="premium-orb premium-orb-right parallax-layer" data-depth="-52" aria-hidden="true" />
+      <section className="hero-section relative grid min-h-[calc(100vh-5rem)] items-center gap-12 py-12 lg:grid-cols-[0.92fr_1.08fr] lg:py-20">
+        <div className="hero-copy relative z-10 will-change-transform">
           <motion.p
             initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
             animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: easeOut }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-4 py-2 text-sm text-silver shadow-glass backdrop-blur-2xl"
+            className="hero-kicker mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-4 py-2 text-sm text-silver shadow-glass backdrop-blur-2xl"
           >
             <Zap size={15} className="text-violet" />
             Serious brainstorming for ideas, projects, goals, and execution.
           </motion.p>
 
-          <h1 className="overflow-hidden text-6xl font-semibold leading-[0.85] tracking-[-0.075em] text-white sm:text-7xl lg:text-8xl xl:text-9xl">
+          <h1 className="hero-title overflow-hidden text-6xl font-semibold leading-[0.85] tracking-[-0.075em] text-white will-change-transform sm:text-7xl lg:text-8xl xl:text-9xl">
             {titleLines.map((line, index) => (
               <span className="block overflow-hidden pb-3" key={line}>
                 <motion.span
@@ -183,7 +326,7 @@ export function Home({ onNavigate }: HomeProps) {
             initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
             animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.62, ease: easeOut }}
-            className="mt-9 flex flex-col gap-3 sm:flex-row"
+            className="hero-actions mt-9 flex flex-col gap-3 sm:flex-row"
           >
             <Button onClick={() => onNavigate('inbox')} className="px-6 py-4 text-base">
               Open Idea Inbox <ArrowRight className="ml-2" size={18} />
@@ -214,10 +357,11 @@ export function Home({ onNavigate }: HomeProps) {
                   y: { duration: 7, delay: 1.2, repeat: Infinity, ease: 'easeInOut' },
                 }
           }
-          className="relative z-10 mx-auto w-full max-w-2xl"
+          className="app-preview relative z-10 mx-auto w-full max-w-2xl will-change-transform"
         >
           <div className="absolute -inset-8 rounded-[3rem] bg-violet/20 blur-3xl" />
           <div className="relative overflow-hidden rounded-[2.35rem] border border-white/15 bg-slate-950/60 p-3 shadow-[0_38px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl">
+            <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
             <div className="rounded-[1.8rem] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),rgba(255,255,255,0.04))] p-4 sm:p-5">
               <div className="mb-5 flex items-center justify-between gap-4">
                 <div>
@@ -276,7 +420,7 @@ export function Home({ onNavigate }: HomeProps) {
         </motion.div>
       </section>
 
-      <section className="landing-reveal relative py-16 sm:py-20">
+      <section className="how-section landing-reveal section-transition relative py-16 sm:py-20">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.36em] text-violet">How It Works</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.045em] text-white sm:text-5xl">
@@ -288,8 +432,7 @@ export function Home({ onNavigate }: HomeProps) {
             const Icon = item.icon
             return (
               <article
-                className="stagger-card group rounded-[2rem] border border-white/10 bg-white/[0.07] p-6 shadow-glass backdrop-blur-2xl transition duration-300 hover:-translate-y-1 hover:border-violet/35 hover:bg-white/[0.1]"
-                data-stagger={index * 0.08}
+                className="how-card group rounded-[2rem] border border-white/10 bg-white/[0.07] p-6 shadow-glass backdrop-blur-2xl transition duration-300 hover:-translate-y-1 hover:border-violet/35 hover:bg-white/[0.1]"
                 key={item.title}
               >
                 <div className="mb-6 grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-navy/70 text-violet shadow-glow">
@@ -304,7 +447,50 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      <section className="landing-reveal relative py-16 sm:py-20">
+      <section className="board-story-section section-transition relative py-16 sm:py-20">
+        <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+          <div className="landing-reveal">
+            <p className="text-sm font-semibold uppercase tracking-[0.36em] text-violet">Brainstorm Board</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-[-0.045em] text-white sm:text-5xl">
+              Watch scattered thoughts settle into a focused system.
+            </h2>
+            <p className="mt-5 max-w-xl text-lg leading-8 text-silver/72">
+              The board holds still for a moment while idea cards slide into orbit, making the product feel deliberate rather than noisy.
+            </p>
+          </div>
+
+          <div className="board-shell relative min-h-[34rem] overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.07] p-5 shadow-glass backdrop-blur-2xl sm:p-7">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(139,92,246,0.22),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
+            <div className="absolute inset-6 rounded-[2rem] border border-white/10" />
+            <div className="relative flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.32em] text-silver/55">Board preview</p>
+                <h3 className="mt-2 text-2xl font-semibold text-white">Opportunity Map</h3>
+              </div>
+              <span className="rounded-full border border-white/10 bg-navy/60 px-3 py-1 text-xs text-silver/70">4 active clusters</span>
+            </div>
+
+            <div className="absolute left-1/2 top-1/2 grid h-36 w-36 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-violet/30 bg-navy/70 text-center shadow-glow">
+              <span className="px-5 text-sm font-semibold leading-5 text-white">Focused next action</span>
+            </div>
+
+            {boardIdeas.map((idea) => (
+              <article
+                className="board-idea-card absolute w-48 rounded-3xl border border-white/10 bg-slate-950/72 p-4 shadow-glass backdrop-blur-xl will-change-transform"
+                data-speed={idea.speed}
+                key={idea.title}
+                style={{ left: `calc(50% + ${idea.x})`, top: `calc(50% + ${idea.y})` }}
+              >
+                <span className="mb-4 block h-2 w-16 rounded-full bg-gradient-to-r from-violet to-sky-300" />
+                <h4 className="font-semibold text-white">{idea.title}</h4>
+                <p className="mt-2 text-sm text-silver/62">{idea.meta}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="use-cases-section landing-reveal section-transition relative py-16 sm:py-20">
         <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.36em] text-violet">Use It For Anything</p>
@@ -318,12 +504,11 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {useCases.map((item, index) => {
+          {useCases.map((item) => {
             const Icon = item.icon
             return (
               <article
-                className="stagger-card flex items-center gap-4 rounded-3xl border border-white/10 bg-white/[0.065] p-5 shadow-glass backdrop-blur-xl transition duration-300 hover:border-white/20 hover:bg-white/[0.095]"
-                data-stagger={index * 0.045}
+                className="use-case-card flex items-center gap-4 rounded-3xl border border-white/10 bg-white/[0.065] p-5 shadow-glass backdrop-blur-xl transition duration-300 hover:border-white/20 hover:bg-white/[0.095]"
                 key={item.label}
               >
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-violet/15 text-violet">
@@ -336,8 +521,8 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
-      <section className="landing-reveal py-16 sm:py-20">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.075] p-8 text-center shadow-glass backdrop-blur-2xl sm:p-12 lg:p-16">
+      <section className="py-16 sm:py-20">
+        <div className="final-cta-card relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.075] p-8 text-center shadow-glass backdrop-blur-2xl sm:p-12 lg:p-16">
           <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
           <div className="absolute -bottom-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-violet/25 blur-3xl" />
           <div className="relative mx-auto max-w-4xl">
