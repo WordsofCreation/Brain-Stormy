@@ -21,6 +21,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Button } from '../components/Button'
+import { BrainHeroScene } from '../components/BrainHeroScene'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import type { ViewId } from '../types'
 
@@ -75,12 +76,6 @@ const previewIdeas = [
   { title: 'AI research sprint', status: 'Idea', tone: 'from-violet/90 to-fuchsia-300/80' },
   { title: 'Launch narrative', status: 'Project', tone: 'from-sky-300/90 to-violet/80' },
   { title: 'Weekly focus ritual', status: 'Goal', tone: 'from-silver to-violet/70' },
-]
-
-const previewSchedule = [
-  { time: '09:00', item: 'Map opportunity clusters' },
-  { time: '11:30', item: 'Draft project milestones' },
-  { time: '15:00', item: 'Review momentum dashboard' },
 ]
 
 const boardIdeas = [
@@ -340,86 +335,40 @@ export function Home({ onNavigate }: HomeProps) {
         </div>
 
         <motion.div
-          initial={prefersReducedMotion ? false : { opacity: 0, y: isMobile ? 14 : 40, rotateX: isMobile ? 0 : 6 }}
-          animate={
-            prefersReducedMotion
-              ? undefined
-              : {
-                  opacity: 1,
-                  y: isMobile ? 0 : [0, -14, 0],
-                  rotateX: 0,
-                }
-          }
-          transition={
-            prefersReducedMotion
-              ? undefined
-              : {
-                  opacity: { duration: 0.9, delay: 0.35, ease: easeOut },
-                  rotateX: { duration: 0.9, delay: 0.35, ease: easeOut },
-                  y: isMobile ? { duration: 0 } : { duration: 7, delay: 1.2, repeat: Infinity, ease: 'easeInOut' },
-                }
-          }
-          className="app-preview relative z-10 mx-auto w-full max-w-2xl will-change-transform max-sm:will-change-auto"
+          initial={prefersReducedMotion ? false : { opacity: 0, y: isMobile ? 14 : 40, scale: isMobile ? 1 : 0.96 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+          transition={prefersReducedMotion ? undefined : { duration: 0.95, delay: 0.28, ease: easeOut }}
+          className="app-preview hero-brain-shell relative z-10 mx-auto w-full max-w-2xl will-change-transform max-sm:will-change-auto"
         >
-          <div className="absolute -inset-8 rounded-[3rem] bg-violet/20 blur-3xl" />
-          <div className="relative overflow-hidden rounded-[2.35rem] border border-white/15 bg-slate-950/60 p-3 shadow-[0_38px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl">
-            <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
-            <div className="rounded-[1.8rem] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.14),rgba(255,255,255,0.04))] p-4 sm:p-5">
-              <div className="mb-5 flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.36em] text-silver/55">Live workspace</p>
-                  <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">Storm Control</h2>
-                </div>
-                <div className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
-                  Momentum +42%
-                </div>
+          <div className="absolute -inset-8 rounded-[3rem] bg-cyan-400/10 blur-3xl" />
+          <div className="relative min-h-[28rem] overflow-hidden rounded-[2.75rem] border border-white/15 bg-slate-950/40 shadow-[0_42px_140px_rgba(0,0,0,0.58)] backdrop-blur-2xl sm:min-h-[34rem] lg:min-h-[40rem]">
+            <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/80 to-transparent" />
+            <BrainHeroScene reducedMotion={prefersReducedMotion} />
+
+            <div className="pointer-events-none absolute left-5 top-5 rounded-3xl border border-white/10 bg-navy/45 px-4 py-3 shadow-glass backdrop-blur-2xl sm:left-7 sm:top-7">
+              <p className="text-[0.65rem] uppercase tracking-[0.34em] text-cyan-100/60">Neural engine</p>
+              <p className="mt-1 text-sm font-semibold text-white">Idea pathways active</p>
+            </div>
+
+            <div className="pointer-events-none absolute bottom-5 right-5 max-w-[15rem] rounded-3xl border border-white/10 bg-navy/50 p-4 shadow-glass backdrop-blur-2xl sm:bottom-7 sm:right-7">
+              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+                <Sparkles size={16} className="text-violet" />
+                Live cognition map
               </div>
-
-              <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-                <div className="space-y-3">
-                  {previewIdeas.map((idea, index) => (
-                    <motion.div
-                      key={idea.title}
-                      animate={prefersReducedMotion ? undefined : { x: [0, 8, 0] }}
-                      transition={{ duration: 5.5, delay: index * 0.35, repeat: Infinity, ease: 'easeInOut' }}
-                      className="rounded-3xl border border-white/10 bg-navy/65 p-4"
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className={`mt-1 h-3 w-3 rounded-full bg-gradient-to-br ${idea.tone} shadow-glow`} />
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate font-semibold text-white">{idea.title}</p>
-                          <p className="mt-1 text-sm text-silver/60">{idea.status} captured and prioritized</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                <div className="rounded-3xl border border-white/10 bg-white/[0.07] p-4">
-                  <div className="mb-4 flex items-center justify-between">
-                    <p className="font-semibold text-white">Execution calendar</p>
-                    <CalendarCheck size={18} className="text-violet" />
+              <div className="space-y-2">
+                {previewIdeas.map((idea) => (
+                  <div key={idea.title} className="flex items-center gap-2 text-xs text-silver/75">
+                    <span className={`h-2 w-2 rounded-full bg-gradient-to-br ${idea.tone} shadow-glow`} />
+                    <span className="truncate">{idea.title}</span>
                   </div>
-                  <div className="space-y-3">
-                    {previewSchedule.map((slot) => (
-                      <div key={slot.time} className="grid grid-cols-[3.4rem_1fr] gap-3 rounded-2xl bg-navy/55 p-3">
-                        <span className="text-sm font-semibold text-violet">{slot.time}</span>
-                        <span className="text-sm text-silver/80">{slot.item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-5 rounded-2xl border border-violet/25 bg-violet/10 p-4">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                      <Sparkles size={16} className="text-violet" />
-                      Next best action
-                    </div>
-                    <p className="mt-2 text-sm leading-6 text-silver/72">Convert the strongest cluster into a focused project brief.</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
+
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_38%,rgba(7,17,31,0.34)_72%,rgba(7,17,31,0.82)_100%)]" />
           </div>
         </motion.div>
+
       </section>
 
       <section className="how-section landing-reveal section-transition relative py-16 sm:py-20">
