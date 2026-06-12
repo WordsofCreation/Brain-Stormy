@@ -6,7 +6,7 @@ Place the logo image here using this exact filename:
 brain-stormy-logo.svg
 ```
 
-Vite serves files in `public` from the site root, so this file will be available in the app at:
+Vite serves files in `public` from the configured app base path, so reference this file with `import.meta.env.BASE_URL` in React components. In a root-hosted local app it resolves to:
 
 ```text
 /logo/brain-stormy-logo.svg
