@@ -14,13 +14,19 @@ The homepage hero image will try to load this file first. In a root-hosted local
 /logo/homepage-logo.gif
 ```
 
+On the deployed GitHub Pages site, Vite adds the repository base path, so the same file is served at:
+
+```text
+/Brain-Stormy/logo/homepage-logo.gif
+```
+
 If `homepage-logo.gif` is missing or cannot load, the homepage automatically falls back to the committed SVG at:
 
 ```text
 /logo/brain-stormy-logo.svg
 ```
 
-Because GIF files are binary and can be large, `public/logo/*.gif` is intentionally ignored by git. You can swap different local GIF ideas into this filename without committing them.
+Most binary logo files are ignored by git, but `public/logo/homepage-logo.gif` is intentionally allowed so you can commit and deploy a GIF when you want it to appear on the live site. If you only copy the GIF locally and do not commit it, it will not be available after deployment.
 
 ## Default fallback logo
 
