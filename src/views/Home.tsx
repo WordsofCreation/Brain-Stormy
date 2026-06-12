@@ -21,7 +21,6 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Button } from '../components/Button'
-import { BrainHeroScene } from '../components/BrainHeroScene'
 import { useMediaQuery } from '../hooks/useMediaQuery'
 import type { ViewId } from '../types'
 
@@ -336,9 +335,13 @@ export function Home({ onNavigate }: HomeProps) {
           className="app-preview hero-brain-shell relative z-10 mx-auto w-full max-w-3xl will-change-transform max-sm:will-change-auto"
         >
           <div className="absolute -inset-8 rounded-[3rem] bg-cyan-400/10 blur-3xl" />
-          <div className="relative min-h-[28rem] overflow-hidden rounded-[2.75rem] border border-white/15 bg-slate-950/40 shadow-[0_42px_140px_rgba(0,0,0,0.58)] backdrop-blur-2xl sm:min-h-[34rem] lg:min-h-[40rem]">
-            <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/80 to-transparent" />
-            <BrainHeroScene reducedMotion={prefersReducedMotion} />
+          <div className="relative overflow-hidden rounded-[2.75rem] border border-white/15 bg-slate-950/40 shadow-[0_42px_140px_rgba(0,0,0,0.58)] backdrop-blur-2xl">
+            <div className="absolute inset-x-12 top-0 z-10 h-px bg-gradient-to-r from-transparent via-cyan-200/80 to-transparent" />
+            <img
+              alt="Brain Stormy glowing brain logo"
+              className="block h-auto w-full"
+              src="/logo/brain-stormy-logo.svg"
+            />
           </div>
         </motion.div>
 

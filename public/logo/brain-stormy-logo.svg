@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 838 646" role="img" aria-labelledby="title desc">
+  <title id="title">Brain Stormy glowing brain logo</title>
+  <desc id="desc">A neon cyan and violet brain mark with a dark radial burst background.</desc>
+  <defs>
+    <radialGradient id="bg" cx="42%" cy="32%" r="82%">
+      <stop offset="0" stop-color="#264a6d"/>
+      <stop offset="0.42" stop-color="#183258"/>
+      <stop offset="0.74" stop-color="#2b2350"/>
+      <stop offset="1" stop-color="#101833"/>
+    </radialGradient>
+    <radialGradient id="cyanGlow" cx="45%" cy="48%" r="58%">
+      <stop offset="0" stop-color="#7effff" stop-opacity="0.9"/>
+      <stop offset="0.55" stop-color="#2fe6f5" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#19bed7" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="violetGlow" cx="58%" cy="48%" r="58%">
+      <stop offset="0" stop-color="#f184ff" stop-opacity="0.9"/>
+      <stop offset="0.48" stop-color="#bc5af4" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#8a35e8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="brainCyan" x1="110" x2="680" y1="270" y2="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#43edf6"/>
+      <stop offset="0.48" stop-color="#28d6ea"/>
+      <stop offset="1" stop-color="#35dff2"/>
+    </linearGradient>
+    <linearGradient id="brainViolet" x1="85" x2="760" y1="355" y2="460" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#db67f8"/>
+      <stop offset="0.52" stop-color="#aa55ed"/>
+      <stop offset="1" stop-color="#db70f6"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="68" x2="780" y1="292" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#27e9ff" stop-opacity="0.95"/>
+      <stop offset="0.35" stop-color="#9af7ff" stop-opacity="0.85"/>
+      <stop offset="0.7" stop-color="#d98cff" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#f09bff" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-45%" width="160%" height="190%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feColorMatrix in="blur" values="1 0 0 0 0.05 0 1 0 0 0.85 0 0 1 0 1 0 0 0 0.72 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="tinyGlow" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="brainClip">
+      <path d="M84 410c-8-83 72-142 159-118 28-28 75-43 127-30 38-30 97-31 136-7 85-29 184 7 232 73 52 72 27 154-55 183-60 22-136 13-188-14-51 37-149 49-213 14-75 29-177 14-198-101Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="838" height="646" fill="url(#bg)"/>
+
+  <g opacity="0.55">
+    <path d="M421 290 304 0M421 290 78 94M421 290 0 351M421 290 0 617M421 290 437 0M421 290 590 0M421 290 785 193M421 290 838 328M421 290 838 619M421 290 449 646M421 290 255 646" stroke="#22d9ff" stroke-width="9" stroke-linecap="round" opacity="0.11"/>
+    <path d="M421 290 96 0M421 290 0 216M421 290 697 0M421 290 838 472M421 290 335 646" stroke="#b85cff" stroke-width="10" stroke-linecap="round" opacity="0.08"/>
+  </g>
+
+  <ellipse cx="420" cy="438" rx="333" ry="126" fill="#0b1328" opacity="0.28"/>
+  <ellipse cx="423" cy="475" rx="320" ry="69" fill="#152544" opacity="0.36"/>
+
+  <g filter="url(#softGlow)">
+    <path d="M84 410c-8-83 72-142 159-118 28-28 75-43 127-30 38-30 97-31 136-7 85-29 184 7 232 73 52 72 27 154-55 183-60 22-136 13-188-14-51 37-149 49-213 14-75 29-177 14-198-101Z" fill="#18274f" opacity="0.88"/>
+
+    <g clip-path="url(#brainClip)">
+      <path d="M75 421c13-45 69-70 141-43 67 25 111 28 174 14l23 69c-67 25-153 46-231 27-59-14-99-35-107-67Z" fill="url(#brainViolet)"/>
+      <path d="M145 333c16-42 74-66 133-52 50 12 79 47 105 88l30 91c-67 39-194 33-254-26-29-29-37-66-14-101Z" fill="url(#brainCyan)"/>
+      <path d="M386 271c48-44 139-39 187 11 28 30 36 72 17 109-54 15-121 14-179-3-4-40-12-77-25-117Z" fill="#a253ed"/>
+      <path d="M582 297c83 8 159 48 180 106 20 55-15 104-82 119-76 17-164-6-209-55 48-53 78-92 111-170Z" fill="url(#brainCyan)"/>
+      <path d="M468 462c59-20 141-26 270-33 24 61-13 105-81 116-84 13-159-12-189-83Z" fill="url(#brainViolet)"/>
+      <path d="M152 477c67 12 183 5 265-22 22 78-21 113-115 112-82-1-158-32-150-90Z" fill="url(#brainCyan)"/>
+      <path d="M101 385c37 22 156 60 282 82 54 9 100 10 142 3-113-29-223-73-365-91-22-3-42-1-59 6Z" fill="#d864f5" opacity="0.78"/>
+      <path d="M401 390c62 7 147-7 262-95-73-18-175-22-276-10 4 31 9 66 14 105Z" fill="#9f55f1" opacity="0.82"/>
+      <path d="M230 319c-6-26 28-41 77-34 31 4 61 17 77 37-36-3-91 0-154-3Z" fill="#effcff" opacity="0.92"/>
+      <path d="M421 273c30-25 92-30 141-18-54 2-105 11-137 36l-4-18Z" fill="#f3fffb" opacity="0.9"/>
+      <ellipse cx="266" cy="364" rx="74" ry="41" fill="#f6fffb" opacity="0.9"/>
+      <ellipse cx="544" cy="348" rx="85" ry="53" fill="#d86af7" opacity="0.9"/>
+      <circle cx="329" cy="345" r="9" fill="#ffffff" opacity="0.78"/>
+      <circle cx="604" cy="420" r="10" fill="#f7ffff" opacity="0.84"/>
+      <circle cx="479" cy="369" r="10" fill="#45f4ff" opacity="0.78"/>
+    </g>
+
+    <path d="M73 399c13-61 74-99 153-105 52-4 86 12 128 18 59 9 86-30 154-35 118-9 234 47 262 125" fill="none" stroke="url(#rim)" stroke-width="3.4" opacity="0.86"/>
+    <path d="M83 431c7 44 72 72 163 74 74 2 133-16 181-51 77 40 209 43 281 4" fill="none" stroke="#f08aff" stroke-width="3" opacity="0.45"/>
+    <path d="M362 290 389 420 428 507" fill="none" stroke="#aa54ff" stroke-width="4" opacity="0.86"/>
+    <path d="M389 420 519 411M428 507 470 482" fill="none" stroke="#e08aff" stroke-width="3" opacity="0.72"/>
+  </g>
+
+  <g filter="url(#tinyGlow)">
+    <circle cx="237" cy="314" r="12" fill="#21e7fb" opacity="0.86"/>
+    <circle cx="557" cy="294" r="11" fill="#dc59fb" opacity="0.82"/>
+    <circle cx="742" cy="427" r="9" fill="#7357f2" opacity="0.88"/>
+    <circle cx="631" cy="522" r="12" fill="#2ef2ff" opacity="0.88"/>
+    <circle cx="320" cy="545" r="11" fill="#f05cff" opacity="0.86"/>
+    <circle cx="222" cy="441" r="9" fill="#7659f0" opacity="0.8"/>
+  </g>
+
+  <ellipse cx="419" cy="500" rx="318" ry="116" fill="none" stroke="#7a5cff" stroke-width="1.2" opacity="0.13"/>
+  <ellipse cx="418" cy="397" rx="350" ry="119" fill="none" stroke="#6bf4ff" stroke-width="2" opacity="0.25"/>
+</svg>
