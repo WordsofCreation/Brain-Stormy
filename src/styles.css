@@ -1330,3 +1330,326 @@ a {
     width: min(66rem, 154%);
   }
 }
+
+.brain-logo {
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 23% 42%, rgba(57, 255, 136, 0.16), transparent 31%),
+    radial-gradient(circle at 72% 48%, rgba(53, 231, 255, 0.14), transparent 35%),
+    radial-gradient(circle at 49% 54%, rgba(155, 92, 255, 0.12), transparent 42%),
+    linear-gradient(142deg, #02040a 0%, #07111f 54%, #02040a 100%);
+}
+
+.brain-logo__ambient,
+.brain-logo__grid,
+.brain-logo__scanline,
+.brain-logo__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.brain-logo__ambient {
+  z-index: 0;
+  background:
+    conic-gradient(
+      from 205deg at 29% 48%,
+      transparent,
+      rgba(57, 255, 136, 0.23),
+      transparent 28%,
+      rgba(53, 231, 255, 0.2),
+      transparent 56%,
+      rgba(155, 92, 255, 0.2),
+      transparent
+    );
+  filter: blur(22px) saturate(140%);
+  opacity: 0.86;
+  animation: brain-logo-ambient 11s ease-in-out infinite alternate;
+}
+
+.brain-logo__grid {
+  z-index: 1;
+  background-image:
+    linear-gradient(rgba(57, 255, 136, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(53, 231, 255, 0.08) 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  mask-image: radial-gradient(circle at 50% 50%, #000 0 52%, transparent 82%);
+  opacity: 0.35;
+}
+
+.brain-logo__scanline {
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(57, 255, 136, 0.11) 50%,
+    transparent 100%
+  );
+  height: 34%;
+  opacity: 0.24;
+  animation: brain-logo-scan 5.8s linear infinite;
+}
+
+.brain-logo__mark {
+  position: relative;
+  z-index: 3;
+  width: min(61rem, 112%);
+  overflow: visible;
+  filter: drop-shadow(0 0 18px rgba(57, 255, 136, 0.22))
+    drop-shadow(0 0 44px rgba(53, 231, 255, 0.18));
+  animation: brain-logo-float 6s ease-in-out infinite;
+}
+
+.brain-logo__code {
+  fill: var(--logo-green);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 14px rgba(57, 255, 136, 0.7);
+  animation: brain-logo-code-rain 4.8s linear infinite;
+  animation-delay: var(--code-delay);
+}
+
+.brain-logo__base {
+  fill: rgba(1, 4, 10, 0.82);
+  filter: blur(14px);
+}
+
+.brain-logo__cloud-fill {
+  fill: url('#brain-logo-core');
+  stroke: rgba(242, 255, 249, 0.11);
+  stroke-width: 2;
+}
+
+.brain-logo__cloud-outline {
+  fill: none;
+  stroke: url('#brain-logo-outline');
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+  filter: url('#brain-logo-glow');
+}
+
+.brain-logo__circuit {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: calc(var(--circuit-width) * 1px);
+  stroke-dasharray: 0.28 0.72;
+  stroke-dashoffset: 1;
+  filter: url('#brain-logo-glow');
+  animation: brain-logo-circuit-flow 3.8s linear infinite;
+  animation-delay: var(--circuit-delay);
+}
+
+.brain-logo__lightning {
+  fill: rgba(57, 255, 136, 0.24);
+  stroke: var(--logo-green);
+  stroke-linejoin: round;
+  stroke-width: 6;
+  filter: url('#brain-logo-glow');
+  animation: brain-logo-lightning 2.9s steps(2, end) infinite;
+}
+
+.brain-logo__lightning-core {
+  fill: rgba(242, 255, 249, 0.9);
+  opacity: 0.72;
+  transform: scale(0.72);
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 12px rgba(242, 255, 249, 0.75));
+}
+
+.brain-logo__node-halo,
+.brain-logo__node-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: url('#brain-logo-glow');
+  animation: brain-logo-node-pulse 2.3s ease-in-out infinite;
+  animation-delay: var(--node-delay);
+}
+
+.brain-logo__node-halo {
+  opacity: 0.25;
+}
+
+.brain-logo__node-core {
+  opacity: 1;
+}
+
+.brain-logo__tone--green {
+  stroke: var(--logo-green);
+  fill: var(--logo-green);
+}
+
+.brain-logo__tone--cyan {
+  stroke: var(--logo-cyan);
+  fill: var(--logo-cyan);
+}
+
+.brain-logo__tone--violet {
+  stroke: var(--logo-violet);
+  fill: var(--logo-violet);
+}
+
+.brain-logo__tone--white {
+  stroke: var(--logo-white);
+  fill: var(--logo-white);
+}
+
+.brain-logo__divider {
+  stroke: rgba(242, 255, 249, 0.72);
+  stroke-linecap: round;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 12px rgba(53, 231, 255, 0.58));
+}
+
+.brain-logo__wordmark {
+  fill: url('#brain-logo-wordmark');
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  paint-order: stroke fill;
+  stroke: rgba(2, 4, 10, 0.62);
+  stroke-width: 2;
+  text-shadow: 0 0 22px rgba(53, 231, 255, 0.42);
+}
+
+.brain-logo__wordmark--brain {
+  font-size: 74px;
+}
+
+.brain-logo__wordmark--stormy {
+  font-size: 86px;
+  letter-spacing: 0.08em;
+  filter: drop-shadow(0 0 16px rgba(57, 255, 136, 0.34));
+}
+
+.brain-logo__tagline {
+  fill: rgba(242, 255, 249, 0.68);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.37em;
+}
+
+.brain-logo__vignette {
+  z-index: 4;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 54%, rgba(2, 4, 10, 0.48) 82%, rgba(2, 4, 10, 0.86) 100%),
+    linear-gradient(90deg, rgba(2, 4, 10, 0.38), transparent 24%, transparent 76%, rgba(2, 4, 10, 0.38));
+}
+
+.brain-logo--reduced .brain-logo__ambient,
+.brain-logo--reduced .brain-logo__scanline,
+.brain-logo--reduced .brain-logo__mark,
+.brain-logo--reduced .brain-logo__code,
+.brain-logo--reduced .brain-logo__circuit,
+.brain-logo--reduced .brain-logo__lightning,
+.brain-logo--reduced .brain-logo__node-halo,
+.brain-logo--reduced .brain-logo__node-core {
+  animation: none !important;
+}
+
+@keyframes brain-logo-ambient {
+  0% {
+    transform: translate3d(-2%, -1%, 0) rotate(-4deg) scale(1);
+  }
+
+  100% {
+    transform: translate3d(2%, 1%, 0) rotate(7deg) scale(1.08);
+  }
+}
+
+@keyframes brain-logo-scan {
+  0% {
+    transform: translateY(-125%);
+  }
+
+  100% {
+    transform: translateY(325%);
+  }
+}
+
+@keyframes brain-logo-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-10px) scale(1.015);
+  }
+}
+
+@keyframes brain-logo-code-rain {
+  0% {
+    transform: translateY(-22px);
+    opacity: 0;
+  }
+
+  18%,
+  78% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+}
+
+@keyframes brain-logo-circuit-flow {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0.42;
+  }
+
+  48% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.68;
+  }
+}
+
+@keyframes brain-logo-lightning {
+  0%,
+  58%,
+  100% {
+    opacity: 0.58;
+  }
+
+  62%,
+  68% {
+    opacity: 1;
+  }
+
+  65% {
+    opacity: 0.28;
+  }
+}
+
+@keyframes brain-logo-node-pulse {
+  0%,
+  100% {
+    transform: scale(0.76);
+    opacity: 0.48;
+  }
+
+  50% {
+    transform: scale(1.24);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .brain-logo__mark {
+    width: min(54rem, 138%);
+    transform: translateX(-3%);
+  }
+}

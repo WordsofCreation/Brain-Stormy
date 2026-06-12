@@ -4,159 +4,101 @@ type BrainHeroSceneProps = {
   reducedMotion?: boolean | null
 }
 
-type StrokeTone = 'cyan' | 'violet' | 'magenta' | 'white'
+type Tone = 'green' | 'cyan' | 'violet' | 'white'
 
-type CortexPath = {
+type CircuitPath = {
   d: string
-  tone: StrokeTone
-  delay: string
+  tone: Tone
   width?: number
+  delay: string
 }
 
-type BrainNode = {
+type NeuralNode = {
   x: number
   y: number
   r: number
-  tone: StrokeTone
+  tone: Tone
   delay: string
 }
 
-type StormBolt = {
-  points: string
-  tone: StrokeTone
+type CodeColumn = {
+  x: number
+  y: number
+  value: string
+  opacity: number
   delay: string
 }
 
-const brainStyle = {
-  '--brain-cyan': '#35e7ff',
-  '--brain-violet': '#8b5cf6',
-  '--brain-magenta': '#e879f9',
-  '--brain-white': '#f0fdff',
+const logoStyle = {
+  '--logo-green': '#39ff88',
+  '--logo-cyan': '#35e7ff',
+  '--logo-violet': '#9b5cff',
+  '--logo-white': '#f2fff9',
 } as CSSProperties
 
-const cortexPaths: CortexPath[] = [
+const matrixColumns: CodeColumn[] = [
+  { x: 45, y: 72, value: '01\u00a010\u00a011\u00a000', opacity: 0.4, delay: '0s' },
+  { x: 116, y: 32, value: 'AI\u00a001\u00a0//\u00a010', opacity: 0.3, delay: '-1.4s' },
+  { x: 236, y: 92, value: '10\u00a0UX\u00a001\u00a011', opacity: 0.36, delay: '-2.8s' },
+  { x: 645, y: 62, value: 'SaaS\u00a001\u00a010', opacity: 0.28, delay: '-0.8s' },
+  { x: 790, y: 118, value: '11\u00a000\u00a001\u00a010', opacity: 0.34, delay: '-2.1s' },
+  { x: 914, y: 44, value: 'NODE\u00a010\u00a001', opacity: 0.26, delay: '-3.2s' },
+]
+
+const circuitPaths: CircuitPath[] = [
   {
-    d: 'M198 245 C142 211 154 135 223 107 C282 82 343 113 355 178 C366 239 313 286 238 269',
+    d: 'M122 287 C91 265 91 219 124 197 C120 154 154 124 195 134 C218 95 279 96 300 137 C342 125 380 155 374 198 C408 216 409 263 376 287 Z',
     tone: 'cyan',
+    width: 5,
     delay: '0s',
-    width: 5,
   },
   {
-    d: 'M190 289 C126 298 101 388 163 445 C224 501 334 475 356 388 C373 322 292 283 190 289',
-    tone: 'violet',
-    delay: '-0.7s',
-    width: 4.5,
-  },
-  {
-    d: 'M562 245 C621 211 603 134 536 106 C476 80 414 114 404 178 C395 239 444 287 523 269',
-    tone: 'magenta',
-    delay: '-1.4s',
-    width: 5,
-  },
-  {
-    d: 'M570 289 C636 297 659 389 596 445 C535 501 424 475 403 388 C387 321 468 283 570 289',
-    tone: 'cyan',
-    delay: '-2.1s',
-    width: 4.5,
-  },
-  {
-    d: 'M241 119 C210 148 215 192 256 210 C302 231 336 194 321 153 C309 121 275 104 241 119',
-    tone: 'white',
-    delay: '-2.8s',
-  },
-  {
-    d: 'M514 118 C549 146 541 191 503 211 C458 234 421 198 436 154 C447 121 480 103 514 118',
-    tone: 'white',
-    delay: '-3.5s',
-  },
-  {
-    d: 'M174 205 C234 177 300 188 350 240 C294 236 246 251 205 294',
-    tone: 'cyan',
-    delay: '-0.35s',
-    width: 3.8,
-  },
-  {
-    d: 'M585 205 C524 177 459 188 410 240 C464 238 513 252 555 294',
-    tone: 'violet',
-    delay: '-1.05s',
-    width: 3.8,
-  },
-  {
-    d: 'M202 382 C248 327 315 333 352 392 C309 415 259 418 202 382',
-    tone: 'magenta',
-    delay: '-1.75s',
-    width: 3.6,
-  },
-  {
-    d: 'M557 382 C512 327 443 333 407 392 C452 416 502 418 557 382',
-    tone: 'cyan',
-    delay: '-2.45s',
-    width: 3.6,
-  },
-  {
-    d: 'M380 94 C374 182 374 319 381 466',
-    tone: 'white',
-    delay: '-3.15s',
-    width: 3.2,
-  },
-  {
-    d: 'M151 331 C243 312 315 321 382 360 C449 321 518 312 609 331',
-    tone: 'violet',
-    delay: '-3.85s',
-    width: 3.6,
-  },
-  {
-    d: 'M241 464 C286 516 361 498 381 445 C401 499 475 516 521 464',
-    tone: 'magenta',
-    delay: '-4.55s',
+    d: 'M145 218 H205 L224 190 H278 L300 220 H352',
+    tone: 'green',
     width: 4,
+    delay: '-0.5s',
   },
-]
-
-const nodes: BrainNode[] = [
-  { x: 223, y: 107, r: 8, tone: 'cyan', delay: '0s' },
-  { x: 321, y: 153, r: 7, tone: 'white', delay: '-0.5s' },
-  { x: 174, y: 205, r: 7, tone: 'violet', delay: '-1s' },
-  { x: 205, y: 294, r: 7, tone: 'magenta', delay: '-1.5s' },
-  { x: 352, y: 392, r: 8, tone: 'cyan', delay: '-2s' },
-  { x: 536, y: 106, r: 8, tone: 'magenta', delay: '-2.5s' },
-  { x: 436, y: 154, r: 7, tone: 'white', delay: '-3s' },
-  { x: 585, y: 205, r: 7, tone: 'cyan', delay: '-3.5s' },
-  { x: 555, y: 294, r: 7, tone: 'violet', delay: '-4s' },
-  { x: 407, y: 392, r: 8, tone: 'magenta', delay: '-4.5s' },
-  { x: 381, y: 466, r: 9, tone: 'white', delay: '-5s' },
-]
-
-const stormBolts: StormBolt[] = [
   {
-    points: '83,113 162,151 121,179 240,225 193,253 329,333',
+    d: 'M139 253 H188 L211 278 H270 L294 252 H358',
     tone: 'cyan',
-    delay: '0s',
+    width: 4,
+    delay: '-1.1s',
   },
   {
-    points: '674,111 593,151 634,180 516,226 565,253 429,334',
-    tone: 'magenta',
-    delay: '-1.2s',
-  },
-  {
-    points: '382,17 420,111 391,103 431,211 399,199 438,318',
-    tone: 'white',
-    delay: '-2.4s',
-  },
-  {
-    points: '54,397 177,365 139,407 294,393 243,444 381,423',
+    d: 'M177 173 L214 207 L246 176 L292 211 L332 174',
     tone: 'violet',
-    delay: '-3.6s',
+    width: 3.5,
+    delay: '-1.7s',
   },
   {
-    points: '704,397 581,365 620,407 464,393 515,444 377,423',
-    tone: 'cyan',
-    delay: '-4.8s',
+    d: 'M188 298 L219 266 L250 298 L288 262 L321 295',
+    tone: 'green',
+    width: 3.5,
+    delay: '-2.3s',
+  },
+  {
+    d: 'M250 136 V170 M250 302 V334 M123 241 H89 M376 242 H411',
+    tone: 'white',
+    width: 3,
+    delay: '-2.9s',
   },
 ]
 
-function toneClass(tone: StrokeTone) {
-  return `brain-storm-v3__tone--${tone}`
+const neuralNodes: NeuralNode[] = [
+  { x: 124, y: 197, r: 7, tone: 'cyan', delay: '0s' },
+  { x: 195, y: 134, r: 8, tone: 'green', delay: '-0.4s' },
+  { x: 300, y: 137, r: 8, tone: 'violet', delay: '-0.8s' },
+  { x: 374, y: 198, r: 7, tone: 'cyan', delay: '-1.2s' },
+  { x: 145, y: 218, r: 6, tone: 'green', delay: '-1.6s' },
+  { x: 224, y: 190, r: 6, tone: 'white', delay: '-2s' },
+  { x: 300, y: 220, r: 6, tone: 'green', delay: '-2.4s' },
+  { x: 188, y: 253, r: 6, tone: 'cyan', delay: '-2.8s' },
+  { x: 294, y: 252, r: 6, tone: 'violet', delay: '-3.2s' },
+  { x: 250, y: 334, r: 7, tone: 'white', delay: '-3.6s' },
+]
+
+function toneClass(tone: Tone) {
+  return `brain-logo__tone--${tone}`
 }
 
 export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
@@ -164,7 +106,7 @@ export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
     const root = document.documentElement
     root.style.setProperty(
       '--brain-rendering',
-      reducedMotion ? 'storm-brain-reduced' : 'storm-brain-v3',
+      reducedMotion ? 'brain-logo-reduced' : 'brain-logo-cyberpunk',
     )
     return () => {
       root.style.removeProperty('--brain-rendering')
@@ -173,33 +115,23 @@ export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
 
   return (
     <div
-      className={`brain-hero-scene brain-storm-v3${reducedMotion ? ' brain-storm-v3--reduced' : ''}`}
-      style={brainStyle}
-      aria-hidden="true"
+      className={`brain-hero-scene brain-logo${reducedMotion ? ' brain-logo--reduced' : ''}`}
+      style={logoStyle}
+      aria-label="Brain Stormy cyberpunk SaaS logo"
+      role="img"
     >
-      <div className="brain-storm-v3__plasma" />
-      <div className="brain-storm-v3__orbit brain-storm-v3__orbit--one" />
-      <div className="brain-storm-v3__orbit brain-storm-v3__orbit--two" />
-      <div className="brain-storm-v3__particles" />
+      <div className="brain-logo__ambient" />
+      <div className="brain-logo__grid" />
+      <div className="brain-logo__scanline" />
 
-      <svg
-        className="brain-storm-v3__svg"
-        viewBox="0 0 760 560"
-        role="presentation"
-      >
+      <svg className="brain-logo__mark" viewBox="0 0 1040 430" role="presentation">
         <defs>
-          <filter
-            id="brain-storm-v3-glow"
-            x="-60%"
-            y="-60%"
-            width="220%"
-            height="220%"
-          >
-            <feGaussianBlur stdDeviation="6" result="blur" />
+          <filter id="brain-logo-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="5" result="blur" />
             <feColorMatrix
               in="blur"
               type="matrix"
-              values="1 0 0 0 0.12  0 1 0 0 0.72  0 0 1 0 1  0 0 0 1 0"
+              values="0 0 0 0 0.10  0 1 0 0 0.95  0 0 1 0 0.85  0 0 0 0.95 0"
               result="coloredBlur"
             />
             <feMerge>
@@ -207,88 +139,106 @@ export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-          <linearGradient
-            id="brain-storm-v3-outline"
-            x1="80"
-            x2="680"
-            y1="80"
-            y2="500"
-          >
+          <linearGradient id="brain-logo-outline" x1="88" x2="412" y1="110" y2="324">
             <stop offset="0%" stopColor="#35e7ff" />
-            <stop offset="45%" stopColor="#f0fdff" />
-            <stop offset="100%" stopColor="#e879f9" />
+            <stop offset="46%" stopColor="#39ff88" />
+            <stop offset="100%" stopColor="#9b5cff" />
           </linearGradient>
-          <radialGradient id="brain-storm-v3-fill" cx="50%" cy="45%" r="58%">
-            <stop offset="0%" stopColor="#35e7ff" stopOpacity="0.42" />
-            <stop offset="48%" stopColor="#8b5cf6" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#020712" stopOpacity="0" />
+          <linearGradient id="brain-logo-wordmark" x1="460" x2="1010" y1="130" y2="330">
+            <stop offset="0%" stopColor="#f2fff9" />
+            <stop offset="48%" stopColor="#39ff88" />
+            <stop offset="100%" stopColor="#35e7ff" />
+          </linearGradient>
+          <radialGradient id="brain-logo-core" cx="47%" cy="49%" r="63%">
+            <stop offset="0%" stopColor="#39ff88" stopOpacity="0.2" />
+            <stop offset="50%" stopColor="#35e7ff" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#050812" stopOpacity="0" />
           </radialGradient>
         </defs>
 
-        <ellipse
-          className="brain-storm-v3__floor"
-          cx="380"
-          cy="500"
-          rx="230"
-          ry="34"
+        <title>Brain Stormy</title>
+
+        {matrixColumns.map((column) => (
+          <text
+            key={`${column.x}-${column.value}`}
+            className="brain-logo__code"
+            x={column.x}
+            y={column.y}
+            opacity={column.opacity}
+            style={{ '--code-delay': column.delay } as CSSProperties}
+          >
+            {column.value}
+          </text>
+        ))}
+
+        <ellipse className="brain-logo__base" cx="250" cy="346" rx="178" ry="28" />
+        <path
+          className="brain-logo__cloud-fill"
+          d="M122 287 C91 265 91 219 124 197 C120 154 154 124 195 134 C218 95 279 96 300 137 C342 125 380 155 374 198 C408 216 409 263 376 287 Z"
         />
         <path
-          className="brain-storm-v3__brain-fill"
-          d="M151 331 C95 279 99 178 166 114 C216 66 300 58 379 116 C461 58 544 66 594 114 C662 178 666 279 609 331 C671 403 604 503 521 464 C477 526 408 515 381 445 C351 516 282 526 241 464 C157 504 91 403 151 331 Z"
-        />
-        <path
-          className="brain-storm-v3__brain-outline"
-          d="M151 331 C95 279 99 178 166 114 C216 66 300 58 379 116 C461 58 544 66 594 114 C662 178 666 279 609 331 C671 403 604 503 521 464 C477 526 408 515 381 445 C351 516 282 526 241 464 C157 504 91 403 151 331 Z"
+          className="brain-logo__cloud-outline"
+          d="M122 287 C91 265 91 219 124 197 C120 154 154 124 195 134 C218 95 279 96 300 137 C342 125 380 155 374 198 C408 216 409 263 376 287 Z"
         />
 
-        {cortexPaths.map((path) => (
+        {circuitPaths.map((path) => (
           <path
             key={path.d}
-            className={`brain-storm-v3__cortex ${toneClass(path.tone)}`}
+            className={`brain-logo__circuit ${toneClass(path.tone)}`}
             d={path.d}
             pathLength="1"
             style={
               {
-                '--trace-delay': path.delay,
-                '--trace-width': path.width ?? 4,
+                '--circuit-delay': path.delay,
+                '--circuit-width': path.width ?? 4,
               } as CSSProperties
             }
           />
         ))}
 
-        {stormBolts.map((bolt) => (
-          <polyline
-            key={bolt.points}
-            className={`brain-storm-v3__bolt ${toneClass(bolt.tone)}`}
-            points={bolt.points}
-            pathLength="1"
-            style={{ '--bolt-delay': bolt.delay } as CSSProperties}
-          />
-        ))}
+        <path
+          className="brain-logo__lightning"
+          d="M266 151 L225 238 H264 L227 322 L328 208 H280 L311 151 Z"
+        />
+        <path
+          className="brain-logo__lightning-core"
+          d="M266 151 L225 238 H264 L227 322 L328 208 H280 L311 151 Z"
+        />
 
-        {nodes.map((node) => (
+        {neuralNodes.map((node) => (
           <g
             key={`${node.x}-${node.y}`}
-            className="brain-storm-v3__node"
+            className="brain-logo__node"
             style={{ '--node-delay': node.delay } as CSSProperties}
           >
             <circle
-              className={`brain-storm-v3__node-halo ${toneClass(node.tone)}`}
+              className={`brain-logo__node-halo ${toneClass(node.tone)}`}
               cx={node.x}
               cy={node.y}
-              r={node.r * 3.3}
+              r={node.r * 3.2}
             />
             <circle
-              className={`brain-storm-v3__node-core ${toneClass(node.tone)}`}
+              className={`brain-logo__node-core ${toneClass(node.tone)}`}
               cx={node.x}
               cy={node.y}
               r={node.r}
             />
           </g>
         ))}
+
+        <line className="brain-logo__divider" x1="438" x2="438" y1="112" y2="322" />
+        <text className="brain-logo__wordmark brain-logo__wordmark--brain" x="480" y="190">
+          BRAIN
+        </text>
+        <text className="brain-logo__wordmark brain-logo__wordmark--stormy" x="480" y="284">
+          STORMY
+        </text>
+        <text className="brain-logo__tagline" x="484" y="326">
+          NEURAL IDEATION PLATFORM
+        </text>
       </svg>
 
-      <div className="brain-storm-v3__vignette" />
+      <div className="brain-logo__vignette" />
     </div>
   )
 }
