@@ -6,142 +6,102 @@ type BrainHeroSceneProps = {
   reducedMotion?: boolean | null
 }
 
-type PathTrace = {
+type Tone = 'green' | 'cyan' | 'violet' | 'white'
+
+type CircuitPath = {
   d: string
-  tone: 'cyan' | 'violet' | 'magenta' | 'white'
-  delay: string
+  tone: Tone
   width?: number
+  delay: string
 }
 
-type BrainNode = {
+type NeuralNode = {
   x: number
   y: number
-  size: number
-  tone: 'cyan' | 'violet' | 'magenta' | 'white'
+  r: number
+  tone: Tone
   delay: string
 }
 
-type LightningBolt = {
-  points: string
+type CodeColumn = {
+  x: number
+  y: number
+  value: string
+  opacity: number
   delay: string
   tone: 'cyan' | 'violet' | 'white'
 }
 
-const fallbackStyle = {
-  '--brain-cyan': '#35e7ff',
-  '--brain-violet': '#8b5cf6',
-  '--brain-magenta': '#e879f9',
+const logoStyle = {
+  '--logo-green': '#39ff88',
+  '--logo-cyan': '#35e7ff',
+  '--logo-violet': '#9b5cff',
+  '--logo-white': '#f2fff9',
 } as CSSProperties
 
-const cortexPaths: PathTrace[] = [
-  {
-    d: 'M232 271 C190 214 215 145 288 128 C351 113 398 152 400 215 C402 276 350 308 286 292',
-    tone: 'cyan',
-    delay: '0s',
-    width: 3.4,
-  },
-  {
-    d: 'M393 211 C402 145 456 111 522 129 C589 148 618 214 584 272 C551 328 465 325 420 279',
-    tone: 'violet',
-    delay: '-1.8s',
-    width: 3.4,
-  },
-  {
-    d: 'M276 147 C246 174 251 215 285 231 C329 252 365 221 348 179 C337 151 307 139 276 147',
-    tone: 'white',
-    delay: '-0.7s',
-  },
-  {
-    d: 'M478 145 C443 158 429 192 446 224 C467 261 520 258 546 225 C570 194 554 153 519 143',
-    tone: 'magenta',
-    delay: '-1.2s',
-  },
-  {
-    d: 'M236 237 C287 210 330 211 383 247 C425 276 473 288 552 250',
-    tone: 'cyan',
-    delay: '-2.2s',
-    width: 2.6,
-  },
-  {
-    d: 'M265 290 C328 337 430 346 516 301',
-    tone: 'violet',
-    delay: '-3.1s',
-    width: 2.8,
-  },
-  {
-    d: 'M287 116 C331 75 399 90 421 145 C448 86 524 76 565 123',
-    tone: 'white',
-    delay: '-0.2s',
-    width: 2.5,
-  },
-  {
-    d: 'M209 205 C165 225 159 293 208 338 C258 384 337 375 378 329',
-    tone: 'magenta',
-    delay: '-3.7s',
-    width: 2.5,
-  },
-  {
-    d: 'M425 329 C469 382 552 371 603 321 C651 274 635 205 590 181',
-    tone: 'cyan',
-    delay: '-4.1s',
-    width: 2.5,
-  },
-  {
-    d: 'M381 102 C385 171 386 236 385 342',
-    tone: 'violet',
-    delay: '-1.4s',
-    width: 2.2,
-  },
-  {
-    d: 'M222 328 C209 377 253 417 316 410 C366 405 390 374 384 337',
-    tone: 'cyan',
-    delay: '-2.8s',
-  },
-  {
-    d: 'M421 337 C415 379 447 411 505 413 C573 414 617 373 594 323',
-    tone: 'magenta',
-    delay: '-3.4s',
-  },
+const matrixColumns: CodeColumn[] = [
+  { x: 45, y: 72, value: '01\u00a010\u00a011\u00a000', opacity: 0.4, delay: '0s' },
+  { x: 116, y: 32, value: 'AI\u00a001\u00a0//\u00a010', opacity: 0.3, delay: '-1.4s' },
+  { x: 236, y: 92, value: '10\u00a0UX\u00a001\u00a011', opacity: 0.36, delay: '-2.8s' },
+  { x: 645, y: 62, value: 'SaaS\u00a001\u00a010', opacity: 0.28, delay: '-0.8s' },
+  { x: 790, y: 118, value: '11\u00a000\u00a001\u00a010', opacity: 0.34, delay: '-2.1s' },
+  { x: 914, y: 44, value: 'NODE\u00a010\u00a001', opacity: 0.26, delay: '-3.2s' },
 ]
 
-const neuralNodes: BrainNode[] = [
-  { x: 286, y: 128, size: 7, tone: 'cyan', delay: '0s' },
-  { x: 400, y: 215, size: 5, tone: 'violet', delay: '-1.2s' },
-  { x: 522, y: 129, size: 7, tone: 'magenta', delay: '-2.1s' },
-  { x: 348, y: 179, size: 5, tone: 'white', delay: '-0.4s' },
-  { x: 446, y: 224, size: 6, tone: 'cyan', delay: '-2.8s' },
-  { x: 265, y: 290, size: 5, tone: 'violet', delay: '-1.8s' },
-  { x: 516, y: 301, size: 6, tone: 'white', delay: '-3.2s' },
-  { x: 316, y: 410, size: 6, tone: 'magenta', delay: '-2.4s' },
-  { x: 505, y: 413, size: 6, tone: 'cyan', delay: '-3.8s' },
-  { x: 603, y: 321, size: 5, tone: 'violet', delay: '-0.9s' },
-]
-
-const lightningBolts: LightningBolt[] = [
+const circuitPaths: CircuitPath[] = [
   {
-    points: '118,148 191,184 154,202 252,246 213,257 340,318',
-    delay: '0s',
+    d: 'M122 287 C91 265 91 219 124 197 C120 154 154 124 195 134 C218 95 279 96 300 137 C342 125 380 155 374 198 C408 216 409 263 376 287 Z',
     tone: 'cyan',
+    width: 5,
+    delay: '0s',
   },
   {
-    points: '642,132 552,181 590,196 497,249 536,261 420,318',
+    d: 'M145 218 H205 L224 190 H278 L300 220 H352',
+    tone: 'green',
+    width: 4,
+    delay: '-0.5s',
+  },
+  {
+    d: 'M139 253 H188 L211 278 H270 L294 252 H358',
+    tone: 'cyan',
+    width: 4,
+    delay: '-1.1s',
+  },
+  {
+    d: 'M177 173 L214 207 L246 176 L292 211 L332 174',
+    tone: 'violet',
+    width: 3.5,
     delay: '-1.7s',
-    tone: 'violet',
   },
   {
-    points: '386,30 414,112 391,105 422,202 396,190 424,297',
-    delay: '-3s',
+    d: 'M188 298 L219 266 L250 298 L288 262 L321 295',
+    tone: 'green',
+    width: 3.5,
+    delay: '-2.3s',
+  },
+  {
+    d: 'M250 136 V170 M250 302 V334 M123 241 H89 M376 242 H411',
     tone: 'white',
-  },
-  {
-    points: '96,337 206,315 181,347 305,344 268,378 410,361',
-    delay: '-4.2s',
-    tone: 'cyan',
+    width: 3,
+    delay: '-2.9s',
   },
 ]
 
-function toneClass(tone: string) {
-  return `brain-tone-${tone}`
+const neuralNodes: NeuralNode[] = [
+  { x: 124, y: 197, r: 7, tone: 'cyan', delay: '0s' },
+  { x: 195, y: 134, r: 8, tone: 'green', delay: '-0.4s' },
+  { x: 300, y: 137, r: 8, tone: 'violet', delay: '-0.8s' },
+  { x: 374, y: 198, r: 7, tone: 'cyan', delay: '-1.2s' },
+  { x: 145, y: 218, r: 6, tone: 'green', delay: '-1.6s' },
+  { x: 224, y: 190, r: 6, tone: 'white', delay: '-2s' },
+  { x: 300, y: 220, r: 6, tone: 'green', delay: '-2.4s' },
+  { x: 188, y: 253, r: 6, tone: 'cyan', delay: '-2.8s' },
+  { x: 294, y: 252, r: 6, tone: 'violet', delay: '-3.2s' },
+  { x: 250, y: 334, r: 7, tone: 'white', delay: '-3.6s' },
+]
+
+function toneClass(tone: Tone) {
+  return `brain-logo__tone--${tone}`
 }
 
 export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
@@ -151,7 +111,7 @@ export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
     const root = document.documentElement
     root.style.setProperty(
       '--brain-rendering',
-      reducedMotion ? 'reduced' : 'css-hologram',
+      reducedMotion ? 'brain-logo-reduced' : 'brain-logo-cyberpunk',
     )
     return () => {
       root.style.removeProperty('--brain-rendering')
@@ -160,113 +120,130 @@ export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
 
   return (
     <div
-      className={`brain-hero-scene brain-hero-scene--hologram${reducedMotion ? ' brain-hero-scene--reduced' : ''}${isMobile ? ' brain-hero-scene--mobile' : ''}`}
-      style={fallbackStyle}
-      aria-hidden="true"
+      className={`brain-hero-scene brain-logo${reducedMotion ? ' brain-logo--reduced' : ''}`}
+      style={logoStyle}
+      aria-label="Brain Stormy cyberpunk SaaS logo"
+      role="img"
     >
-      <div className="brain-hero-scene__aurora" />
-      <div className="brain-hero-scene__storm" />
-      <div className="brain-hologram">
-        <div className="brain-hologram__depth brain-hologram__depth--back" />
-        <div className="brain-hologram__depth brain-hologram__depth--front" />
-        <svg
-          className="brain-hologram__svg"
-          viewBox="0 0 760 520"
-          role="presentation"
-        >
-          <defs>
-            <filter
-              id="brain-glow"
-              x="-40%"
-              y="-40%"
-              width="180%"
-              height="180%"
-            >
-              <feGaussianBlur stdDeviation="5" result="coloredBlur" />
-              <feMerge>
-                <feMergeNode in="coloredBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <radialGradient id="brain-core-fill" cx="50%" cy="48%" r="55%">
-              <stop offset="0%" stopColor="#35e7ff" stopOpacity="0.34" />
-              <stop offset="48%" stopColor="#8b5cf6" stopOpacity="0.18" />
-              <stop offset="100%" stopColor="#020712" stopOpacity="0" />
-            </radialGradient>
-            <linearGradient id="brain-stroke" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stopColor="#35e7ff" />
-              <stop offset="50%" stopColor="#f0fdff" />
-              <stop offset="100%" stopColor="#e879f9" />
-            </linearGradient>
-          </defs>
+      <div className="brain-logo__ambient" />
+      <div className="brain-logo__grid" />
+      <div className="brain-logo__scanline" />
 
-          <ellipse
-            className="brain-hologram__shadow"
-            cx="383"
-            cy="444"
-            rx="210"
-            ry="38"
-          />
-          <path
-            className="brain-hologram__mass"
-            d="M221 331 C154 286 154 188 217 133 C262 94 318 91 372 119 C426 80 513 88 575 136 C645 190 656 294 594 356 C543 408 464 424 386 380 C321 423 258 410 221 331 Z"
-          />
-          <path
-            className="brain-hologram__rim"
-            d="M221 331 C154 286 154 188 217 133 C262 94 318 91 372 119 C426 80 513 88 575 136 C645 190 656 294 594 356 C543 408 464 424 386 380 C321 423 258 410 221 331 Z"
-          />
-          <path
-            className="brain-hologram__center"
-            d="M382 111 C381 176 382 254 383 382"
-          />
-
-          {cortexPaths.map((path) => (
-            <path
-              key={path.d}
-              className={`brain-hologram__trace ${toneClass(path.tone)}`}
-              d={path.d}
-              pathLength="1"
-              style={
-                {
-                  '--trace-delay': path.delay,
-                  '--trace-width': path.width ?? 2.2,
-                } as CSSProperties
-              }
+      <svg className="brain-logo__mark" viewBox="0 0 1040 430" role="presentation">
+        <defs>
+          <filter id="brain-logo-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="5" result="blur" />
+            <feColorMatrix
+              in="blur"
+              type="matrix"
+              values="0 0 0 0 0.10  0 1 0 0 0.95  0 0 1 0 0.85  0 0 0 0.95 0"
+              result="coloredBlur"
             />
-          ))}
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <linearGradient id="brain-logo-outline" x1="88" x2="412" y1="110" y2="324">
+            <stop offset="0%" stopColor="#35e7ff" />
+            <stop offset="46%" stopColor="#39ff88" />
+            <stop offset="100%" stopColor="#9b5cff" />
+          </linearGradient>
+          <linearGradient id="brain-logo-wordmark" x1="460" x2="1010" y1="130" y2="330">
+            <stop offset="0%" stopColor="#f2fff9" />
+            <stop offset="48%" stopColor="#39ff88" />
+            <stop offset="100%" stopColor="#35e7ff" />
+          </linearGradient>
+          <radialGradient id="brain-logo-core" cx="47%" cy="49%" r="63%">
+            <stop offset="0%" stopColor="#39ff88" stopOpacity="0.2" />
+            <stop offset="50%" stopColor="#35e7ff" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#050812" stopOpacity="0" />
+          </radialGradient>
+        </defs>
 
-          {lightningBolts.map((bolt) => (
-            <polyline
-              key={bolt.points}
-              className={`brain-hologram__bolt ${toneClass(bolt.tone)}`}
-              points={bolt.points}
-              style={{ '--bolt-delay': bolt.delay } as CSSProperties}
+        <title>Brain Stormy</title>
+
+        {matrixColumns.map((column) => (
+          <text
+            key={`${column.x}-${column.value}`}
+            className="brain-logo__code"
+            x={column.x}
+            y={column.y}
+            opacity={column.opacity}
+            style={{ '--code-delay': column.delay } as CSSProperties}
+          >
+            {column.value}
+          </text>
+        ))}
+
+        <ellipse className="brain-logo__base" cx="250" cy="346" rx="178" ry="28" />
+        <path
+          className="brain-logo__cloud-fill"
+          d="M122 287 C91 265 91 219 124 197 C120 154 154 124 195 134 C218 95 279 96 300 137 C342 125 380 155 374 198 C408 216 409 263 376 287 Z"
+        />
+        <path
+          className="brain-logo__cloud-outline"
+          d="M122 287 C91 265 91 219 124 197 C120 154 154 124 195 134 C218 95 279 96 300 137 C342 125 380 155 374 198 C408 216 409 263 376 287 Z"
+        />
+
+        {circuitPaths.map((path) => (
+          <path
+            key={path.d}
+            className={`brain-logo__circuit ${toneClass(path.tone)}`}
+            d={path.d}
+            pathLength="1"
+            style={
+              {
+                '--circuit-delay': path.delay,
+                '--circuit-width': path.width ?? 4,
+              } as CSSProperties
+            }
+          />
+        ))}
+
+        <path
+          className="brain-logo__lightning"
+          d="M266 151 L225 238 H264 L227 322 L328 208 H280 L311 151 Z"
+        />
+        <path
+          className="brain-logo__lightning-core"
+          d="M266 151 L225 238 H264 L227 322 L328 208 H280 L311 151 Z"
+        />
+
+        {neuralNodes.map((node) => (
+          <g
+            key={`${node.x}-${node.y}`}
+            className="brain-logo__node"
+            style={{ '--node-delay': node.delay } as CSSProperties}
+          >
+            <circle
+              className={`brain-logo__node-halo ${toneClass(node.tone)}`}
+              cx={node.x}
+              cy={node.y}
+              r={node.r * 3.2}
             />
-          ))}
+            <circle
+              className={`brain-logo__node-core ${toneClass(node.tone)}`}
+              cx={node.x}
+              cy={node.y}
+              r={node.r}
+            />
+          </g>
+        ))}
 
-          {neuralNodes.map((node) => (
-            <g
-              key={`${node.x}-${node.y}`}
-              className="brain-hologram__node"
-              style={{ '--node-delay': node.delay } as CSSProperties}
-            >
-              <circle
-                className={`brain-hologram__node-glow ${toneClass(node.tone)}`}
-                cx={node.x}
-                cy={node.y}
-                r={node.size * 2.6}
-              />
-              <circle
-                className={`brain-hologram__node-core ${toneClass(node.tone)}`}
-                cx={node.x}
-                cy={node.y}
-                r={node.size}
-              />
-            </g>
-          ))}
-        </svg>
-      </div>
-      <div className="brain-hero-scene__vignette" />
+        <line className="brain-logo__divider" x1="438" x2="438" y1="112" y2="322" />
+        <text className="brain-logo__wordmark brain-logo__wordmark--brain" x="480" y="190">
+          BRAIN
+        </text>
+        <text className="brain-logo__wordmark brain-logo__wordmark--stormy" x="480" y="284">
+          STORMY
+        </text>
+        <text className="brain-logo__tagline" x="484" y="326">
+          NEURAL IDEATION PLATFORM
+        </text>
+      </svg>
+
+      <div className="brain-logo__vignette" />
     </div>
   )
 }
