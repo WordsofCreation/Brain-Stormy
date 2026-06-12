@@ -31,7 +31,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
             onClick={() => navigate("home")}
             type="button"
           >
-            <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-2xl bg-white text-navy shadow-glow sm:h-11 sm:w-11">
+            <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-2xl bg-mint text-navy shadow-glow sm:h-11 sm:w-11">
               {logoFailed ? (
                 <Brain size={23} />
               ) : (
@@ -53,7 +53,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
             </span>
           </button>
 
-          <nav className="storm-nav-shell hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.06] p-1 md:flex">
+          <nav className="storm-nav-shell hidden items-center gap-1 rounded-full border border-mint/15 bg-mint/[0.055] p-1 md:flex">
             {navigationItems.map((item) => {
               const Icon = item.icon;
               const active = item.id === activeView;
@@ -67,7 +67,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
                   {active ? (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-white shadow-glow"
+                      className="absolute inset-0 rounded-full bg-mint shadow-glow"
                     />
                   ) : null}
                   <Icon className="relative" size={16} />
@@ -101,7 +101,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
                   <button
                     className={`storm-interactive flex min-h-12 items-center gap-3 rounded-2xl px-4 py-3 text-left text-base font-medium transition ${
                       item.id === activeView
-                        ? "bg-white text-navy"
+                        ? "bg-mint text-navy"
                         : "text-silver hover:bg-white/10 hover:text-white"
                     }`}
                     key={item.id}
@@ -126,7 +126,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
         className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-navy/90 px-2 pb-[calc(env(safe-area-inset-bottom)+0.45rem)] pt-2 shadow-[0_-18px_60px_rgba(0,0,0,0.35)] backdrop-blur-2xl md:hidden"
         aria-label="Primary mobile navigation"
       >
-        <div className="mx-auto grid max-w-2xl grid-cols-4 sm:grid-cols-8 gap-1 rounded-[1.35rem] border border-white/10 bg-white/[0.055] p-1">
+        <div className="mx-auto grid max-w-2xl grid-cols-4 sm:grid-cols-8 gap-1 rounded-[1.35rem] border border-mint/15 bg-mint/[0.055] p-1">
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const active = item.id === activeView;
@@ -141,7 +141,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
                 {active ? (
                   <motion.span
                     layoutId="bottom-nav-pill"
-                    className="absolute inset-0 rounded-2xl bg-white shadow-glow"
+                    className="absolute inset-0 rounded-2xl bg-mint shadow-glow"
                     transition={{ duration: 0.24, ease: "easeOut" }}
                   />
                 ) : null}

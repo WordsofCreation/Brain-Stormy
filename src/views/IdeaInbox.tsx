@@ -57,7 +57,7 @@ const defaultFormState: IdeaFormState = {
 
 const priorityStyles: Record<IdeaPriority, string> = {
   Low: 'border-emerald-300/20 bg-emerald-300/10 text-emerald-100',
-  Medium: 'border-sky-300/20 bg-sky-300/10 text-sky-100',
+  Medium: 'border-electric/20 bg-electric/10 text-mint',
   High: 'border-amber-300/20 bg-amber-300/10 text-amber-100',
   Urgent: 'border-rose-300/25 bg-rose-400/15 text-rose-100',
 }
@@ -67,7 +67,7 @@ const statusStyles: Record<IdeaStatus, string> = {
   Reviewing: 'bg-violet/15 text-violet',
   Approved: 'bg-emerald-300/10 text-emerald-100',
   Parked: 'bg-amber-300/10 text-amber-100',
-  Completed: 'bg-sky-300/10 text-sky-100',
+  Completed: 'bg-electric/10 text-mint',
 }
 
 function getTomorrowKey() {
@@ -426,7 +426,7 @@ export function IdeaInbox() {
               animate={isMobile ? { y: 0 } : { x: 0 }}
               exit={isMobile ? { y: '100%' } : { x: '100%' }}
               transition={{ type: 'spring', stiffness: isMobile ? 320 : 280, damping: 32 }}
-              className="max-h-[92svh] w-full overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-l sm:p-7"
+              className="max-h-[92svh] w-full overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#061b14]/95 p-5 shadow-glass sm:h-full sm:max-h-none sm:max-w-xl sm:rounded-none sm:border-l sm:p-7"
             >
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div>

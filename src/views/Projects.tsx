@@ -68,7 +68,7 @@ const emptyTaskForm: TaskFormState = {
 };
 
 const statusStyles: Record<ProjectStatus, string> = {
-  Planning: "border-sky-300/20 bg-sky-300/10 text-sky-100",
+  Planning: "border-electric/20 bg-electric/10 text-mint",
   Active: "border-emerald-300/20 bg-emerald-300/10 text-emerald-100",
   Waiting: "border-amber-300/20 bg-amber-300/10 text-amber-100",
   Scheduled: "border-violet/30 bg-violet/15 text-violet",
@@ -77,7 +77,7 @@ const statusStyles: Record<ProjectStatus, string> = {
 
 const priorityStyles: Record<ProjectPriority, string> = {
   Low: "border-emerald-300/20 bg-emerald-300/10 text-emerald-100",
-  Medium: "border-sky-300/20 bg-sky-300/10 text-sky-100",
+  Medium: "border-electric/20 bg-electric/10 text-mint",
   High: "border-amber-300/20 bg-amber-300/10 text-amber-100",
   Urgent: "border-rose-300/25 bg-rose-400/15 text-rose-100",
 };
@@ -1097,7 +1097,7 @@ function ProjectDetailDrawer({
           stiffness: isMobile ? 320 : 280,
           damping: 32,
         }}
-        className="max-h-[92svh] w-full overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:h-full sm:max-h-none sm:max-w-2xl sm:rounded-none sm:border-l sm:p-7"
+        className="max-h-[92svh] w-full overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#061b14]/95 p-5 shadow-glass sm:h-full sm:max-h-none sm:max-w-2xl sm:rounded-none sm:border-l sm:p-7"
       >
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>

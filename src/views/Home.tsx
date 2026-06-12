@@ -342,9 +342,9 @@ export function Home({ onNavigate }: HomeProps) {
           transition={prefersReducedMotion ? undefined : { duration: 0.95, delay: 0.28, ease: easeOut }}
           className="app-preview hero-brain-shell relative z-10 mx-auto w-full max-w-3xl will-change-transform max-sm:will-change-auto"
         >
-          <div className="absolute -inset-8 rounded-[3rem] bg-cyan-400/10 blur-3xl" />
-          <div className="relative overflow-hidden rounded-[2.75rem] border border-white/15 bg-slate-950/40 shadow-[0_42px_140px_rgba(0,0,0,0.58)] backdrop-blur-2xl">
-            <div className="absolute inset-x-12 top-0 z-10 h-px bg-gradient-to-r from-transparent via-cyan-200/80 to-transparent" />
+          <div className="absolute -inset-8 rounded-[3rem] bg-electric/10 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[2.75rem] border border-white/15 bg-navy/48 shadow-[0_42px_140px_rgba(0,0,0,0.58)] backdrop-blur-2xl">
+            <div className="absolute inset-x-12 top-0 z-10 h-px bg-gradient-to-r from-transparent via-mint/75 to-transparent" />
             <img
               alt="Brain Stormy glowing brain logo"
               className="block h-auto w-full"
@@ -396,7 +396,7 @@ export function Home({ onNavigate }: HomeProps) {
           </div>
 
           <div className="board-shell relative min-h-[34rem] overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.07] p-5 shadow-glass backdrop-blur-2xl sm:p-7">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(139,92,246,0.22),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(95,240,178,0.16),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
             <div className="absolute inset-6 rounded-[2rem] border border-white/10" />
             <div className="relative flex items-center justify-between gap-4">
               <div>
@@ -412,12 +412,12 @@ export function Home({ onNavigate }: HomeProps) {
 
             {boardIdeas.map((idea) => (
               <article
-                className="board-idea-card absolute w-48 rounded-3xl border border-white/10 bg-slate-950/72 p-4 shadow-glass backdrop-blur-xl will-change-transform"
+                className="board-idea-card absolute w-48 rounded-3xl border border-white/10 bg-navy/78 p-4 shadow-glass backdrop-blur-xl will-change-transform"
                 data-speed={idea.speed}
                 key={idea.title}
                 style={{ left: `calc(50% + ${idea.x})`, top: `calc(50% + ${idea.y})` }}
               >
-                <span className="mb-4 block h-2 w-16 rounded-full bg-gradient-to-r from-violet to-sky-300" />
+                <span className="mb-4 block h-2 w-16 rounded-full bg-gradient-to-r from-electric via-mint to-violet" />
                 <h4 className="font-semibold text-white">{idea.title}</h4>
                 <p className="mt-2 text-sm text-silver/62">{idea.meta}</p>
               </article>

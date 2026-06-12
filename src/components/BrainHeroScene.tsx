@@ -31,10 +31,10 @@ type CodeColumn = {
 }
 
 const logoStyle = {
-  '--logo-green': '#39ff88',
-  '--logo-cyan': '#35e7ff',
-  '--logo-violet': '#9b5cff',
-  '--logo-white': '#f2fff9',
+  '--logo-green': '#9df7c8',
+  '--logo-cyan': '#5ff0b2',
+  '--logo-violet': '#8f7dff',
+  '--logo-white': '#effff6',
 } as CSSProperties
 
 const matrixColumns: CodeColumn[] = [
@@ -141,19 +141,19 @@ export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
             </feMerge>
           </filter>
           <linearGradient id="brain-logo-outline" x1="88" x2="412" y1="110" y2="324">
-            <stop offset="0%" stopColor="#35e7ff" />
-            <stop offset="46%" stopColor="#39ff88" />
-            <stop offset="100%" stopColor="#9b5cff" />
+            <stop offset="0%" stopColor="#5ff0b2" />
+            <stop offset="46%" stopColor="#9df7c8" />
+            <stop offset="100%" stopColor="#8f7dff" />
           </linearGradient>
           <linearGradient id="brain-logo-wordmark" x1="460" x2="1010" y1="130" y2="330">
-            <stop offset="0%" stopColor="#f2fff9" />
-            <stop offset="48%" stopColor="#39ff88" />
-            <stop offset="100%" stopColor="#35e7ff" />
+            <stop offset="0%" stopColor="#effff6" />
+            <stop offset="48%" stopColor="#9df7c8" />
+            <stop offset="100%" stopColor="#5ff0b2" />
           </linearGradient>
           <radialGradient id="brain-logo-core" cx="47%" cy="49%" r="63%">
-            <stop offset="0%" stopColor="#39ff88" stopOpacity="0.2" />
-            <stop offset="50%" stopColor="#35e7ff" stopOpacity="0.12" />
-            <stop offset="100%" stopColor="#050812" stopOpacity="0" />
+            <stop offset="0%" stopColor="#9df7c8" stopOpacity="0.2" />
+            <stop offset="50%" stopColor="#5ff0b2" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#010806" stopOpacity="0" />
           </radialGradient>
         </defs>
 
