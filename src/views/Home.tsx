@@ -333,14 +333,12 @@ export function Home({ onNavigate }: HomeProps) {
           initial={prefersReducedMotion ? false : { opacity: 0, y: isMobile ? 14 : 40, scale: isMobile ? 1 : 0.96 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
           transition={prefersReducedMotion ? undefined : { duration: 0.95, delay: 0.28, ease: easeOut }}
-          className="app-preview hero-brain-shell relative z-10 mx-auto w-full max-w-2xl will-change-transform max-sm:will-change-auto"
+          className="app-preview hero-brain-shell relative z-10 mx-auto w-full max-w-3xl will-change-transform max-sm:will-change-auto"
         >
           <div className="absolute -inset-8 rounded-[3rem] bg-cyan-400/10 blur-3xl" />
           <div className="relative min-h-[28rem] overflow-hidden rounded-[2.75rem] border border-white/15 bg-slate-950/40 shadow-[0_42px_140px_rgba(0,0,0,0.58)] backdrop-blur-2xl sm:min-h-[34rem] lg:min-h-[40rem]">
             <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/80 to-transparent" />
             <BrainHeroScene reducedMotion={prefersReducedMotion} />
-
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_38%,rgba(7,17,31,0.34)_72%,rgba(7,17,31,0.82)_100%)]" />
           </div>
         </motion.div>
 

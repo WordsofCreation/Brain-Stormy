@@ -727,3 +727,606 @@ a {
     transform: none !important;
   }
 }
+
+.brain-hero-scene--hologram {
+  background:
+    radial-gradient(
+      circle at 50% 46%,
+      rgba(53, 231, 255, 0.16),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 55% 52%,
+      rgba(139, 92, 246, 0.2),
+      transparent 48%
+    ),
+    linear-gradient(145deg, rgba(2, 7, 18, 0.7), rgba(7, 17, 31, 0.94));
+  perspective: 1200px;
+}
+
+.brain-hologram {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  animation: brain-hologram-float 7s ease-in-out infinite;
+}
+
+.brain-hologram__svg {
+  width: min(112%, 48rem);
+  max-width: none;
+  overflow: visible;
+  filter: drop-shadow(0 0 26px rgba(53, 231, 255, 0.34))
+    drop-shadow(0 0 62px rgba(139, 92, 246, 0.22));
+  transform: rotateX(58deg) rotateZ(-8deg) translateY(0.35rem) scale(1.08);
+  transform-style: preserve-3d;
+  animation: brain-hologram-orbit 10s ease-in-out infinite;
+}
+
+.brain-hologram__depth {
+  position: absolute;
+  width: min(40rem, 98%);
+  aspect-ratio: 1.28;
+  border-radius: 48% 52% 43% 48% / 50% 48% 44% 46%;
+  border: 1px solid rgba(240, 253, 255, 0.13);
+  background:
+    radial-gradient(
+      circle at 34% 35%,
+      rgba(53, 231, 255, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 67% 35%,
+      rgba(232, 121, 249, 0.16),
+      transparent 30%
+    ),
+    linear-gradient(135deg, rgba(53, 231, 255, 0.08), rgba(139, 92, 246, 0.12));
+  box-shadow:
+    inset 0 0 72px rgba(240, 253, 255, 0.08),
+    0 0 90px rgba(53, 231, 255, 0.2);
+  transform-style: preserve-3d;
+}
+
+.brain-hologram__depth--back {
+  transform: rotateX(58deg) rotateZ(-8deg) translateZ(-86px) scale(0.88);
+  opacity: 0.22;
+}
+
+.brain-hologram__depth--front {
+  transform: rotateX(58deg) rotateZ(-8deg) translateZ(-34px) scale(1.01);
+  opacity: 0.28;
+}
+
+.brain-hologram__shadow {
+  fill: rgba(2, 7, 18, 0.56);
+  filter: blur(14px);
+}
+
+.brain-hologram__mass {
+  fill: url('#brain-core-fill');
+  stroke: rgba(240, 253, 255, 0.12);
+  stroke-width: 2;
+}
+
+.brain-hologram__rim,
+.brain-hologram__center {
+  fill: none;
+  stroke: url('#brain-stroke');
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  opacity: 0.72;
+  filter: url('#brain-glow');
+}
+
+.brain-hologram__center {
+  stroke-width: 2;
+  opacity: 0.42;
+}
+
+.brain-hologram__trace {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: calc(var(--trace-width) * 1px);
+  stroke-dasharray: 0.32 0.68;
+  stroke-dashoffset: 1;
+  opacity: 0.86;
+  filter: url('#brain-glow');
+  animation: brain-neural-flow 4.8s linear infinite;
+  animation-delay: var(--trace-delay);
+}
+
+.brain-hologram__bolt {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  stroke-dasharray: 0.16 0.84;
+  opacity: 0;
+  filter: url('#brain-glow');
+  animation: brain-lightning-strike 3.2s steps(2, end) infinite;
+  animation-delay: var(--bolt-delay);
+}
+
+.brain-hologram__node-glow {
+  opacity: 0.25;
+  filter: url('#brain-glow');
+  animation: brain-node-pulse 2.8s ease-in-out infinite;
+  animation-delay: var(--node-delay);
+}
+
+.brain-hologram__node-core {
+  opacity: 0.95;
+  filter: url('#brain-glow');
+  animation: brain-node-pulse 2.8s ease-in-out infinite;
+  animation-delay: var(--node-delay);
+}
+
+.brain-tone-cyan {
+  stroke: var(--brain-cyan);
+  fill: var(--brain-cyan);
+}
+
+.brain-tone-violet {
+  stroke: var(--brain-violet);
+  fill: var(--brain-violet);
+}
+
+.brain-tone-magenta {
+  stroke: var(--brain-magenta);
+  fill: var(--brain-magenta);
+}
+
+.brain-tone-white {
+  stroke: #f0fdff;
+  fill: #f0fdff;
+}
+
+.brain-hero-scene--mobile .brain-hologram__svg {
+  width: min(128%, 38rem);
+  transform: rotateX(56deg) rotateZ(-8deg) translateY(1rem) scale(1.12);
+}
+
+.brain-hero-scene--reduced .brain-hologram,
+.brain-hero-scene--reduced .brain-hologram__svg,
+.brain-hero-scene--reduced .brain-hologram__trace,
+.brain-hero-scene--reduced .brain-hologram__bolt,
+.brain-hero-scene--reduced .brain-hologram__node-glow,
+.brain-hero-scene--reduced .brain-hologram__node-core {
+  animation: none !important;
+}
+
+@keyframes brain-hologram-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0.3rem, 0) rotateY(-5deg);
+  }
+
+  50% {
+    transform: translate3d(0, -0.5rem, 0) rotateY(6deg);
+  }
+}
+
+@keyframes brain-hologram-orbit {
+  0%,
+  100% {
+    transform: rotateX(58deg) rotateZ(-10deg) rotateY(-8deg) translateY(0.35rem)
+      scale(1.07);
+  }
+
+  50% {
+    transform: rotateX(61deg) rotateZ(-3deg) rotateY(10deg) translateY(-0.15rem)
+      scale(1.12);
+  }
+}
+
+@keyframes brain-neural-flow {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0.34;
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.5;
+  }
+}
+
+@keyframes brain-lightning-strike {
+  0%,
+  72%,
+  100% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  74% {
+    stroke-dashoffset: 0.4;
+    opacity: 0.95;
+  }
+
+  77% {
+    opacity: 0.2;
+  }
+
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  84% {
+    opacity: 0;
+  }
+}
+
+@keyframes brain-node-pulse {
+  0%,
+  100% {
+    transform: scale(0.82);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.28);
+    opacity: 1;
+  }
+}
+
+.brain-storm-v3 {
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(53, 231, 255, 0.2),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 42% 36%,
+      rgba(232, 121, 249, 0.14),
+      transparent 34%
+    ),
+    linear-gradient(145deg, #020712 0%, #07111f 52%, #020712 100%);
+}
+
+.brain-storm-v3__plasma,
+.brain-storm-v3__orbit,
+.brain-storm-v3__particles,
+.brain-storm-v3__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.brain-storm-v3__plasma {
+  z-index: 0;
+  background:
+    conic-gradient(
+      from 180deg at 50% 50%,
+      transparent,
+      rgba(53, 231, 255, 0.24),
+      transparent 28%,
+      rgba(139, 92, 246, 0.28),
+      transparent 58%,
+      rgba(232, 121, 249, 0.2),
+      transparent
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(53, 231, 255, 0.18),
+      transparent 52%
+    );
+  filter: blur(18px) saturate(135%);
+  animation: brain-storm-v3-plasma 9s ease-in-out infinite alternate;
+}
+
+.brain-storm-v3__orbit {
+  z-index: 1;
+  margin: auto;
+  width: min(45rem, 108%);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  opacity: 0.72;
+  mask-image: radial-gradient(
+    circle,
+    transparent 0 34%,
+    #000 41%,
+    transparent 73%
+  );
+}
+
+.brain-storm-v3__orbit--one {
+  background:
+    repeating-conic-gradient(
+      from 16deg,
+      rgba(53, 231, 255, 0.38) 0deg 2deg,
+      transparent 3deg 17deg
+    ),
+    conic-gradient(
+      from 90deg,
+      transparent,
+      rgba(53, 231, 255, 0.34),
+      transparent 45%,
+      rgba(232, 121, 249, 0.3),
+      transparent
+    );
+  filter: drop-shadow(0 0 28px rgba(53, 231, 255, 0.34));
+  animation: brain-storm-v3-spin 8s linear infinite;
+}
+
+.brain-storm-v3__orbit--two {
+  width: min(36rem, 92%);
+  transform: rotateX(58deg) rotateZ(28deg);
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(240, 253, 255, 0.32) 0deg 1deg,
+      transparent 2deg 20deg
+    ),
+    conic-gradient(
+      from 270deg,
+      transparent,
+      rgba(139, 92, 246, 0.35),
+      transparent,
+      rgba(53, 231, 255, 0.25),
+      transparent
+    );
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.35));
+  animation: brain-storm-v3-counter-spin 12s linear infinite;
+}
+
+.brain-storm-v3__particles {
+  z-index: 1;
+  background-image:
+    radial-gradient(circle, rgba(240, 253, 255, 0.92) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(53, 231, 255, 0.82) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(232, 121, 249, 0.7) 0 1px, transparent 2px);
+  background-position:
+    12% 24%,
+    72% 18%,
+    82% 78%;
+  background-size:
+    6.5rem 6.5rem,
+    8rem 8rem,
+    7rem 7rem;
+  opacity: 0.65;
+  animation: brain-storm-v3-particles 6s linear infinite;
+}
+
+.brain-storm-v3__svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: min(54rem, 122%);
+  max-width: none;
+  overflow: visible;
+  transform: translate(-50%, -50%) scale(1.02);
+  filter: drop-shadow(0 0 18px rgba(53, 231, 255, 0.4))
+    drop-shadow(0 0 54px rgba(139, 92, 246, 0.28))
+    drop-shadow(0 0 96px rgba(232, 121, 249, 0.16));
+  animation: brain-storm-v3-float 5.5s ease-in-out infinite;
+}
+
+.brain-storm-v3__floor {
+  fill: rgba(2, 7, 18, 0.72);
+  filter: blur(16px);
+}
+
+.brain-storm-v3__brain-fill {
+  fill: url('#brain-storm-v3-fill');
+  stroke: rgba(240, 253, 255, 0.12);
+  stroke-width: 2;
+}
+
+.brain-storm-v3__brain-outline {
+  fill: none;
+  stroke: url('#brain-storm-v3-outline');
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+  filter: url('#brain-storm-v3-glow');
+  opacity: 0.95;
+}
+
+.brain-storm-v3__cortex {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: calc(var(--trace-width) * 1px);
+  stroke-dasharray: 0.22 0.78;
+  stroke-dashoffset: 1;
+  filter: url('#brain-storm-v3-glow');
+  opacity: 0.96;
+  animation: brain-storm-v3-neural-flow 3.6s linear infinite;
+  animation-delay: var(--trace-delay);
+}
+
+.brain-storm-v3__bolt {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+  stroke-dasharray: 0.2 0.8;
+  stroke-dashoffset: 1;
+  filter: url('#brain-storm-v3-glow');
+  opacity: 0;
+  animation: brain-storm-v3-lightning 2.8s steps(2, end) infinite;
+  animation-delay: var(--bolt-delay);
+}
+
+.brain-storm-v3__node-halo,
+.brain-storm-v3__node-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: url('#brain-storm-v3-glow');
+  animation: brain-storm-v3-node-pulse 2.2s ease-in-out infinite;
+  animation-delay: var(--node-delay);
+}
+
+.brain-storm-v3__node-halo {
+  opacity: 0.24;
+}
+
+.brain-storm-v3__node-core {
+  opacity: 1;
+}
+
+.brain-storm-v3__tone--cyan {
+  stroke: var(--brain-cyan);
+  fill: var(--brain-cyan);
+}
+
+.brain-storm-v3__tone--violet {
+  stroke: var(--brain-violet);
+  fill: var(--brain-violet);
+}
+
+.brain-storm-v3__tone--magenta {
+  stroke: var(--brain-magenta);
+  fill: var(--brain-magenta);
+}
+
+.brain-storm-v3__tone--white {
+  stroke: var(--brain-white);
+  fill: var(--brain-white);
+}
+
+.brain-storm-v3__vignette {
+  z-index: 5;
+  background:
+    radial-gradient(
+      circle at 50% 48%,
+      transparent 0 50%,
+      rgba(2, 7, 18, 0.22) 74%,
+      rgba(2, 7, 18, 0.68) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(2, 7, 18, 0.34),
+      transparent 22%,
+      transparent 78%,
+      rgba(2, 7, 18, 0.34)
+    );
+}
+
+.brain-storm-v3--reduced .brain-storm-v3__plasma,
+.brain-storm-v3--reduced .brain-storm-v3__orbit,
+.brain-storm-v3--reduced .brain-storm-v3__particles,
+.brain-storm-v3--reduced .brain-storm-v3__svg,
+.brain-storm-v3--reduced .brain-storm-v3__cortex,
+.brain-storm-v3--reduced .brain-storm-v3__bolt,
+.brain-storm-v3--reduced .brain-storm-v3__node-halo,
+.brain-storm-v3--reduced .brain-storm-v3__node-core {
+  animation: none !important;
+}
+
+@keyframes brain-storm-v3-plasma {
+  0% {
+    transform: translate3d(-2%, -1%, 0) rotate(0deg) scale(1);
+  }
+
+  100% {
+    transform: translate3d(2%, 2%, 0) rotate(10deg) scale(1.08);
+  }
+}
+
+@keyframes brain-storm-v3-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes brain-storm-v3-counter-spin {
+  to {
+    transform: rotateX(58deg) rotateZ(-332deg);
+  }
+}
+
+@keyframes brain-storm-v3-particles {
+  to {
+    background-position:
+      24% 38%,
+      60% 34%,
+      70% 62%;
+  }
+}
+
+@keyframes brain-storm-v3-float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.02) rotate(-1deg);
+  }
+
+  50% {
+    transform: translate(-50%, -53%) scale(1.08) rotate(1deg);
+  }
+}
+
+@keyframes brain-storm-v3-neural-flow {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0.38;
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.62;
+  }
+}
+
+@keyframes brain-storm-v3-lightning {
+  0%,
+  62%,
+  100% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+
+  65% {
+    stroke-dashoffset: 0.6;
+    opacity: 1;
+  }
+
+  69% {
+    opacity: 0.12;
+  }
+
+  72% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  78% {
+    opacity: 0;
+  }
+}
+
+@keyframes brain-storm-v3-node-pulse {
+  0%,
+  100% {
+    transform: scale(0.72);
+    opacity: 0.46;
+  }
+
+  50% {
+    transform: scale(1.28);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .brain-storm-v3__svg {
+    width: min(66rem, 154%);
+  }
+}
