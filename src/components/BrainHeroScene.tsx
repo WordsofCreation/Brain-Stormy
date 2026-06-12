@@ -1,7 +1,4 @@
-import { Float, PerspectiveCamera } from '@react-three/drei'
-import { Canvas, useFrame, type RootState } from '@react-three/fiber'
-import { useEffect, useLayoutEffect, useMemo, useRef, type CSSProperties } from 'react'
-import * as THREE from 'three'
+import { useEffect, type CSSProperties } from 'react'
 
 import { useMediaQuery } from '../hooks/useMediaQuery'
 
@@ -9,289 +6,266 @@ type BrainHeroSceneProps = {
   reducedMotion?: boolean | null
 }
 
-type BrainPoint = {
-  position: THREE.Vector3
-  nodeScale: number
-  hue: number
+type PathTrace = {
+  d: string
+  tone: 'cyan' | 'violet' | 'magenta' | 'white'
+  delay: string
+  width?: number
 }
 
-type BrainNetwork = {
-  pointPositions: Float32Array
-  edgePositions: Float32Array
-  nodes: BrainPoint[]
-  sparks: Float32Array
+type BrainNode = {
+  x: number
+  y: number
+  size: number
+  tone: 'cyan' | 'violet' | 'magenta' | 'white'
+  delay: string
 }
 
-type BrainCoreProps = {
-  density: number
-  lineDistance: number
-  reducedMotion: boolean
+type LightningBolt = {
+  points: string
+  delay: string
+  tone: 'cyan' | 'violet' | 'white'
 }
 
-const palette = {
-  cyan: '#35e7ff',
-  blue: '#38bdf8',
-  violet: '#8b5cf6',
-  magenta: '#e879f9',
-}
+const fallbackStyle = {
+  '--brain-cyan': '#35e7ff',
+  '--brain-violet': '#8b5cf6',
+  '--brain-magenta': '#e879f9',
+} as CSSProperties
 
-const fallbackStyle =
+const cortexPaths: PathTrace[] = [
   {
-    '--brain-cyan': palette.cyan,
-    '--brain-violet': palette.violet,
-    '--brain-magenta': palette.magenta,
-  } as CSSProperties
+    d: 'M232 271 C190 214 215 145 288 128 C351 113 398 152 400 215 C402 276 350 308 286 292',
+    tone: 'cyan',
+    delay: '0s',
+    width: 3.4,
+  },
+  {
+    d: 'M393 211 C402 145 456 111 522 129 C589 148 618 214 584 272 C551 328 465 325 420 279',
+    tone: 'violet',
+    delay: '-1.8s',
+    width: 3.4,
+  },
+  {
+    d: 'M276 147 C246 174 251 215 285 231 C329 252 365 221 348 179 C337 151 307 139 276 147',
+    tone: 'white',
+    delay: '-0.7s',
+  },
+  {
+    d: 'M478 145 C443 158 429 192 446 224 C467 261 520 258 546 225 C570 194 554 153 519 143',
+    tone: 'magenta',
+    delay: '-1.2s',
+  },
+  {
+    d: 'M236 237 C287 210 330 211 383 247 C425 276 473 288 552 250',
+    tone: 'cyan',
+    delay: '-2.2s',
+    width: 2.6,
+  },
+  {
+    d: 'M265 290 C328 337 430 346 516 301',
+    tone: 'violet',
+    delay: '-3.1s',
+    width: 2.8,
+  },
+  {
+    d: 'M287 116 C331 75 399 90 421 145 C448 86 524 76 565 123',
+    tone: 'white',
+    delay: '-0.2s',
+    width: 2.5,
+  },
+  {
+    d: 'M209 205 C165 225 159 293 208 338 C258 384 337 375 378 329',
+    tone: 'magenta',
+    delay: '-3.7s',
+    width: 2.5,
+  },
+  {
+    d: 'M425 329 C469 382 552 371 603 321 C651 274 635 205 590 181',
+    tone: 'cyan',
+    delay: '-4.1s',
+    width: 2.5,
+  },
+  {
+    d: 'M381 102 C385 171 386 236 385 342',
+    tone: 'violet',
+    delay: '-1.4s',
+    width: 2.2,
+  },
+  {
+    d: 'M222 328 C209 377 253 417 316 410 C366 405 390 374 384 337',
+    tone: 'cyan',
+    delay: '-2.8s',
+  },
+  {
+    d: 'M421 337 C415 379 447 411 505 413 C573 414 617 373 594 323',
+    tone: 'magenta',
+    delay: '-3.4s',
+  },
+]
 
-function createBrainNetwork(density: number, lineDistance: number): BrainNetwork {
-  const points: BrainPoint[] = []
-  const pointPositions: number[] = []
-  const sparks: number[] = []
-  const nodeEvery = density > 520 ? 11 : 9
+const neuralNodes: BrainNode[] = [
+  { x: 286, y: 128, size: 7, tone: 'cyan', delay: '0s' },
+  { x: 400, y: 215, size: 5, tone: 'violet', delay: '-1.2s' },
+  { x: 522, y: 129, size: 7, tone: 'magenta', delay: '-2.1s' },
+  { x: 348, y: 179, size: 5, tone: 'white', delay: '-0.4s' },
+  { x: 446, y: 224, size: 6, tone: 'cyan', delay: '-2.8s' },
+  { x: 265, y: 290, size: 5, tone: 'violet', delay: '-1.8s' },
+  { x: 516, y: 301, size: 6, tone: 'white', delay: '-3.2s' },
+  { x: 316, y: 410, size: 6, tone: 'magenta', delay: '-2.4s' },
+  { x: 505, y: 413, size: 6, tone: 'cyan', delay: '-3.8s' },
+  { x: 603, y: 321, size: 5, tone: 'violet', delay: '-0.9s' },
+]
 
-  for (let i = 0; i < density; i += 1) {
-    const hemisphere = i % 2 === 0 ? -1 : 1
-    const t = (i + 0.5) / density
-    const goldenAngle = Math.PI * (3 - Math.sqrt(5))
-    const theta = i * goldenAngle
-    const y = 1 - 2 * t
-    const radial = Math.sqrt(Math.max(0, 1 - y * y))
-    const lobeBias = 0.82 + 0.22 * Math.sin(theta * 2.1) + 0.08 * Math.cos(y * 7)
+const lightningBolts: LightningBolt[] = [
+  {
+    points: '118,148 191,184 154,202 252,246 213,257 340,318',
+    delay: '0s',
+    tone: 'cyan',
+  },
+  {
+    points: '642,132 552,181 590,196 497,249 536,261 420,318',
+    delay: '-1.7s',
+    tone: 'violet',
+  },
+  {
+    points: '386,30 414,112 391,105 422,202 396,190 424,297',
+    delay: '-3s',
+    tone: 'white',
+  },
+  {
+    points: '96,337 206,315 181,347 305,344 268,378 410,361',
+    delay: '-4.2s',
+    tone: 'cyan',
+  },
+]
 
-    let x = hemisphere * (0.22 + radial * Math.cos(theta) * 1.06 * lobeBias)
-    let z = radial * Math.sin(theta) * 0.78 * lobeBias
-    const foldedY = y * 0.9 + 0.1 * Math.sin(theta * 3 + hemisphere)
-
-    const frontBackTaper = 1 - 0.18 * Math.max(0, z)
-    x *= frontBackTaper
-    z += 0.2 * Math.cos(y * Math.PI) - 0.05
-
-    const crease = Math.abs(x) < 0.19 ? 0.28 : 1
-    const cortexRipple = 0.08 * Math.sin(theta * 7.5 + y * 6) + 0.045 * Math.cos(theta * 4 - z * 5)
-
-    const position = new THREE.Vector3(
-      x + cortexRipple * hemisphere * 0.35,
-      foldedY + cortexRipple * 0.28,
-      z * crease + cortexRipple,
-    )
-
-    if (position.y < -0.82 && Math.abs(position.x) > 1.02) {
-      position.x *= 0.82
-      position.y += 0.12
-    }
-
-    pointPositions.push(position.x, position.y, position.z)
-    sparks.push((Math.random() - 0.5) * 5.8, (Math.random() - 0.5) * 3.4, (Math.random() - 0.5) * 3.2)
-
-    if (i % nodeEvery === 0 || Math.sin(theta * 2.4) > 0.96) {
-      points.push({
-        position,
-        nodeScale: 0.018 + ((i % 17) / 17) * 0.036,
-        hue: i % 3,
-      })
-    }
-  }
-
-  const edgePositions: number[] = []
-  const maxEdges = density > 520 ? 420 : 260
-  let edges = 0
-
-  for (let i = 0; i < density && edges < maxEdges; i += 1) {
-    const ax = pointPositions[i * 3]
-    const ay = pointPositions[i * 3 + 1]
-    const az = pointPositions[i * 3 + 2]
-
-    for (let j = i + 7; j < density && edges < maxEdges; j += density > 520 ? 17 : 23) {
-      const bx = pointPositions[j * 3]
-      const by = pointPositions[j * 3 + 1]
-      const bz = pointPositions[j * 3 + 2]
-      const distance = Math.hypot(ax - bx, ay - by, az - bz)
-      const bridgesHemispheres = Math.abs(ax + bx) < 0.32 && Math.abs(ay - by) < 0.32
-
-      if (distance < lineDistance || (bridgesHemispheres && distance < lineDistance * 1.5 && edges % 5 === 0)) {
-        edgePositions.push(ax, ay, az, bx, by, bz)
-        edges += 1
-      }
-    }
-  }
-
-  return {
-    pointPositions: new Float32Array(pointPositions),
-    edgePositions: new Float32Array(edgePositions),
-    nodes: points,
-    sparks: new Float32Array(sparks),
-  }
-}
-
-function NeuralNodes({ nodes }: { nodes: BrainPoint[] }) {
-  const meshRef = useRef<THREE.InstancedMesh>(null)
-  const colorArray = useMemo(
-    () => nodes.map((node) => new THREE.Color(node.hue === 0 ? palette.cyan : node.hue === 1 ? palette.violet : palette.magenta)),
-    [nodes],
-  )
-
-  useLayoutEffect(() => {
-    if (!meshRef.current) {
-      return
-    }
-
-    const matrix = new THREE.Matrix4()
-    nodes.forEach((node, index) => {
-      matrix.compose(node.position, new THREE.Quaternion(), new THREE.Vector3(node.nodeScale, node.nodeScale, node.nodeScale))
-      meshRef.current?.setMatrixAt(index, matrix)
-      meshRef.current?.setColorAt(index, colorArray[index])
-    })
-    meshRef.current.instanceMatrix.needsUpdate = true
-    if (meshRef.current.instanceColor) {
-      meshRef.current.instanceColor.needsUpdate = true
-    }
-  }, [colorArray, nodes])
-
-  return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, nodes.length]}>
-      <sphereGeometry args={[1, 14, 14]} />
-      <meshBasicMaterial transparent opacity={0.95} toneMapped={false} vertexColors />
-    </instancedMesh>
-  )
-}
-
-function BrainCore({ density, lineDistance, reducedMotion }: BrainCoreProps) {
-  const groupRef = useRef<THREE.Group>(null)
-  const glassRef = useRef<THREE.Mesh>(null)
-  const network = useMemo(() => createBrainNetwork(density, lineDistance), [density, lineDistance])
-
-  useFrame((state: RootState) => {
-    const elapsed = state.clock.getElapsedTime()
-    const group = groupRef.current
-
-    if (!group) {
-      return
-    }
-
-    if (reducedMotion) {
-      group.rotation.set(0.04, -0.2, 0)
-      return
-    }
-
-    const pointerX = THREE.MathUtils.clamp(state.pointer.x, -0.75, 0.75)
-    const pointerY = THREE.MathUtils.clamp(state.pointer.y, -0.75, 0.75)
-    const scrollNudge = typeof window === 'undefined' ? 0 : Math.min(window.scrollY / 1200, 0.7)
-
-    group.rotation.y = THREE.MathUtils.lerp(group.rotation.y, -0.22 + pointerX * 0.18 + elapsed * 0.035 + scrollNudge * 0.12, 0.035)
-    group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, 0.03 - pointerY * 0.08, 0.035)
-    group.position.y = Math.sin(elapsed * 0.72) * 0.055
-    const breath = 1 + Math.sin(elapsed * 1.05) * 0.018
-    group.scale.setScalar(breath)
-
-    if (glassRef.current) {
-      glassRef.current.rotation.y = elapsed * 0.025
-      glassRef.current.rotation.z = Math.sin(elapsed * 0.35) * 0.025
-    }
-  })
-
-  return (
-    <group ref={groupRef} scale={1.74} rotation={[0.04, -0.24, -0.02]}>
-      <Float speed={reducedMotion ? 0 : 1.15} rotationIntensity={reducedMotion ? 0 : 0.18} floatIntensity={reducedMotion ? 0 : 0.3}>
-        <mesh ref={glassRef} scale={[1.28, 1.04, 0.88]}>
-          <sphereGeometry args={[1.12, 64, 64]} />
-          <meshPhysicalMaterial
-            color="#65e7ff"
-            transparent
-            opacity={0.12}
-            roughness={0.18}
-            metalness={0.04}
-            transmission={0.72}
-            thickness={0.72}
-            ior={1.38}
-            clearcoat={1}
-            clearcoatRoughness={0.12}
-            emissive="#1239ff"
-            emissiveIntensity={0.22}
-            depthWrite={false}
-            blending={THREE.AdditiveBlending}
-          />
-        </mesh>
-
-        <points>
-          <bufferGeometry>
-            <bufferAttribute attach="attributes-position" args={[network.pointPositions, 3]} />
-          </bufferGeometry>
-          <pointsMaterial size={0.014} color={palette.cyan} transparent opacity={0.72} depthWrite={false} blending={THREE.AdditiveBlending} />
-        </points>
-
-        <lineSegments>
-          <bufferGeometry>
-            <bufferAttribute attach="attributes-position" args={[network.edgePositions, 3]} />
-          </bufferGeometry>
-          <lineBasicMaterial color={palette.blue} transparent opacity={0.28} depthWrite={false} blending={THREE.AdditiveBlending} />
-        </lineSegments>
-
-        <NeuralNodes nodes={network.nodes} />
-
-        <points rotation={[0.1, 0.35, 0]}>
-          <bufferGeometry>
-            <bufferAttribute attach="attributes-position" args={[network.sparks, 3]} />
-          </bufferGeometry>
-          <pointsMaterial size={0.009} color={palette.magenta} transparent opacity={0.42} depthWrite={false} blending={THREE.AdditiveBlending} />
-        </points>
-      </Float>
-    </group>
-  )
-}
-
-function BrainFallback() {
-  return (
-    <div className="brain-fallback" style={fallbackStyle} aria-hidden="true">
-      <div className="brain-fallback__halo" />
-      <div className="brain-fallback__brain">
-        <span />
-        <span />
-        <span />
-        <span />
-        <span />
-      </div>
-    </div>
-  )
+function toneClass(tone: string) {
+  return `brain-tone-${tone}`
 }
 
 export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
   const isMobile = useMediaQuery('(max-width: 767px)')
-  const isTablet = useMediaQuery('(max-width: 1023px)')
-  const shouldFallback = reducedMotion || isMobile
-  const density = isTablet ? 420 : 720
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && !shouldFallback) {
-      const root = document.documentElement
-      root.style.setProperty('--brain-rendering', 'active')
-      return () => {
-        root.style.removeProperty('--brain-rendering')
-      }
+    const root = document.documentElement
+    root.style.setProperty(
+      '--brain-rendering',
+      reducedMotion ? 'reduced' : 'css-hologram',
+    )
+    return () => {
+      root.style.removeProperty('--brain-rendering')
     }
-
-    return undefined
-  }, [shouldFallback])
-
-  if (shouldFallback) {
-    return <BrainFallback />
-  }
+  }, [reducedMotion])
 
   return (
-    <div className="brain-hero-scene" aria-hidden="true">
+    <div
+      className={`brain-hero-scene brain-hero-scene--hologram${reducedMotion ? ' brain-hero-scene--reduced' : ''}${isMobile ? ' brain-hero-scene--mobile' : ''}`}
+      style={fallbackStyle}
+      aria-hidden="true"
+    >
       <div className="brain-hero-scene__aurora" />
-      <Canvas
-        dpr={isTablet ? [1, 1.35] : [1, 1.75]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0, 0, 4.7], fov: 40 }}
-        performance={{ min: 0.55 }}
-      >
-        <PerspectiveCamera makeDefault position={[0, 0, 4.7]} fov={40} />
-        <color attach="background" args={['#020712']} />
-        <ambientLight intensity={0.62} />
-        <pointLight position={[-2.8, 1.9, 2.7]} color={palette.cyan} intensity={12} distance={7} />
-        <pointLight position={[2.8, -1.1, 2.2]} color={palette.magenta} intensity={9} distance={6} />
-        <pointLight position={[0, 2.6, -1.2]} color={palette.violet} intensity={8} distance={6} />
-        <BrainCore density={density} lineDistance={isTablet ? 0.34 : 0.28} reducedMotion={Boolean(reducedMotion)} />
-      </Canvas>
+      <div className="brain-hero-scene__storm" />
+      <div className="brain-hologram">
+        <div className="brain-hologram__depth brain-hologram__depth--back" />
+        <div className="brain-hologram__depth brain-hologram__depth--front" />
+        <svg
+          className="brain-hologram__svg"
+          viewBox="0 0 760 520"
+          role="presentation"
+        >
+          <defs>
+            <filter
+              id="brain-glow"
+              x="-40%"
+              y="-40%"
+              width="180%"
+              height="180%"
+            >
+              <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <radialGradient id="brain-core-fill" cx="50%" cy="48%" r="55%">
+              <stop offset="0%" stopColor="#35e7ff" stopOpacity="0.34" />
+              <stop offset="48%" stopColor="#8b5cf6" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#020712" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="brain-stroke" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stopColor="#35e7ff" />
+              <stop offset="50%" stopColor="#f0fdff" />
+              <stop offset="100%" stopColor="#e879f9" />
+            </linearGradient>
+          </defs>
+
+          <ellipse
+            className="brain-hologram__shadow"
+            cx="383"
+            cy="444"
+            rx="210"
+            ry="38"
+          />
+          <path
+            className="brain-hologram__mass"
+            d="M221 331 C154 286 154 188 217 133 C262 94 318 91 372 119 C426 80 513 88 575 136 C645 190 656 294 594 356 C543 408 464 424 386 380 C321 423 258 410 221 331 Z"
+          />
+          <path
+            className="brain-hologram__rim"
+            d="M221 331 C154 286 154 188 217 133 C262 94 318 91 372 119 C426 80 513 88 575 136 C645 190 656 294 594 356 C543 408 464 424 386 380 C321 423 258 410 221 331 Z"
+          />
+          <path
+            className="brain-hologram__center"
+            d="M382 111 C381 176 382 254 383 382"
+          />
+
+          {cortexPaths.map((path) => (
+            <path
+              key={path.d}
+              className={`brain-hologram__trace ${toneClass(path.tone)}`}
+              d={path.d}
+              pathLength="1"
+              style={
+                {
+                  '--trace-delay': path.delay,
+                  '--trace-width': path.width ?? 2.2,
+                } as CSSProperties
+              }
+            />
+          ))}
+
+          {lightningBolts.map((bolt) => (
+            <polyline
+              key={bolt.points}
+              className={`brain-hologram__bolt ${toneClass(bolt.tone)}`}
+              points={bolt.points}
+              style={{ '--bolt-delay': bolt.delay } as CSSProperties}
+            />
+          ))}
+
+          {neuralNodes.map((node) => (
+            <g
+              key={`${node.x}-${node.y}`}
+              className="brain-hologram__node"
+              style={{ '--node-delay': node.delay } as CSSProperties}
+            >
+              <circle
+                className={`brain-hologram__node-glow ${toneClass(node.tone)}`}
+                cx={node.x}
+                cy={node.y}
+                r={node.size * 2.6}
+              />
+              <circle
+                className={`brain-hologram__node-core ${toneClass(node.tone)}`}
+                cx={node.x}
+                cy={node.y}
+                r={node.size}
+              />
+            </g>
+          ))}
+        </svg>
+      </div>
       <div className="brain-hero-scene__vignette" />
     </div>
   )
