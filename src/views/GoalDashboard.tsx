@@ -740,10 +740,6 @@ export function GoalDashboard({ onNavigate }: GoalDashboardProps) {
                 <h2 className="mt-2 text-2xl font-semibold text-white">
                   {formatTodayTitle(today)}
                 </h2>
-                <p className="mt-2 text-sm leading-6 text-silver/72">
-                  Important, not alarming: finish the smallest useful set of
-                  actions that keeps momentum clear.
-                </p>
               </div>
               <span className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-silver">
                 {todayCalendarItems.length + focusTasks.length} focus items

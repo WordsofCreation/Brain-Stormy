@@ -31,7 +31,7 @@ function getViewFromHash() {
 
 const viewLabels: Record<ViewId, string> = {
   home: "Home",
-  inbox: "Idea Inbox",
+  inbox: "Ideas",
   board: "Brainstorm Board",
   projects: "Projects",
   tasks: "Tasks",
