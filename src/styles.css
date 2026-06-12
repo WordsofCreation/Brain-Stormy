@@ -4,7 +4,14 @@
 
 :root {
   color-scheme: dark;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   background: #07111f;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -78,10 +85,27 @@ a {
   height: min(92vh, 58rem);
   pointer-events: none;
   background:
-    radial-gradient(circle at 18% 22%, rgba(139, 92, 246, 0.36), transparent 28%),
-    radial-gradient(circle at 78% 16%, rgba(216, 222, 233, 0.16), transparent 23%),
-    radial-gradient(circle at 52% 72%, rgba(56, 189, 248, 0.16), transparent 31%),
-    linear-gradient(120deg, rgba(7, 17, 31, 0), rgba(139, 92, 246, 0.12), rgba(7, 17, 31, 0));
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(139, 92, 246, 0.36),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 78% 16%,
+      rgba(216, 222, 233, 0.16),
+      transparent 23%
+    ),
+    radial-gradient(
+      circle at 52% 72%,
+      rgba(56, 189, 248, 0.16),
+      transparent 31%
+    ),
+    linear-gradient(
+      120deg,
+      rgba(7, 17, 31, 0),
+      rgba(139, 92, 246, 0.12),
+      rgba(7, 17, 31, 0)
+    );
   filter: blur(4px) saturate(115%);
   opacity: 0.95;
   transform: translate3d(0, 0, 0);
@@ -91,10 +115,17 @@ a {
 .storm-energy-bg::before,
 .storm-energy-bg::after {
   position: absolute;
-  content: "";
+  content: '';
   inset: 18% 10%;
   border-radius: 999px;
-  background: conic-gradient(from 90deg, transparent, rgba(255, 255, 255, 0.14), transparent, rgba(139, 92, 246, 0.22), transparent);
+  background: conic-gradient(
+    from 90deg,
+    transparent,
+    rgba(255, 255, 255, 0.14),
+    transparent,
+    rgba(139, 92, 246, 0.22),
+    transparent
+  );
   filter: blur(28px);
   opacity: 0.52;
   animation: storm-spin 28s linear infinite;
@@ -148,11 +179,24 @@ a {
   z-index: -2;
   height: 52rem;
   pointer-events: none;
-  content: "";
+  content: '';
   background:
-    linear-gradient(90deg, transparent 0 24%, rgba(255, 255, 255, 0.08) 24.2%, transparent 24.6% 54%, rgba(139, 92, 246, 0.14) 54.2%, transparent 54.6%),
+    linear-gradient(
+      90deg,
+      transparent 0 24%,
+      rgba(255, 255, 255, 0.08) 24.2%,
+      transparent 24.6% 54%,
+      rgba(139, 92, 246, 0.14) 54.2%,
+      transparent 54.6%
+    ),
     radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2), transparent 42%);
-  mask-image: linear-gradient(to bottom, transparent, black 18%, black 72%, transparent);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 18%,
+    black 72%,
+    transparent
+  );
   opacity: 0.45;
 }
 
@@ -170,7 +214,11 @@ a {
   left: -11rem;
   width: 27rem;
   height: 27rem;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 68%);
+  background: radial-gradient(
+    circle,
+    rgba(56, 189, 248, 0.18),
+    transparent 68%
+  );
 }
 
 .premium-orb-right {
@@ -178,7 +226,11 @@ a {
   right: -13rem;
   width: 34rem;
   height: 34rem;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.24), transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(168, 85, 247, 0.24),
+    transparent 70%
+  );
 }
 
 .section-transition::before {
@@ -186,8 +238,13 @@ a {
   inset: 0 auto auto 50%;
   width: min(52rem, 86vw);
   height: 1px;
-  content: "";
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  content: '';
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
   transform: translateX(-50%);
 }
 
@@ -295,8 +352,10 @@ a {
 }
 
 .brain-hero-scene__aurora,
+.brain-hero-scene__storm,
 .brain-hero-scene__vignette,
-.brain-fallback__halo {
+.brain-fallback__halo,
+.brain-fallback__storm-ring {
   position: absolute;
   pointer-events: none;
 }
@@ -305,20 +364,77 @@ a {
   inset: -18% -10%;
   z-index: 0;
   background:
-    radial-gradient(circle at 30% 28%, rgba(53, 231, 255, 0.24), transparent 30%),
-    radial-gradient(circle at 72% 64%, rgba(232, 121, 249, 0.2), transparent 32%),
-    conic-gradient(from 140deg at 50% 50%, rgba(56, 189, 248, 0), rgba(139, 92, 246, 0.24), rgba(53, 231, 255, 0.16), rgba(232, 121, 249, 0.2), rgba(56, 189, 248, 0));
+    radial-gradient(
+      circle at 30% 28%,
+      rgba(53, 231, 255, 0.24),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 72% 64%,
+      rgba(232, 121, 249, 0.2),
+      transparent 32%
+    ),
+    conic-gradient(
+      from 140deg at 50% 50%,
+      rgba(56, 189, 248, 0),
+      rgba(139, 92, 246, 0.24),
+      rgba(53, 231, 255, 0.16),
+      rgba(232, 121, 249, 0.2),
+      rgba(56, 189, 248, 0)
+    );
   filter: blur(18px) saturate(122%);
-  opacity: 0.88;
+  opacity: 0.9;
   animation: brain-aurora-drift 16s ease-in-out infinite alternate;
+}
+
+.brain-hero-scene__storm {
+  inset: 5% 3%;
+  z-index: 0;
+  border-radius: 999px;
+  background:
+    repeating-conic-gradient(
+      from 24deg,
+      rgba(53, 231, 255, 0.16) 0deg 1.5deg,
+      transparent 2deg 18deg
+    ),
+    conic-gradient(
+      from 92deg,
+      transparent,
+      rgba(139, 92, 246, 0.24),
+      transparent 34%,
+      rgba(53, 231, 255, 0.2),
+      transparent 68%,
+      rgba(232, 121, 249, 0.18),
+      transparent
+    );
+  filter: blur(0.3px) drop-shadow(0 0 36px rgba(53, 231, 255, 0.28));
+  mask-image: radial-gradient(
+    circle,
+    transparent 0 31%,
+    #000 41%,
+    transparent 72%
+  );
+  opacity: 0.75;
+  animation: brain-storm-orbit 11s linear infinite;
 }
 
 .brain-hero-scene__vignette {
   inset: 0;
   z-index: 2;
   background:
-    linear-gradient(90deg, rgba(7, 17, 31, 0.3), transparent 28%, transparent 72%, rgba(7, 17, 31, 0.24)),
-    radial-gradient(circle at 50% 48%, transparent 30%, rgba(7, 17, 31, 0.28) 66%, rgba(7, 17, 31, 0.76) 100%);
+    linear-gradient(
+      90deg,
+      rgba(7, 17, 31, 0.3),
+      transparent 28%,
+      transparent 72%,
+      rgba(7, 17, 31, 0.24)
+    ),
+    radial-gradient(
+      circle at 50% 48%,
+      transparent 30%,
+      rgba(7, 17, 31, 0.28) 66%,
+      rgba(7, 17, 31, 0.76) 100%
+    );
   mix-blend-mode: screen;
 }
 
@@ -327,8 +443,16 @@ a {
   place-items: center;
   min-height: 28rem;
   background:
-    radial-gradient(circle at 50% 44%, color-mix(in srgb, var(--brain-cyan), transparent 74%), transparent 34%),
-    radial-gradient(circle at 64% 64%, color-mix(in srgb, var(--brain-magenta), transparent 76%), transparent 31%);
+    radial-gradient(
+      circle at 50% 44%,
+      color-mix(in srgb, var(--brain-cyan), transparent 74%),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 64% 64%,
+      color-mix(in srgb, var(--brain-magenta), transparent 76%),
+      transparent 31%
+    );
 }
 
 .brain-fallback__halo {
@@ -338,9 +462,44 @@ a {
   border: 1px solid rgba(216, 222, 233, 0.16);
   background:
     radial-gradient(circle, rgba(53, 231, 255, 0.14), transparent 58%),
-    conic-gradient(from 120deg, rgba(53, 231, 255, 0), rgba(139, 92, 246, 0.42), rgba(232, 121, 249, 0.24), rgba(53, 231, 255, 0));
+    conic-gradient(
+      from 120deg,
+      rgba(53, 231, 255, 0),
+      rgba(139, 92, 246, 0.42),
+      rgba(232, 121, 249, 0.24),
+      rgba(53, 231, 255, 0)
+    );
   filter: blur(0.2px) drop-shadow(0 0 46px rgba(53, 231, 255, 0.24));
   opacity: 0.62;
+}
+
+.brain-fallback__storm-ring {
+  width: min(33rem, 94%);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(53, 231, 255, 0.22) 0deg 2deg,
+      transparent 3deg 19deg
+    ),
+    conic-gradient(
+      from 180deg,
+      transparent,
+      rgba(139, 92, 246, 0.32),
+      transparent,
+      rgba(232, 121, 249, 0.24),
+      transparent
+    );
+  filter: drop-shadow(0 0 34px rgba(53, 231, 255, 0.32));
+  mask-image: radial-gradient(
+    circle,
+    transparent 0 34%,
+    #000 43%,
+    transparent 72%
+  );
+  opacity: 0.68;
+  animation: brain-storm-orbit 12s linear infinite;
 }
 
 .brain-fallback__brain {
@@ -350,23 +509,46 @@ a {
   border: 1px solid rgba(216, 222, 233, 0.22);
   border-radius: 46% 54% 44% 48% / 52% 50% 44% 42%;
   background:
-    radial-gradient(circle at 28% 34%, rgba(53, 231, 255, 0.24), transparent 22%),
-    radial-gradient(circle at 68% 38%, rgba(232, 121, 249, 0.22), transparent 23%),
-    linear-gradient(135deg, rgba(216, 222, 233, 0.16), rgba(53, 231, 255, 0.08) 36%, rgba(139, 92, 246, 0.12));
+    radial-gradient(
+      circle at 28% 34%,
+      rgba(53, 231, 255, 0.3),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 68% 38%,
+      rgba(232, 121, 249, 0.26),
+      transparent 23%
+    ),
+    radial-gradient(
+      ellipse at 50% 50%,
+      rgba(216, 222, 233, 0.12),
+      transparent 58%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(216, 222, 233, 0.16),
+      rgba(53, 231, 255, 0.08) 36%,
+      rgba(139, 92, 246, 0.12)
+    );
   box-shadow:
     inset 0 0 52px rgba(216, 222, 233, 0.08),
     0 0 72px rgba(53, 231, 255, 0.2),
     0 0 120px rgba(139, 92, 246, 0.14);
-  opacity: 0.9;
+  opacity: 0.92;
+  animation: brain-fallback-breathe 5.5s ease-in-out infinite;
 }
 
 .brain-fallback__brain::before,
 .brain-fallback__brain::after {
   position: absolute;
-  content: "";
+  content: '';
   inset: 18% 48% 14%;
   width: 1px;
-  background: linear-gradient(transparent, rgba(216, 222, 233, 0.42), transparent);
+  background: linear-gradient(
+    transparent,
+    rgba(216, 222, 233, 0.42),
+    transparent
+  );
 }
 
 .brain-fallback__brain::after {
@@ -374,11 +556,33 @@ a {
   width: auto;
   border-radius: inherit;
   background:
-    radial-gradient(circle at 22% 20%, rgba(53, 231, 255, 0.75) 0 2px, transparent 3px),
-    radial-gradient(circle at 66% 28%, rgba(232, 121, 249, 0.75) 0 2px, transparent 3px),
-    radial-gradient(circle at 42% 68%, rgba(139, 92, 246, 0.82) 0 2px, transparent 3px),
-    linear-gradient(35deg, transparent 44%, rgba(53, 231, 255, 0.38) 45%, transparent 47%),
-    linear-gradient(140deg, transparent 40%, rgba(232, 121, 249, 0.32) 41%, transparent 43%);
+    radial-gradient(
+      circle at 22% 20%,
+      rgba(53, 231, 255, 0.75) 0 2px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 66% 28%,
+      rgba(232, 121, 249, 0.75) 0 2px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 42% 68%,
+      rgba(139, 92, 246, 0.82) 0 2px,
+      transparent 3px
+    ),
+    linear-gradient(
+      35deg,
+      transparent 44%,
+      rgba(53, 231, 255, 0.38) 45%,
+      transparent 47%
+    ),
+    linear-gradient(
+      140deg,
+      transparent 40%,
+      rgba(232, 121, 249, 0.32) 41%,
+      transparent 43%
+    );
   opacity: 0.86;
 }
 
@@ -386,7 +590,13 @@ a {
   position: absolute;
   height: 1px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(53, 231, 255, 0.72), rgba(232, 121, 249, 0.54), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(53, 231, 255, 0.72),
+    rgba(232, 121, 249, 0.54),
+    transparent
+  );
   box-shadow: 0 0 18px rgba(53, 231, 255, 0.42);
 }
 
@@ -425,13 +635,74 @@ a {
   transform: rotate(7deg);
 }
 
+.brain-fallback__brain i {
+  position: absolute;
+  width: 1px;
+  height: 34%;
+  border-radius: 999px;
+  background: linear-gradient(
+    transparent,
+    rgba(240, 253, 255, 0.92),
+    rgba(53, 231, 255, 0.24),
+    transparent
+  );
+  box-shadow: 0 0 20px rgba(53, 231, 255, 0.62);
+  transform-origin: 50% 0;
+  opacity: 0.84;
+}
+
+.brain-fallback__brain i:nth-of-type(1) {
+  left: 68%;
+  top: -18%;
+  transform: rotate(21deg);
+}
+
+.brain-fallback__brain i:nth-of-type(2) {
+  left: 38%;
+  top: 4%;
+  height: 28%;
+  transform: rotate(-38deg);
+}
+
+.brain-fallback__brain i:nth-of-type(3) {
+  left: 76%;
+  top: 42%;
+  height: 25%;
+  transform: rotate(62deg);
+}
+
 @keyframes brain-aurora-drift {
   0% {
-    transform: translate3d(-2%, -1%, 0) scale(1);
+    transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg);
   }
 
   100% {
-    transform: translate3d(2%, 2.5%, 0) scale(1.06);
+    transform: translate3d(2%, 2.5%, 0) scale(1.06) rotate(8deg);
+  }
+}
+
+@keyframes brain-storm-orbit {
+  0% {
+    transform: rotate(0deg) scale(0.94);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.03);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(0.94);
+  }
+}
+
+@keyframes brain-fallback-breathe {
+  0%,
+  100% {
+    transform: scale(0.98) rotate(-1deg);
+  }
+
+  50% {
+    transform: scale(1.03) rotate(1deg);
   }
 }
 
@@ -447,7 +718,9 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .brain-hero-scene__aurora,
+  .brain-hero-scene__storm,
   .brain-fallback__halo,
+  .brain-fallback__storm-ring,
   .brain-fallback__brain,
   .hero-brain-shell {
     animation: none !important;
