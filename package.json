@@ -10,11 +10,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-three/drei": "latest",
+    "@react-three/fiber": "latest",
     "framer-motion": "latest",
     "gsap": "latest",
     "lucide-react": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "three": "latest"
   },
   "devDependencies": {
     "@eslint/js": "latest",
