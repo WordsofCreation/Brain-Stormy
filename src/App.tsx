@@ -72,6 +72,47 @@ export default function App() {
   const activeView = isViewId(storedActiveView) ? storedActiveView : "home";
 
   useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      !window.matchMedia("(hover: hover)").matches
+    ) {
+      return;
+    }
+
+    const interactiveSelector =
+      'button:not(:disabled), a[href], [role="button"], [tabindex]:not([tabindex="-1"]), select, input[type="checkbox"], input[type="radio"]';
+
+    const syncInteractiveSpotlight = (event: PointerEvent) => {
+      const target =
+        event.target instanceof Element
+          ? event.target.closest<HTMLElement>(interactiveSelector)
+          : null;
+
+      if (!target) {
+        return;
+      }
+
+      const rect = target.getBoundingClientRect();
+      target.style.setProperty("--interactive-x", `${event.clientX - rect.left}px`);
+      target.style.setProperty("--interactive-y", `${event.clientY - rect.top}px`);
+      target.style.setProperty(
+        "--interactive-tilt-x",
+        `${((event.clientY - rect.top) / rect.height - 0.5) * -10}deg`,
+      );
+      target.style.setProperty(
+        "--interactive-tilt-y",
+        `${((event.clientX - rect.left) / rect.width - 0.5) * 10}deg`,
+      );
+    };
+
+    window.addEventListener("pointermove", syncInteractiveSpotlight, {
+      passive: true,
+    });
+    return () =>
+      window.removeEventListener("pointermove", syncInteractiveSpotlight);
+  }, []);
+
+  useEffect(() => {
     const hashView = getViewFromHash();
 
     if (hashView) {

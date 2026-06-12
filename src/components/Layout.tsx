@@ -27,7 +27,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
       <header className="fixed left-0 right-0 top-0 z-40 border-b border-white/10 bg-navy/70 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
           <button
-            className="flex min-h-12 min-w-0 items-center gap-3"
+            className="storm-interactive flex min-h-12 min-w-0 items-center gap-3 rounded-3xl px-1"
             onClick={() => navigate("home")}
             type="button"
           >
@@ -53,13 +53,13 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
             </span>
           </button>
 
-          <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.06] p-1 md:flex">
+          <nav className="storm-nav-shell hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.06] p-1 md:flex">
             {navigationItems.map((item) => {
               const Icon = item.icon;
               const active = item.id === activeView;
               return (
                 <button
-                  className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-sm transition ${active ? "text-navy" : "text-silver hover:text-white"}`}
+                  className={`storm-interactive relative flex items-center gap-2 rounded-full px-4 py-2 text-sm transition ${active ? "text-navy" : "text-silver hover:text-white"}`}
                   key={item.id}
                   onClick={() => navigate(item.id)}
                   type="button"
@@ -67,7 +67,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
                   {active ? (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-white"
+                      className="absolute inset-0 rounded-full bg-white shadow-glow"
                     />
                   ) : null}
                   <Icon className="relative" size={16} />
@@ -78,7 +78,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
           </nav>
 
           <button
-            className="min-h-12 min-w-12 rounded-2xl border border-white/10 bg-white/10 p-3 text-white md:hidden"
+            className="storm-interactive min-h-12 min-w-12 rounded-2xl border border-white/10 bg-white/10 p-3 text-white md:hidden"
             onClick={() => setMobileOpen((open) => !open)}
             type="button"
             aria-label="Toggle navigation"
@@ -93,13 +93,13 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              className="mx-4 mb-4 grid gap-2 rounded-3xl border border-white/10 bg-navy/95 p-3 shadow-glass md:hidden"
+              className="storm-card mx-4 mb-4 grid gap-2 rounded-3xl border border-white/10 bg-navy/95 p-3 shadow-glass md:hidden"
             >
               {navigationItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <button
-                    className={`flex min-h-12 items-center gap-3 rounded-2xl px-4 py-3 text-left text-base font-medium transition ${
+                    className={`storm-interactive flex min-h-12 items-center gap-3 rounded-2xl px-4 py-3 text-left text-base font-medium transition ${
                       item.id === activeView
                         ? "bg-white text-navy"
                         : "text-silver hover:bg-white/10 hover:text-white"
@@ -132,7 +132,7 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
             const active = item.id === activeView;
             return (
               <button
-                className={`relative flex min-h-[3.7rem] flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.68rem] font-semibold transition ${active ? "text-navy" : "text-silver/75 hover:text-white"}`}
+                className={`storm-interactive relative flex min-h-[3.7rem] flex-col items-center justify-center gap-1 rounded-2xl px-1 text-[0.68rem] font-semibold transition ${active ? "text-navy" : "text-silver/75 hover:text-white"}`}
                 key={item.id}
                 onClick={() => navigate(item.id)}
                 type="button"

@@ -10,7 +10,7 @@ type SectionProps = {
 
 export function Section({ eyebrow, title, description, children }: SectionProps) {
   return (
-    <section className="relative py-7 sm:py-10 lg:py-14">
+    <section className="storm-section relative py-7 sm:py-10 lg:py-14">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

@@ -18,11 +18,13 @@ const variants: Record<ButtonVariant, string> = {
 export function Button({ children, className = '', variant = 'primary', ...props }: ButtonProps) {
   return (
     <motion.button
-      whileHover={{ y: -3, scale: 1.025 }}
-      whileTap={{ scale: 0.97 }}
-      className={`storm-button inline-flex min-h-11 items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition sm:min-h-0 ${variants[variant]} ${className}`}
+      whileHover={{ y: -4, scale: 1.035, rotateX: 4, rotateY: -4 }}
+      whileTap={{ y: 1, scale: 0.965 }}
+      transition={{ type: 'spring', stiffness: 420, damping: 26 }}
+      className={`storm-button storm-interactive inline-flex min-h-11 items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition sm:min-h-0 ${variants[variant]} ${className}`}
       {...props}
     >
+      <span className="storm-button__shine" aria-hidden="true" />
       <span className="relative z-10 inline-flex items-center justify-center">{children}</span>
     </motion.button>
   )
