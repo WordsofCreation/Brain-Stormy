@@ -276,6 +276,11 @@ export function Home({ onNavigate }: HomeProps) {
   return (
     <div ref={pageRef} className="home-shell relative -mt-8 overflow-hidden pb-10">
       <div className="storm-energy-bg parallax-layer" data-depth="120" aria-hidden="true" />
+      <div className="storm-rain" aria-hidden="true">
+        <span className="storm-rain__sheet storm-rain__sheet--near" />
+        <span className="storm-rain__sheet storm-rain__sheet--far" />
+        <span className="storm-rain__mist" />
+      </div>
       <div className="premium-orb premium-orb-left parallax-layer" data-depth="70" aria-hidden="true" />
       <div className="premium-orb premium-orb-right parallax-layer" data-depth="-52" aria-hidden="true" />
       <section className="hero-section relative grid min-h-[calc(100svh-7rem)] items-center gap-10 py-10 lg:grid-cols-[0.92fr_1.08fr] lg:py-20">

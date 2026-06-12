@@ -10,20 +10,20 @@ type ButtonProps = HTMLMotionProps<'button'> & {
 }
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-white text-navy shadow-glow hover:bg-silver',
-  secondary: 'border border-white/15 bg-white/10 text-white hover:bg-white/15',
-  ghost: 'text-silver hover:bg-white/10 hover:text-white',
+  primary: 'storm-button--primary',
+  secondary: 'storm-button--secondary',
+  ghost: 'storm-button--ghost',
 }
 
 export function Button({ children, className = '', variant = 'primary', ...props }: ButtonProps) {
   return (
     <motion.button
-      whileHover={{ y: -2 }}
-      whileTap={{ scale: 0.98 }}
-      className={`inline-flex min-h-11 items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition sm:min-h-0 ${variants[variant]} ${className}`}
+      whileHover={{ y: -3, scale: 1.025 }}
+      whileTap={{ scale: 0.97 }}
+      className={`storm-button inline-flex min-h-11 items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition sm:min-h-0 ${variants[variant]} ${className}`}
       {...props}
     >
-      {children}
+      <span className="relative z-10 inline-flex items-center justify-center">{children}</span>
     </motion.button>
   )
 }
