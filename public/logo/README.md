@@ -1,17 +1,36 @@
 # Logo assets
 
-Place the logo image here using this exact filename:
+## Homepage GIF test slot
+
+To test animated homepage logo ideas, place your GIF in this folder with this exact filename:
 
 ```text
-brain-stormy-logo.svg
+homepage-logo.gif
 ```
 
-Vite serves files in `public` from the configured app base path, so reference this file with `import.meta.env.BASE_URL` in React components. In a root-hosted local app it resolves to:
+The homepage hero image will try to load this file first. In a root-hosted local app, that file is served at:
+
+```text
+/logo/homepage-logo.gif
+```
+
+If `homepage-logo.gif` is missing or cannot load, the homepage automatically falls back to the committed SVG at:
 
 ```text
 /logo/brain-stormy-logo.svg
 ```
 
+Because GIF files are binary and can be large, `public/logo/*.gif` is intentionally ignored by git. You can swap different local GIF ideas into this filename without committing them.
+
+## Default fallback logo
+
+The committed fallback logo image uses this exact filename:
+
+```text
+brain-stormy-logo.svg
+```
+
+Vite serves files in `public` from the configured app base path, so reference these files with `import.meta.env.BASE_URL` in React components.
 
 ## Pull-request friendly format
 
