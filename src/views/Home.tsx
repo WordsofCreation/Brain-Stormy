@@ -17,7 +17,7 @@ import {
   Workflow,
   Zap,
 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Button } from '../components/Button'
@@ -31,7 +31,8 @@ type HomeProps = {
 }
 
 const easeOut = [0.22, 1, 0.36, 1] as const
-const logoPath = `${import.meta.env.BASE_URL}logo/brain-stormy-logo.svg`
+const customHomepageLogoPath = `${import.meta.env.BASE_URL}logo/homepage-logo.gif`
+const fallbackLogoPath = `${import.meta.env.BASE_URL}logo/brain-stormy-logo.svg`
 
 const howItWorks = [
   {
@@ -84,6 +85,7 @@ export function Home({ onNavigate }: HomeProps) {
   const pageRef = useRef<HTMLDivElement | null>(null)
   const prefersReducedMotion = useReducedMotion()
   const isMobile = useMediaQuery('(max-width: 767px)')
+  const [logoSrc, setLogoSrc] = useState(customHomepageLogoPath)
 
   useEffect(() => {
     if (!pageRef.current || prefersReducedMotion || isMobile) {
@@ -346,7 +348,8 @@ export function Home({ onNavigate }: HomeProps) {
             <img
               alt="Brain Stormy glowing brain logo"
               className="block h-auto w-full"
-              src={logoPath}
+              onError={() => setLogoSrc(fallbackLogoPath)}
+              src={logoSrc}
             />
           </div>
         </motion.div>
