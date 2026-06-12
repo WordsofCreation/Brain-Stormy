@@ -8,3 +8,10 @@ npm-debug.log*
 .yarn-debug.log*
 .yarn-error.log*
 .pnpm-debug.log*
+# Keep binary logo uploads local; use the tracked SVG for PR-safe logo changes.
+public/logo/*.png
+public/logo/*.gif
+public/logo/*.jpg
+public/logo/*.jpeg
+public/logo/*.webp
+public/logo/*.avif

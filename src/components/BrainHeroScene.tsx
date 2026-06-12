@@ -1,7 +1,5 @@
 import { useEffect, type CSSProperties } from 'react'
 
-import { useMediaQuery } from '../hooks/useMediaQuery'
-
 type BrainHeroSceneProps = {
   reducedMotion?: boolean | null
 }
@@ -40,12 +38,12 @@ const logoStyle = {
 } as CSSProperties
 
 const matrixColumns: CodeColumn[] = [
-  { x: 45, y: 72, value: '01\u00a010\u00a011\u00a000', opacity: 0.4, delay: '0s' },
-  { x: 116, y: 32, value: 'AI\u00a001\u00a0//\u00a010', opacity: 0.3, delay: '-1.4s' },
-  { x: 236, y: 92, value: '10\u00a0UX\u00a001\u00a011', opacity: 0.36, delay: '-2.8s' },
-  { x: 645, y: 62, value: 'SaaS\u00a001\u00a010', opacity: 0.28, delay: '-0.8s' },
-  { x: 790, y: 118, value: '11\u00a000\u00a001\u00a010', opacity: 0.34, delay: '-2.1s' },
-  { x: 914, y: 44, value: 'NODE\u00a010\u00a001', opacity: 0.26, delay: '-3.2s' },
+  { x: 45, y: 72, value: '01\u00a010\u00a011\u00a000', opacity: 0.4, delay: '0s', tone: 'cyan' },
+  { x: 116, y: 32, value: 'AI\u00a001\u00a0//\u00a010', opacity: 0.3, delay: '-1.4s', tone: 'white' },
+  { x: 236, y: 92, value: '10\u00a0UX\u00a001\u00a011', opacity: 0.36, delay: '-2.8s', tone: 'violet' },
+  { x: 645, y: 62, value: 'SaaS\u00a001\u00a010', opacity: 0.28, delay: '-0.8s', tone: 'cyan' },
+  { x: 790, y: 118, value: '11\u00a000\u00a001\u00a010', opacity: 0.34, delay: '-2.1s', tone: 'violet' },
+  { x: 914, y: 44, value: 'NODE\u00a010\u00a001', opacity: 0.26, delay: '-3.2s', tone: 'white' },
 ]
 
 const circuitPaths: CircuitPath[] = [
@@ -105,8 +103,6 @@ function toneClass(tone: Tone) {
 }
 
 export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
-  const isMobile = useMediaQuery('(max-width: 767px)')
-
   useEffect(() => {
     const root = document.documentElement
     root.style.setProperty(

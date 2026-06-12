@@ -10,8 +10,11 @@ type LayoutProps = {
   onNavigate: (view: ViewId) => void;
 };
 
+const logoPath = "/logo/brain-stormy-logo.svg";
+
 export function Layout({ activeView, children, onNavigate }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [logoFailed, setLogoFailed] = useState(false);
 
   const navigate = (view: ViewId) => {
     onNavigate(view);
@@ -28,8 +31,17 @@ export function Layout({ activeView, children, onNavigate }: LayoutProps) {
             onClick={() => navigate("home")}
             type="button"
           >
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white text-navy shadow-glow sm:h-11 sm:w-11">
-              <Brain size={23} />
+            <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-2xl bg-white text-navy shadow-glow sm:h-11 sm:w-11">
+              {logoFailed ? (
+                <Brain size={23} />
+              ) : (
+                <img
+                  alt="Brain Stormy logo"
+                  className="h-full w-full object-cover"
+                  onError={() => setLogoFailed(true)}
+                  src={logoPath}
+                />
+              )}
             </span>
             <span className="min-w-0 text-left">
               <span className="block truncate text-base font-bold tracking-tight sm:text-lg">
