@@ -31,6 +31,7 @@ type HomeProps = {
 }
 
 const easeOut = [0.22, 1, 0.36, 1] as const
+const logoPath = `${import.meta.env.BASE_URL}logo/brain-stormy-logo.svg`
 
 const howItWorks = [
   {
@@ -340,7 +341,7 @@ export function Home({ onNavigate }: HomeProps) {
             <img
               alt="Brain Stormy glowing brain logo"
               className="block h-auto w-full"
-              src="/logo/brain-stormy-logo.svg"
+              src={logoPath}
             />
           </div>
         </motion.div>

@@ -10,7 +10,7 @@ type LayoutProps = {
   onNavigate: (view: ViewId) => void;
 };
 
-const logoPath = "/logo/brain-stormy-logo.svg";
+const logoPath = `${import.meta.env.BASE_URL}logo/brain-stormy-logo.svg`;
 
 export function Layout({ activeView, children, onNavigate }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
