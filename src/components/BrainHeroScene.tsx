@@ -1,5 +1,7 @@
 import { useEffect, type CSSProperties } from 'react'
 
+import { useMediaQuery } from '../hooks/useMediaQuery'
+
 type BrainHeroSceneProps = {
   reducedMotion?: boolean | null
 }
@@ -27,6 +29,7 @@ type CodeColumn = {
   value: string
   opacity: number
   delay: string
+  tone: 'cyan' | 'violet' | 'white'
 }
 
 const logoStyle = {
@@ -102,6 +105,8 @@ function toneClass(tone: Tone) {
 }
 
 export function BrainHeroScene({ reducedMotion = false }: BrainHeroSceneProps) {
+  const isMobile = useMediaQuery('(max-width: 767px)')
+
   useEffect(() => {
     const root = document.documentElement
     root.style.setProperty(
