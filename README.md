@@ -4,6 +4,12 @@ Brain Stormy is a standalone brainstorming, idea organization, and calendar exec
 
 This repository contains the initial React + Vite foundation with TypeScript, Tailwind CSS, Framer Motion, GSAP ScrollTrigger preparation, responsive navigation, reusable UI components, and starter local-storage-backed sample data.
 
+## Custom logo GIF
+
+Place your logo GIF at `public/logo/brain-stormy-logo.gif`. Vite serves files from the `public` directory at the site root, and the app header is already configured to load the GIF from `/logo/brain-stormy-logo.gif`.
+
+If that file is not present yet, the app keeps using the default brain icon fallback.
+
 ## Run locally
 
 ```bash
