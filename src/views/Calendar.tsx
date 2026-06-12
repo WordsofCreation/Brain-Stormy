@@ -39,8 +39,8 @@ const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 const typeStyles: Record<CalendarItemType, string> = {
   'Idea Review': 'border-violet/30 bg-violet/15 text-violet',
-  'Deep Work': 'border-sky-300/25 bg-sky-300/10 text-sky-100',
-  Research: 'border-cyan-300/25 bg-cyan-300/10 text-cyan-100',
+  'Deep Work': 'border-electric/25 bg-electric/10 text-mint',
+  Research: 'border-mint/25 bg-mint/10 text-mint',
   Planning: 'border-indigo-300/25 bg-indigo-300/10 text-indigo-100',
   'Project Task': 'border-emerald-300/25 bg-emerald-300/10 text-emerald-100',
   Deadline: 'border-rose-300/30 bg-rose-400/15 text-rose-100',
@@ -60,7 +60,7 @@ const statusStyles: Record<CalendarItemStatus, string> = {
 
 const priorityStyles: Record<ProjectPriority, string> = {
   Low: 'text-emerald-100',
-  Medium: 'text-sky-100',
+  Medium: 'text-mint',
   High: 'text-amber-100',
   Urgent: 'text-rose-100',
 }
@@ -333,7 +333,7 @@ export function Calendar() {
                         isSelected
                           ? 'border-violet/70 bg-violet/15 shadow-glow'
                           : isToday
-                            ? 'border-silver/50 bg-white/[0.11] shadow-[0_0_30px_rgba(216,222,233,0.14)]'
+                            ? 'border-silver/50 bg-white/[0.11] shadow-[0_0_30px_rgba(157,247,200,0.14)]'
                             : 'border-white/10 bg-navy/45 hover:border-violet/40 hover:bg-white/[0.075]'
                       } ${day.isCurrentMonth ? 'opacity-100' : 'opacity-45'}`}
                       key={day.dateKey}
@@ -416,7 +416,7 @@ export function Calendar() {
         </div>
 
         <motion.aside initial={isMobile ? { opacity: 0, y: 12 } : { opacity: 0, x: 22 }} animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, x: 0 }} transition={{ duration: isMobile ? 0.24 : 0.45, ease: 'easeOut' }} className="grid content-start gap-6">
-          <Card className="bg-gradient-to-br from-violet/15 via-white/[0.07] to-sky-300/10">
+          <Card className="bg-gradient-to-br from-violet/15 via-white/[0.07] to-electric/10">
             <div className="flex items-center gap-3">
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-violet/20 text-violet">
                 <Sparkles size={21} />
@@ -450,7 +450,7 @@ export function Calendar() {
               animate={isMobile ? { y: 0 } : { opacity: 1, y: 0, scale: 1 }}
               exit={isMobile ? { y: '100%' } : { opacity: 0, y: 18, scale: 0.96 }}
               transition={{ type: 'spring', stiffness: isMobile ? 320 : 260, damping: 30 }}
-              className="max-h-[92svh] w-full max-w-3xl overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#091424]/95 p-5 shadow-glass sm:max-h-[92vh] sm:rounded-[2rem] sm:p-7"
+              className="max-h-[92svh] w-full max-w-3xl overflow-y-auto rounded-t-[2rem] border border-white/10 bg-[#061b14]/95 p-5 shadow-glass sm:max-h-[92vh] sm:rounded-[2rem] sm:p-7"
               onSubmit={saveCalendarItem}
             >
               <div className="mb-6 flex items-start justify-between gap-4">

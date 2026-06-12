@@ -65,7 +65,7 @@ const priorityWeight: Record<IdeaPriority | ProjectPriority, number> = {
 
 const priorityStyles: Record<IdeaPriority | ProjectPriority, string> = {
   Low: "border-emerald-300/20 bg-emerald-300/10 text-emerald-100",
-  Medium: "border-sky-300/20 bg-sky-300/10 text-sky-100",
+  Medium: "border-electric/20 bg-electric/10 text-mint",
   High: "border-amber-300/20 bg-amber-300/10 text-amber-100",
   Urgent: "border-rose-300/25 bg-rose-400/15 text-rose-100",
 };
@@ -676,7 +676,7 @@ export function GoalDashboard({ onNavigate }: GoalDashboardProps) {
               </div>
               <div className="mt-6 h-3 overflow-hidden rounded-full bg-white/10">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-violet to-sky-300"
+                  className="h-full rounded-full bg-gradient-to-r from-electric via-mint to-violet"
                   initial={{ width: 0 }}
                   animate={{ width: `${executionProgress}%` }}
                   transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
@@ -1076,7 +1076,7 @@ export function GoalDashboard({ onNavigate }: GoalDashboardProps) {
                   </div>
                   <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
                     <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-violet to-sky-300"
+                      className="h-full rounded-full bg-gradient-to-r from-electric via-mint to-violet"
                       initial={{ width: 0 }}
                       animate={{ width: `${item.progress}%` }}
                       transition={{ duration: 0.9, ease: "easeOut" }}

@@ -48,7 +48,7 @@ const boardColumns: BoardColumn[] = [
 
 const priorityStyles: Record<IdeaPriority, string> = {
   Low: 'border-emerald-300/20 bg-emerald-300/10 text-emerald-100',
-  Medium: 'border-sky-300/20 bg-sky-300/10 text-sky-100',
+  Medium: 'border-electric/20 bg-electric/10 text-mint',
   High: 'border-amber-300/20 bg-amber-300/10 text-amber-100',
   Urgent: 'border-rose-300/25 bg-rose-400/15 text-rose-100',
 }
