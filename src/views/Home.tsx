@@ -72,11 +72,6 @@ const useCases = [
   { label: 'Life planning', icon: Flag },
 ]
 
-const previewIdeas = [
-  { title: 'AI research sprint', status: 'Idea', tone: 'from-violet/90 to-fuchsia-300/80' },
-  { title: 'Launch narrative', status: 'Project', tone: 'from-sky-300/90 to-violet/80' },
-  { title: 'Weekly focus ritual', status: 'Goal', tone: 'from-silver to-violet/70' },
-]
 
 const boardIdeas = [
   { title: 'Positioning story', meta: 'Brand arc', x: '-32%', y: '-6%', speed: '1.25' },
@@ -344,26 +339,6 @@ export function Home({ onNavigate }: HomeProps) {
           <div className="relative min-h-[28rem] overflow-hidden rounded-[2.75rem] border border-white/15 bg-slate-950/40 shadow-[0_42px_140px_rgba(0,0,0,0.58)] backdrop-blur-2xl sm:min-h-[34rem] lg:min-h-[40rem]">
             <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/80 to-transparent" />
             <BrainHeroScene reducedMotion={prefersReducedMotion} />
-
-            <div className="pointer-events-none absolute left-5 top-5 rounded-3xl border border-white/10 bg-navy/45 px-4 py-3 shadow-glass backdrop-blur-2xl sm:left-7 sm:top-7">
-              <p className="text-[0.65rem] uppercase tracking-[0.34em] text-cyan-100/60">Neural engine</p>
-              <p className="mt-1 text-sm font-semibold text-white">Idea pathways active</p>
-            </div>
-
-            <div className="pointer-events-none absolute bottom-5 right-5 max-w-[15rem] rounded-3xl border border-white/10 bg-navy/50 p-4 shadow-glass backdrop-blur-2xl sm:bottom-7 sm:right-7">
-              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
-                <Sparkles size={16} className="text-violet" />
-                Live cognition map
-              </div>
-              <div className="space-y-2">
-                {previewIdeas.map((idea) => (
-                  <div key={idea.title} className="flex items-center gap-2 text-xs text-silver/75">
-                    <span className={`h-2 w-2 rounded-full bg-gradient-to-br ${idea.tone} shadow-glow`} />
-                    <span className="truncate">{idea.title}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_38%,rgba(7,17,31,0.34)_72%,rgba(7,17,31,0.82)_100%)]" />
           </div>
